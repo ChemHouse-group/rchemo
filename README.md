@@ -1,14 +1,18 @@
 ## rchemo - Dimension reduction, Regression and Discrimination for Chemometrics  
-## <span style="color:grey70"> **Version 0.0-17** </span> 
 
-Jchemo provides functions and pipelines for predictions in chemometrics or other domains, with focus on high dimensional data.
+rchemo provides functions and pipelines for predictions in chemometrics or other domains, with focus on high dimensional data.
 
-The package was initially about k-nearest neighbors locally weighted partial least squares regression and discrimination models (kNN-LWPLSR an kNN-LWPLSDA; e.g. Lesnoff et al 2021 https://doi.org/10.1002/cem.3209). It has now been expanded to other methods.
+The package was initially designed about **k-nearest neighbors locally weighted partial least squares regression 
+and discrimination models** (kNN-LWPLSR and kNN-LWPLSDA; e.g. https://doi.org/10.1002/cem.3209).
+It has now been expanded to many other methods for analyzing high dimensional data. 
 
-Generic functions such as **transform**, **predict**, **coef** and **summary** are available. Tuning the models is facilitated by functions **gridscore** (validation dataset) and **gridcv** (cross-validation), with faster versions for models based on latent variables (LVs) (**gridscorelv** and **gridcvlv**) and ridge regularization (**gridscorelb** and **gridcvlb**).
+Generic functions such as **transform**, **predict**, **coef** and **summary** are available. 
+**Tuning the predictive models** is facilitated by functions **gridscore** (validation dataset) and 
+**gridcv** (cross-validation). Faster versions are also available for models based on latent variables (LVs) 
+(**gridscorelv** and **gridcvlv**) and ridge regularization (**gridscorelb** and **gridcvlb**).
 
-**NOTE:** This R package **rchemo** is currently only maintained. 
-**The new current and more expanded package is [**Jchemo**](https://github.com/mlesnoff/Jchemo.jl) in Julia language**.
+**NOTE: This repository is still in building, for a future replacement of [this one](https://github.com/mlesnoff/rchemo). 
+Please do not use it. An annoucement will be done when it will be ready for use.** 
 
 ## <span style="color:green"> **Available functions** </span> 
 
@@ -82,19 +86,12 @@ Write in the R console
 library(rchemo)
 ```
 
-## <span style="color:green"> **Author** </span> 
+## <span style="color:green"> **Authors** </span> 
 
-**Matthieu Lesnoff**
-
-- Cirad, [**UMR Selmet**](https://umr-selmet.cirad.fr/en), Montpellier, France
-
-- [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
-
-**matthieu.lesnoff@cirad.fr**
 
 #### How to cite
 
-Lesnoff, M. 2021. R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/mlesnoff/rchemo. CIRAD, UMR SELMET, Montpellier, France
+R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo.
 
 
 
