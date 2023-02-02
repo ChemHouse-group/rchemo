@@ -1,5 +1,11 @@
 ## NEWS for package **rchemo**
 
+## **Version 0.0-18**
+
+- To come.
+
+
+
 ## **Version 0.0-17**
 
 - Function **sampclas** has been renamed to **sampcla** and modified.
