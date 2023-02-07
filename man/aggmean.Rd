@@ -20,7 +20,11 @@ Calculation of the centers (means) of classes of row observations of a data set.
 
 \value{
 
-A list of outputs.
+\item{ct}{centers (column-wise means)}
+
+\item{lev}{classes}
+
+\item{ni}{number of observations in each per class}
 
 }
 

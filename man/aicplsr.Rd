@@ -1,26 +1,11 @@
 \name{aicplsr}
 \alias{aicplsr}
-\encoding{latin1}
 
 \title{AIC and Cp for Univariate PLSR Models}
 
 \description{
 
 Computation of the AIC and Mallows's \eqn{Cp} criteria for univariate PLSR models (Lesnoff et al. 2021). This function may receive modifications in the future (work in progress).
-
-For a model with \eqn{a} latent variables (LVs), function \code{aicplsr} calculates \eqn{AIC} and \eqn{Cp} by:
-
-\eqn{AIC(a) = n * log(SSR(a)) + 2 * (df(a) + 1)}  
-
-\eqn{Cp(a) = SSR(a) / n + 2 * df(a) * s2 / n}  
-
-where \eqn{SSR} is the sum of squared residuals for the current evaluated model, \eqn{df(a)} the estimated PLSR model complexity (i.e. nb. model's degrees of freedom), \eqn{s2} an estimate of the irreductible error variance (computed from a low biased model) and \eqn{n} the number of training observations.  
-
-By default (argument \code{correct}), the small sample size correction (so-called AICc) is applied to AIC and Cp for deucing the bias. 
-
-The functions returns two estimates of Cp, each corresponding to a different estimate of s2.
-
-The model complexity  \eqn{df} can be computed from three methods (argument \code{meth}).
 
 }
 
@@ -48,7 +33,7 @@ aicplsr(
 
 \item{correct}{Logical. If code{TRUE} (default), the AICc corection is applied to the criteria.}
 
-\item{B}{For \code{meth = "dif"}: the number of observations in the data receiving perturbation (maximum is \eqn{n}; see \code{\link{dfplsr_cov}}). For \code{meth = "cov"}: the number of bootstrap replications (see \code{\link{dfplsr_cov}}).}
+\item{B}{For \code{meth = "div"}: the number of observations in the data receiving perturbation (maximum is \eqn{n}; see \code{\link{dfplsr_cov}}). For \code{meth = "cov"}: the number of bootstrap replications (see \code{\link{dfplsr_cov}}).}
 
 \item{print}{Logical. If \code{TRUE}, fitting information are printed.}
 
@@ -56,9 +41,31 @@ aicplsr(
 
 }
 
+\details{
+
+For a model with \eqn{a} latent variables (LVs), function \code{aicplsr} calculates \eqn{AIC} and \eqn{Cp} by:
+
+\eqn{AIC(a) = n * log(SSR(a)) + 2 * (df(a) + 1)}  
+
+\eqn{Cp(a) = SSR(a) / n + 2 * df(a) * s2 / n}  
+
+where \eqn{SSR} is the sum of squared residuals for the current evaluated model, \eqn{df(a)} the estimated PLSR model complexity (i.e. nb. model's degrees of freedom), \eqn{s2} an estimate of the irreductible error variance (computed from a low biased model) and \eqn{n} the number of training observations.  
+
+By default (argument \code{correct}), the small sample size correction (so-called AICc) is applied to AIC and Cp for deucing the bias. 
+
+The functions returns two estimates of Cp (\eqn{cp1} and \eqn{cp2}), each corresponding to a different estimate of \eqn{s2}.
+
+The model complexity  \eqn{df} can be computed from three methods (argument \code{meth}).
+}
+
 \value{
 
-A list of items, in particular a data.frame with the estimated criteria.
+	\item{crit}{dataframe with \eqn{n}, and the etimated criteria (\eqn{df}, \eqn{ct}, \eqn{ssr}, \eqn{aic}, \eqn{cp1, cp2}) for 0 to \eqn{nlv} latent variables in the model.}
+	
+	\item{delta}{dataframe with the differences between the estimated values of \eqn{aic}, \eqn{cp1} and \eqn{cp2}, and those of the model with the lowest estimated values of \eqn{aic}, \eqn{cp1} and \eqn{cp2}, for models with 0 to \eqn{nlv} latent variables}
+	
+	\item{opt}{vector with the optimal number of latent variables in the model (i.e. minimizing aic, cp1 and cp2 values)}
+	
 }
 
 \references{
@@ -94,7 +101,7 @@ https://doi.org/10.1080/00401706.1973.10489103
 Ye, J., 1998. On Measuring and Correcting the Effects of Data Mining and Model Selection. Journal of
 the American Statistical Association 93, 120–131. https://doi.org/10.1080/01621459.1998.10474094
 
-Zuccaro, C., 1992. Mallows’ Cp Statistic and Model Selection in Multiple Linear Regression. International Journal of Market Research. 34, 1–10. https://doi.org/10.1177/147078539203400204
+Zuccaro, C., 1992. Mallows’Cp Statistic and Model Selection in Multiple Linear Regression. International Journal of Market Research. 34, 1–10. https://doi.org/10.1177/147078539203400204
 
 }
 

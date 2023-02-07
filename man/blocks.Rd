@@ -16,7 +16,6 @@ Functions managing blocks of data.
 
 - \code{hconcat}: Concatenates horizontally the blocks of a list. 
 
-
 }
 
 \usage{
@@ -31,7 +30,7 @@ hconcat(X)
 
 \arguments{
 
-\item{Xtrain}{A list of blocks of training X-data.}
+\item{Xtrain}{A list of blocks of training X-data}
 
 \item{X}{For \code{blockscal}: A list of blocks of new X-data. For \code{mblocks}: X-data. For \code{hconcat}: a list of blocks of X-data.}
 
@@ -41,7 +40,21 @@ hconcat(X)
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{mblocks}: a list of blocks of X-data.
+
+For \code{hconcat}: a matrix concatenating a list of data blocks.
+
+For \code{blockscal}: 
+
+\item{Xtrain}{A list of blocks of training X-data, after block autoscaling.}
+
+\item{X}{A list of blocks of new X-data, after block autoscaling.}  
+
+\item{disp}{The scaling factor (computed on the training).}
+
+}
 
 \examples{
 
