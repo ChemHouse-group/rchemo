@@ -2,7 +2,6 @@
 \alias{dfplsr_cg}
 \alias{dfplsr_cov}
 \alias{dfplsr_div}
-\encoding{latin1}
 
 \title{Degrees of freedom of Univariate PLSR Models}
 
@@ -10,15 +9,15 @@
 
 Computation of the model complexity \eqn{df} (number of degrees of freedom) of univariate PLSR models (with intercept). See Lesnoff et al. 2021 for an illustration.
 
-(1) Estimation from the CGLSR algorithm. See Hansen 1998.
+(1) Estimation from the CGLSR algorithm (Hansen, 1998).
 
 - \code{dfplsr_cov}
 
-(2) Monte Carlo estimation. See in particular Ye 1998 and Efron 2004. Details in relation with the functions are given in Lesnoff et al. 2021.
+(2) Monte Carlo estimation (Ye, 1998 and Efron, 2004). Details in relation with the functions are given in Lesnoff et al. 2021.
 
-- \code{dfplsr_cov}: The covariances presented by Efron 2004 (Eq. 2.16) are computed  by parametric bootstrap. The residual variance \eqn{sigma^2} is estimated from a low-biased model.
+- \code{dfplsr_cov}: The covariances are computed  by parametric bootstrap (Efron, 2004, Eq. 2.16). The residual variance \eqn{sigma^2} is estimated from a low-biased model.
 
-- \code{dfplsr_div}: The divergencies \eqn{dy_fit/dy} presented by Ye (1998) and Efron (2004) are computed by perturbation analysis. This is a Stein unbiased risk estimation (SURE) of \eqn{df}.
+- \code{dfplsr_div}: The divergencies \eqn{dy_fit/dy} are computed by perturbation analysis(Ye, 1998 and Efron, 2004). This is a Stein unbiased risk estimation (SURE) of \eqn{df}.
 
 }
 
@@ -39,13 +38,13 @@ dfplsr_div(
 \arguments{
 
 \item{X}{A \eqn{n x p} matrix or data frame of training observations.}
-
+  
 \item{y}{A vector of length \eqn{n} of training responses.}
-
+  
 \item{nlv}{The maximal number of latent variables (LVs) to consider in the model.}
-
+  
 \item{reorth}{For \code{dfplsr_cg}: Logical. If \code{TRUE}, a Gram-Schmidt reorthogonalization of the normal equation residual vectors is done.}
-
+  
 \item{algo}{a PLS algorithm. Default to  \code{NULL} (\code{\link{plskern}} is used).}
 
 \item{maxlv}{For \code{dfplsr_cov}: dDmension of the PLSR model (nb. LVs) used for parametric bootstrap.}
@@ -60,11 +59,25 @@ dfplsr_div(
 
 }
 
+\details{
+
+Missing values are not allowed.
+
+The example below reproduces the numerical illustration given by Kramer & Sugiyama 2011 on the Ozone data (Fig. 1, center).
+The \eqn{pls.model} function from the R package "plsdof" v0.2-9 (Kramer & Braun 2019) is used for \eqn{df} calculations (\eqn{df.kramer}), and automatically scales the X matrix before PLS. The example scales also X for consistency when using the other functions.
+
+For the Monte Carlo estimations, \code{B} Should be increased for more stability
+
+
+}
+
 \value{
 
-A list of outputs (see examples), such as:
+A list of outputs :
 
-\item{df}{The model complexity for the models with \eqn{a = 0, 1, ..., nlv} components.}
+\item{df}{vector with the model complexity for the models with \eqn{a = 0, 1, ..., nlv} components.}
+
+\item{cov}{For \code{dfplsr_cov}: vector with covariances, computed  by parametric bootstrap.}
 
 }
 
@@ -88,7 +101,7 @@ Kramer, N., Sugiyama, M., 2011. The Degrees of Freedom of Partial Least Squares 
 
 Kramer, N., Braun, M. L. 2019. plsdof: Degrees of Freedom and Statistical Inference for Partial Least Squares Regression. R package version 0.2-9. https://cran.r-project.org
 
-Lesnoff, M., Roger, J.M., Rutledge, D.N., Submitted. Monte Carlo methods for estimating Mallows’s Cp and AIC criteria for PLSR models. Illustration on agronomic spectroscopic NIR data. Journal of Chemometrics.
+Lesnoff, M., Roger, J.M., Rutledge, D.N., 2021. Monte Carlo methods for estimating Mallows’s Cp and AIC criteria for PLSR models. Illustration on agronomic spectroscopic NIR data. Journal of Chemometrics, 35(10), e3369. https://doi.org/10.1002/cem.3369
 
 Stein, C.M., 1981. Estimation of the Mean of a Multivariate Normal
 Distribution. The Annals of Statistics 9, 1135–1151.
@@ -103,35 +116,19 @@ Statistics 35, 2173–2192. https://doi.org/10.1214/009053607000000127
 
 \examples{
 
-## The example below reproduces the numerical illustration
-## given by Kramer & Sugiyama 2011 on the Ozone data (Fig. 1, center).
-## Function "pls.model" used for df calculations
-## in the R package "plsdof" v0.2-9 (Kramer & Braun 2019)
-## automatically scales the X matrix before PLS.
-## The example scales also X for consistency when using the other functions.
-
 data(ozone)
 
 z <- ozone$X
-u <- which(!is.na(rowSums(z)))    ## Removing rows with NAs
+u <- which(!is.na(rowSums(z)))
 X <- z[u, -4]
 y <- z[u, 4]
 dim(X)
 
-Xs <- scale(X)    ## Scaling only for consistency with plsdof
-
-###### CGLS estimations
+Xs <- scale(X)
 
 nlv <- 12
 res <- dfplsr_cg(Xs, y, nlv = nlv)
 
-#library(plsdof)
-#fm <- pls.model(
-#  Xr, yr, m = nlv, compute.DoF = TRUE,
-#  compute.jacobian = FALSE,                   ## Krylov
-#  use.kernel = FALSE
-#  )
-#df.kramer <- fm$DoF
 df.kramer <- c(1.000000, 3.712373, 6.456417, 11.633565, 12.156760, 11.715101, 12.349716,
   12.192682, 13.000000, 13.000000, 13.000000, 13.000000, 13.000000)
 
@@ -139,25 +136,44 @@ znlv <- 0:nlv
 plot(znlv, res$df, type = "l", col = "red",
      ylim = c(0, 15),
      xlab = "Nb components", ylab = "df")
-lines(znlv, znlv + 1, col = "grey40")   ## Naive df
+lines(znlv, znlv + 1, col = "grey40")
 points(znlv, df.kramer, pch = 16)
 abline(h = 1, lty = 2, col = "grey")
+legend("bottomright", legend=c("dfplsr_cg","Naive df","df.kramer"), col=c("red","grey40","black"),
+lty=c(1,1,0), pch=c(NA,NA,16), bty="n")
 
-###### Monte Carlo estimations
+}
+
+\examples{
+
+data(ozone)
+
+z <- ozone$X
+u <- which(!is.na(rowSums(z)))
+X <- z[u, -4]
+y <- z[u, 4]
+dim(X)
+
+Xs <- scale(X)
 
 nlv <- 12
-B <- 50   ## Should be increased for more stability
+B <- 50 
 u <- dfplsr_cov(Xs, y, nlv = nlv, B = B)
 v <- dfplsr_div(Xs, y, nlv = nlv, B = B)
+
+df.kramer <- c(1.000000, 3.712373, 6.456417, 11.633565, 12.156760, 11.715101, 12.349716,
+  12.192682, 13.000000, 13.000000, 13.000000, 13.000000, 13.000000)
 
 znlv <- 0:nlv
 plot(znlv, u$df, type = "l", col = "red",
      ylim = c(0, 15),
      xlab = "Nb components", ylab = "df")
 lines(znlv, v$df, col = "blue")                 
-lines(znlv, znlv + 1, col = "grey40")   ## Naive df
+lines(znlv, znlv + 1, col = "grey40")
 points(znlv, df.kramer, pch = 16)
 abline(h = 1, lty = 2, col = "grey")
+legend("bottomright", legend=c("dfplsr_cov","dfplsr_div","Naive df","df.kramer"), col=c("blue","red","grey40","black"),
+lty=c(1,1,1,0), pch=c(NA,NA,NA,16), bty="n")
 
 }
 
