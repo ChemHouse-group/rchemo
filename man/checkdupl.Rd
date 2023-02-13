@@ -26,7 +26,11 @@ checkdupl(X, Y = NULL, digits = NULL)
 
 }
 
-\value{See the examples.}
+\value{
+
+a dataframe with the row numbers in the first and second datasets that are identical, and the values of the variables.
+
+}
 
 \examples{
 
@@ -44,8 +48,6 @@ checkdupl(X1, X2)
 checkdupl(X1)
 
 checkdupl(matrix(rnorm(20), nrow = 5))
-
-## Removing duplicates
 
 res <- checkdupl(X1)
 s <- unique(res$rownum2)

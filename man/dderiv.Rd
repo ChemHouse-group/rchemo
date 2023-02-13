@@ -29,13 +29,13 @@ data(cassav)
 X <- cassav$Xtest
 
 n <- 15
-Xp <- dderiv(X, n = n)            # = 1st derivate
-#Xp <- dderiv(dderiv(X, n), n)    # = 2nd derivate
+Xp_derivate1 <- dderiv(X, n = n)
+Xp_derivate2 <- dderiv(dderiv(X, n), n)
 
 oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, 2))
 plotsp(X, main = "Signal")
-plotsp(Xp, main = "Corrected signal")
+plotsp(Xp_derivate1, main = "Corrected signal")
 abline(h = 0, lty = 2, col = "grey")
 par(oldpar)
 

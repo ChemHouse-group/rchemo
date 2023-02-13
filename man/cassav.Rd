@@ -16,20 +16,20 @@ A NIRS dataset (absorbance) describing the concentration of a natural pigment in
   
   \describe{
   
------ Reference (calibration) data
+For the reference (calibration) data:
 
-    \item{Xtrain}{ A matrix whose rows are the NIR absorbance spectra (= log10(1 / Reflectance)).}
+    \item{\code{Xtrain}}{A matrix whose rows are the NIR absorbance spectra (= log10(1 / Reflectance)).}
 
-    \item{ytrain}{A vector of the response variable (pigment concentration).}
+    \item{\code{ytrain}}{A vector of the response variable (pigment concentration).}
     
-    \item{year}{A vector of the year of data collection (2009 to 2012; the test set correponds to year 2013).}
+    \item{\code{year}}{A vector of the year of data collection (2009 to 2012; the test set correponds to year 2013).}
     
     
------ Test data
+For the test data:
 
-    \item{Xtest}{A matrix whose rows are the NIR absorbance spectra (= log10(1 / Reflectance)).}
+    \item{\code{Xtest}}{A matrix whose rows are the NIR absorbance spectra (= log10(1 / Reflectance)).}
 
-    \item{ytest}{A vector of the response variable (pigment concentration).}
+    \item{\code{ytest}}{A vector of the response variable (pigment concentration).}
     
   }
 }

@@ -2,19 +2,12 @@
 \alias{cglsr}
 \alias{coef.Cglsr}
 \alias{predict.Cglsr}
-\encoding{latin1}
 
 \title{CG Least Squares Models}
 
 \description{
 
 Conjugate gradient algorithm (CG) for the normal equations (CGLS algorithm 7.4.1, Bjorck 1996, p.289)
-
-The code for re-orthogonalization (Hansen 1998) and filter factors (Vogel 1987, Hansen 1998) computations is a transcription (with few adaptations) of the matlab function `cgls` (Saunders et al. https://web.stanford.edu/group/SOL/software/cgls/; Hansen 2008).
-
-The filter factors can be used to compute the model complexity of CGLSR and PLSR models (see \code{\link{dfplsr_cg}}).
-
-Data \eqn{X} and \eqn{y} are internally centered. 
 
 }
 
@@ -30,7 +23,9 @@ cglsr(X, y, nlv, reorth = TRUE, filt = FALSE)
 
 \arguments{
 
-\item{X}{For main function: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{cglsr}: 
+
+\item{X}{For main function: Training X-data (\eqn{n, p}).}
 
 \item{y}{Univariate training Y-data (\eqn{n, 1}).}
 
@@ -40,13 +35,67 @@ cglsr(X, y, nlv, reorth = TRUE, filt = FALSE)
 
 \item{filt}{Logical. If \code{TRUE}, the filter factors are computed (output \code{F}).}
 
+
+For \code{coef.Cglsr} : 
+
 \item{object}{A fitted model, output of a call to the main functions.}
+
+\item{nlv}{numeric. The number of CG iterations. If \code{NULL}, the nlv in the fitted model}
+
+\item{...}{Optional arguments. Not used.}
+
+
+For \code{predict.Cglsr} : 
+
+\item{object}{A fitted model, output of a call to the main functions.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
+\item{nlv}{vector with the number(s) of CG iterations. If \code{NULL}, the nlv in the fitted model}
 
 \item{...}{Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\details{
+
+The code for re-orthogonalization (Hansen 1998) and filter factors (Vogel 1987, Hansen 1998) computations is a transcription (with few adaptations) of the matlab function `cgls` (Saunders et al. https://web.stanford.edu/group/SOL/software/cgls/; Hansen 2008).
+
+The filter factors can be used to compute the model complexity of CGLSR and PLSR models (see \code{\link{dfplsr_cg}}).
+
+Data \eqn{X} and \eqn{y} are internally centered. 
+
+Missing values are not allowed.
+
+}
+
+\value{	
+
+For \code{cglsr}: 
+
+  \item{B}{matrix}
+  
+	\item{gnew}{vector}
+	
+	\item{xmeans}{variable means for the training X-data}
+	
+	\item{ymeans}{variable means for the training Y-data}
+	
+	\item{F}{If \code{filt = TRUE}, the filter factors}
+	
+	
+For \code{coef.Cglsr} : 
+
+\item{int}{intercept value.}
+
+\item{B}{matrix with the model coefficients.}
+
+	
+For \code{predict.Cglsr} : 
+
+  \item{pred}{list of matrices, with the predicted values for each number \code{nlv} of CG iterations}
+	
+}
 
 
 \references{
@@ -75,7 +124,7 @@ Report, Dept. of Mathematical Sciences, Montana State University, 1987.
 \examples{
 
 z <- ozone$X
-u <- which(!is.na(rowSums(z)))    ## Removing rows with NAs
+u <- which(!is.na(rowSums(z)))
 X <- z[u, -4]
 y <- z[u, 4]
 dim(X)
@@ -97,14 +146,6 @@ msep(pred, ytest)
 
 cglsr(X, y, nlv = 5, filt = TRUE)$F
 
-## Comparison with PLSR algorithms
-
-nlv <- 12
-fm1 <- plskern(X, y, nlv = nlv)
-fm2 <- plsnipals(X, y, nlv = nlv)
-cbind(coef(fm1)$B, coef(fm2)$B,
-      cglsr(X, y, nlv = nlv, reorth = TRUE)$B[, nlv],
-      cglsr(X, y, nlv = nlv, reorth = FALSE)$B[, nlv])
 
 }
 

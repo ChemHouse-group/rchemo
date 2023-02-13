@@ -16,17 +16,17 @@ A NIRS dataset (pre-processed absorbance) describing the class membership of for
   
   \describe{
   
------ Reference (calibration) data
+For the reference (calibration) data:
 
-    \item{Xtrain}{A matrix whose rows are the pre-processed NIR absorbance spectra (= log10(1 / Reflectance)).}
+    \item{\code{Xtrain}}{A matrix whose rows are the pre-processed NIR absorbance spectra (= log10(1 / Reflectance)).}
 
-    \item{ytrain}{A vector of the response variable (class membership).}
+    \item{\code{ytrain}}{A vector of the response variable (class membership).}
     
------ Test data
+For the test data:
 
-    \item{Xtest}{A matrix whose rows are the pre-processed NIR absorbance spectra (= log10(1 / Reflectance)).}
+    \item{\code{Xtest}}{A matrix whose rows are the pre-processed NIR absorbance spectra (= log10(1 / Reflectance)).}
 
-    \item{ytest}{A vector of the response variable (class membership).}
+    \item{\code{ytest}}{A vector of the response variable (class membership).}
     
   }
 }

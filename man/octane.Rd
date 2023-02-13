@@ -1,7 +1,7 @@
 \name{octane}
 \alias{octane}
 \docType{data}
-\encoding{latin1}
+
 
 \title{octane}
 
@@ -18,7 +18,7 @@ Samples 25, 26, and 36-39 contain added alcohol (outliers).
 \usage{data(octane)}
 
 \format{
-  A list with 1 component: matrix \code{X}.
+  A list with 1 component: the matrix \eqn{X} with 39 samples and 226 variables.
 }
 
 \source{

@@ -12,7 +12,9 @@
 \item{X}{A dataset.}
 }
 
-\value{A data frame summarizing the numbers of NA by rows.}
+\value{
+A data frame summarizing the numbers of NA by rows.
+}
 
 \examples{
 

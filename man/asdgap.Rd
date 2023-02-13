@@ -10,9 +10,7 @@
 \usage{data(asdgap)}
 
 \format{
-A list with the following component: 
-  
-X: 5 spectra.
+A list with 1 element: the data frame \eqn{X} with 5 spectra and 2151 variables.
 }
 
 
