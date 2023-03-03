@@ -25,23 +25,72 @@ dkplsr(X, Y, weights = NULL, nlv, kern = "krbf", ...)
 
 \arguments{
 
-\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{dkplsr}: 
 
-\item{Y}{Training Y-data (\eqn{n, q}).}
+\item{X}{Matrix with the training X-data (\eqn{n, p}).}
 
-\item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
+\item{Y}{Matrix with the training Y-data (\eqn{n, q}).}
+
+\item{weights}{vector of weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
 \item{nlv}{The number(s) of LVs to calculate.}
 
-\item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
+\item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions (\code{krbf}, \code{kpol}, \code{ktanh}).}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
+\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}, \code{gamma} and \code{coef0} for \code{ktanh}, \code{gamma} and \code{coef0} and \code{degree} for \code{kpol}).}
 
 }
 
-\value{See the examples.}
+For \code{transform.dkplsr} and \code{predict.dkplsr}: 
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{A matrix with new X-data (\eqn{m, p}) to consider.}
+
+\item{...}{Optional arguments to pass to methods.}
+
+\item{nlv}{The number(s) of LVs to consider.}
+
+
+For \code{coef.dkplsr}: 
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{...}{Optional arguments to pass to methods.}
+
+\item{nlv}{The number(s) of LVs to consider.}
+
+}
+
+\value{
+
+For \code{dkplsr}: 
+
+\item{X}{Matrix with the training X-data (\eqn{n, p}).}
+
+\item{fm}{List with the outputs of the PLSR ((\code{T}): the X-score matrix (n,nlv); (\code{P}): the X-loadings matrix (p,nlv); (\code{R}): The PLS projection matrix (p,nlv); (\code{W}): The X-loading weights matrix (p,nlv); (\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor, (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1)}
+
+\item{K}{kernel Gram matrix} 
+
+\item{kern}{kernel function} 
+
+\item{dots}{Optional arguments passed in the kernel function}
+
+For \code{transform.dkplsr} : A matrix (\eqn{m, nlv}) with the projection of the new X-data on the X-scores
+
+For \code{predict.dkplsr}: 
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
+
+\item{K}{kernel Gram matrix (\eqn{m, nlv}), with values for the new X-data}
+
+For \code{coef.dkplsr}: 
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+}
 
 
 \references{
@@ -50,6 +99,10 @@ Bennett, K.P., Embrechts, M.J., 2003. An optimization perspective on kernel part
 
 Rosipal, R., Trejo, L.J., 2001. Kernel Partial Least Squares Regression in Reproducing Kernel Hilbert Space. Journal of Machine Learning Research 2, 97-123.
 
+}
+
+\note{
+The second example concerns the fitting of the function sinc(x) described in Rosipal & Trejo 2001 p. 105-106
 }
 
 \examples{
@@ -79,8 +132,9 @@ nlv <- 2
 fm <- dkplsr(Xtrain, Ytrain, nlv = nlv, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest, nlv = nlv)
 
-####### Example of fitting the function sinc(x)
-####### described in Rosipal & Trejo 2001 p. 105-106 
+}
+
+\examples{
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5
@@ -97,7 +151,6 @@ pred <- predict(fm, X)$pred
 plot(X, y, type = "p")
 lines(X, zy, lty = 2)
 lines(X, pred, col = "red")
-
 
 }
 

@@ -73,9 +73,9 @@ Missing values are not allowed.
 
 For \code{cglsr}: 
 
-  \item{B}{matrix}
+  \item{B}{matrix with the model coefficients for the fix nlv.}
   
-	\item{gnew}{vector}
+	\item{gnew}{squared norm of the s vector}
 	
 	\item{xmeans}{variable means for the training X-data}
 	
