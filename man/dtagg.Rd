@@ -30,7 +30,7 @@ dtagg(formula, data, FUN = mean, ...)
 
 \value{
 
-A dataframe, see the examples.
+A dataframe, with the values of the agregation level(s) and the corresponding computed statistic value.
 
 }
 

@@ -34,16 +34,16 @@ ktanh(X, Y = NULL, gamma = 1, coef0 = 0)
 
 \item{Y}{Dataset (\eqn{m, p}). The resulting Gram matrix \eqn{K(X, Y)} has dimensionnality (\eqn{n, m}). If \code{NULL} (default), \code{Y} is set equal to \code{X}.}
 
-\item{gamma}{See the code.}
+\item{gamma}{value of the gamma parameter in the kernel calculation.}
 
-\item{degree}{See the code.}
+\item{degree}{For \code{kpol}: value of the degree parameter in the polynomial kernel calculation.}
 
-\item{coef0}{See the code.}
+\item{coef0}{For \code{kpol} and \code{ktanh}: value of the coef0 parameter in the polynomial or sigmoid kernel calculation.}
 
 }
 
 
-\value{See the examples.}
+\value{Gram matrix}
 
 
 \references{

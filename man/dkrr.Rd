@@ -24,6 +24,8 @@ dkrr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \arguments{
 
+For \code{dkrr}:
+
 \item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
@@ -38,9 +40,50 @@ dkrr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
+For \code{coeff.Dkrr}:
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{lb}{A value of regularization parameter \eqn{lambda}.}
+
+For \code{predict.Dkrr}:
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{A matrix with new X-data (\eqn{m, p}) to consider.}
+
+\item{lb}{A value of regularization parameter \eqn{lambda}.}
+
 }
 
-\value{See the examples.}
+\value{
+
+For \code{dkrr}: 
+
+\item{X}{Matrix with the training X-data (\eqn{n, p}).}
+
+\item{fm}{List with the outputs of the RR ((\code{V}): eigenvector matrix of the correlation matrix (n,n); (\code{TtDY}): the Y-scores matrix (n,q); (\code{sv}): eigen values of the matrix (1,n); (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1)}
+
+\item{K}{kernel Gram matrix} 
+
+\item{kern}{kernel function} 
+
+\item{dots}{Optional arguments passed in the kernel function}
+
+For \code{predict.Dkrr}: 
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
+
+\item{K}{kernel Gram matrix (\eqn{m, nlv}), with values for the new X-data}
+
+For \code{coef.Dkrr}: 
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+\item{df}{}
+}
 
 
 \references{
@@ -49,6 +92,10 @@ Bennett, K.P., Embrechts, M.J., 2003. An optimization perspective on kernel part
 
 Rosipal, R., Trejo, L.J., 2001. Kernel Partial Least Squares Regression in Reproducing Kernel Hilbert Space. Journal of Machine Learning Research 2, 97-123.
 
+}
+
+\note{
+The second example concerns the fitting of the function sinc(x) described in Rosipal & Trejo 2001 p. 105-106
 }
 
 \examples{
@@ -75,9 +122,9 @@ lb <- 2
 fm <- dkrr(Xtrain, Ytrain, lb = lb, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest)
 
-####### Example of fitting the function sinc(x)
-####### described in Rosipal & Trejo 2001 p. 105-106 
+}
 
+\examples{
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5
 n <- length(x)

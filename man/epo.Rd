@@ -1,6 +1,5 @@
 \name{eposvd}
 \alias{eposvd}
-\encoding{latin1}
 
 \title{External parameter orthogonalization (EPO)}
 
@@ -11,8 +10,6 @@ Pre-processing a X-dataset by external parameter orthogonalization (EPO; Roger e
 EPO consists in orthogonalizing the row observations of \eqn{X} to the detrimental sub-space defined by the first \eqn{nlv} non-centered PCA loadings vectors of \eqn{D}. 
 
 Function \code{eposvd} uses a SVD factorization of \eqn{D} and returns \eqn{M (p, p)} the orthogonalization matrix, and \eqn{P} the considered loading vectors of \eqn{D}. 
-
-The data corrected from the detrimental information \eqn{D} can be computed by \eqn{X_corrected = X * M}.
 
 }
 
@@ -26,7 +23,20 @@ The data corrected from the detrimental information \eqn{D} can be computed by \
 
 }
 
-\value{See the examples.}
+\details{
+
+The data corrected from the detrimental information \eqn{D} can be computed by \eqn{X_corrected = X * M}.
+Rows of the corrected matrix X_corr are orthogonal to the loadings vectors (columns of P): \eqn{X_corr * P}.
+
+}
+
+\value{
+
+\item{M}{orthogonalization matrix.}
+
+\item{P}{detrimental directions matrix (p, nlv) (loadings of D = columns of P).}
+
+}
 
 \references{
 
@@ -42,20 +52,14 @@ Roger, J.-M., Boulet, J.-C., 2018. A review of orthogonal projections for calibr
 n <- 4 ; p <- 8 
 X <- matrix(rnorm(n * p), ncol = p)
 m <- 3
-D <- matrix(rnorm(m * p), ncol = p)    # Detrimental information
+D <- matrix(rnorm(m * p), ncol = p)
 
 nlv <- 2
 res <- eposvd(D, nlv = nlv)
-M <- res$M       # orthogonalization matrix
-P <- res$P       # detrimental directions matrix (loadings of D = columns of P)
+M <- res$M
+P <- res$P
 M
 P
-
-## The matrix corrected from D can be computed by:
-## X_corr <- X %*% M    
-## Rows of the corrected matrix X_corr
-## are orthogonal to the loadings vectors (columns of P):
-## X_corr %*% P 
 
 }
 

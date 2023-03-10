@@ -39,7 +39,7 @@ For \code{dkplsr}:
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}, \code{gamma} and \code{coef0} for \code{ktanh}, \code{gamma} and \code{coef0} and \code{degree} for \code{kpol}).}
 
-}
+
 
 For \code{transform.dkplsr} and \code{predict.dkplsr}: 
 

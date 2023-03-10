@@ -2,7 +2,6 @@
 \alias{kpca}
 \alias{transform.Kpca}
 \alias{summary.Kpca}
-\encoding{latin1}
 
 \title{KPCA}
 

@@ -19,10 +19,6 @@ The functions return "scores" (average error rates) of predictions for a given m
 
 - \code{gridcvlb}: Specific to models using ridge regularization (e.g. RR). Much faster than \code{gridcv}.
 
-Argument \code{pars} (the grid) must be a list of named vectors, each vector corresponding to an argument of the model function and giving the parameter values to consider for this argument. This list can eventually be built with function \code{\link{mpars}}, which returns all the combinations of the input parameters, see the examples. 
-
-For \code{gridcvlv}, \code{pars} must not contain \code{nlv} (nb. LVs), and for \code{gridcvlb}, \code{lb} (regularization parameter \eqn{lambda}).
-
 }
 
 \usage{
@@ -51,17 +47,34 @@ gridcvlb(X, Y, segm, score, fun, lb, pars = NULL, verb = TRUE)
 
 \item{lb}{For \code{gridcvlb}. A vector of ridge regulariation parameters.}
 
-\item{pars}{A list of named vectors.  Each vector must correspond to an argument of the model function and gives the parameter values to consider for this argument.}
+\item{pars}{A list of named vectors.  Each vector must correspond to an argument of the model function and gives the parameter values to consider for this argument. (see details)}
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
 }
 
+\details{
+
+Argument \code{pars} (the grid) must be a list of named vectors, each vector corresponding to an argument of the model function and giving the parameter values to consider for this argument. This list can eventually be built with function \code{\link{mpars}}, which returns all the combinations of the input parameters, see the examples. 
+
+For \code{gridcvlv}, \code{pars} must not contain \code{nlv} (nb. LVs), and for \code{gridcvlb}, \code{lb} (regularization parameter \eqn{lambda}).
+
+}
+
 \value{Dataframes with the prediction scores for the grid.}
 
-\examples{
+\note{
 
-######################## EXAMPLES WITH PLSR
+Examples are given:
+- with PLSR, using gridcv and gridcvlv (much faster)
+- with PLSLDA, using gridcv and gridcvlv (much faster)
+- with RR, using gridcv and gridcvlb (much faster) 
+- with KRR, using gridcv and gridcvlb (much faster)  
+- with LWPLSR, using gridcvlv 
+
+}
+
+\examples{
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
@@ -72,7 +85,6 @@ K = 3
 segm <- segmkf(n = n, K = K, nrep = 1)
 segm
 
-## Using gridcv
 nlv <- 5
 pars <- mpars(nlv = 1:nlv)
 pars
@@ -82,27 +94,23 @@ gridcv(
     fun = plskern, 
     pars = pars, verb = TRUE)
 
-## Using gridcvlv (much faster) 
 gridcvlv(
     X, Y, segm, 
     score = msep, 
     fun = plskern, 
     nlv = 0:nlv, verb = TRUE)
+}
 
-######################## EXAMPLES WITH PLSLDA
+\examples{
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
 y <- sample(c(1, 4, 10), size = n, replace = TRUE)
-#y <- sample(c("a", "10", "d"), size = n, replace = TRUE)
-#y <- as.factor(sample(c(1, 4, 10), size = n, replace = TRUE))
-#y <- as.factor(sample(c("a", "10", "d"), size = n, replace = TRUE))
 
 K = 3
 segm <- segmkf(n = n, K = K, nrep = 1)
 segm
 
-## Using gridcv
 nlv <- 5
 pars <- mpars(nlv = 1:nlv, prior = c("unif", "prop"))
 pars
@@ -112,7 +120,6 @@ gridcv(
     fun = plslda,
     pars = pars, verb = TRUE)
 
-## Using gridcvlv (much faster) 
 pars <- mpars(prior = c("unif", "prop"))
 pars
 gridcvlv(
@@ -120,8 +127,9 @@ gridcvlv(
     score = err, 
     fun = plslda,
     nlv = 1:nlv, pars = pars, verb = TRUE)
+}
 
-######################## EXAMPLES WITH RR
+\examples{
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
@@ -132,7 +140,6 @@ K = 3
 segm <- segmkf(n = n, K = K, nrep = 1)
 segm
 
-## Using gridcv
 lb <- c(.1, 1)
 pars <- mpars(lb = lb)
 pars
@@ -142,14 +149,14 @@ gridcv(
     fun = rr, 
     pars = pars, verb = TRUE)
 
-## Using gridcvlb (much faster) 
 gridcvlb(
     X, Y, segm, 
     score = msep, 
     fun = rr, 
     lb = lb, verb = TRUE)
+}
 
-######################## EXAMPLES WITH KRR
+\examples{
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
@@ -160,7 +167,6 @@ K = 3
 segm <- segmkf(n = n, K = K, nrep = 1)
 segm
 
-## Using gridcv
 lb <- c(.1, 1)
 gamma <- 10^(-1:1)
 pars <- mpars(lb = lb, gamma = gamma)
@@ -171,15 +177,15 @@ gridcv(
     fun = krr, 
     pars = pars, verb = TRUE)
 
-## Using gridcvlb (much faster) 
 pars <- mpars(gamma = gamma)
 gridcvlb(
     X, Y, segm, 
     score = msep, 
     fun = krr, 
     lb = lb, pars = pars, verb = TRUE)
+}
 
-######################## EXAMPLES WITH LWPLSR
+\examples{
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
