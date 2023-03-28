@@ -45,7 +45,9 @@ svmda(X, y, cost = 1, epsilon = .1, gamma = 1, scale = FALSE)
 
 \arguments{
 
-\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{svmr} and \code{svmda}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{y}{Training Y-data (\eqn{n}).}
 
@@ -57,13 +59,36 @@ svmda(X, y, cost = 1, epsilon = .1, gamma = 1, scale = FALSE)
 
 \item{scale}{Logical. If \code{TRUE}, \code{X} and \code{Y} are scaled internally.}
 
+For \code{predict.Svm}:
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
+\item{...}{Optional arguments.}
+
+For \code{summary.Svm}:
+
 \item{object}{A fitted model, output of a call to the main function.}
 
 \item{...}{Optional arguments.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{svmr} and \code{svmda}:
+
+\item{fm}{list of outputs such as:
+\code{call}; \code{type}; \code{kernel}; \code{cost}; \code{degree}; \code{gamma}; \code{coef0}; \code{nu}; \code{epsilon}; \code{sparse}; \code{scaled}; \code{x.scale}; \code{y.scale}; \code{nclasses}; \code{levels}; \code{tot.nSV}; \code{nSV}; \code{labels}; \code{SV}: The resulting support vectors (possibly scaled); \code{index}: The index of the resulting support vectors in the data matrix. Note that this index refers to the preprocessed data (after the possible effect of na.omit and subset); \code{rho}: The negative intercept; \code{compprob}; \code{probA, probB}: numeric vectors of length k(k-1)/2, k number of classes, containing the parameters of the logistic distributions fitted to the decision values of the binary classifiers (1 / (1 + exp(a x + b))); \code{sigma}: In case of a probabilistic regression model, the scale parameter of the hypothesized (zero-mean) laplace distribution estimated by maximum likelihood; \code{coefs}: The corresponding coefficients times the training labels; \code{na.action}; \code{fitted}; \code{decision.values}; \code{residuals}; \code{isnum}.}
+
+For \code{predict.Svm}:
+
+\item{pred}{predictions for each observation.}
+
+For \code{summary.Svm}:display of call, parameters, and number of support vectors:  50
+
+}
 
 \references{
 
@@ -73,9 +98,15 @@ Chang, cost.-cost. & Lin, cost.-J. (2001). LIBSVM: a library for support vector 
 
 }
 
-\examples{
+\note{
 
-#################################### SVMR
+The first example illustrates SVMR.
+The second one is the example of fitting the function sinc(x) described in Rosipal & Trejo 2001 p. 105-106.
+The third one illustrates SVMC.
+
+}
+
+\examples{
 
 n <- 50 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
@@ -92,8 +123,9 @@ msep(pred, ytest)
 
 summary(fm)
 
-####### Example of fitting the function sinc(x)
-####### described in Rosipal & Trejo 2001 p. 105-106 
+}
+
+\examples{
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5
@@ -110,14 +142,13 @@ plot(X, y, type = "p")
 lines(X, zy, lty = 2)
 lines(X, pred, col = "red")
 
-#################################### SVMC
+}
+
+\examples{
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
-ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
-#ytrain <- sample(c("a", "10", "d"), size = n, replace = TRUE)
-#ytrain <- as.factor(sample(c(1, 4, 10), size = n, replace = TRUE))
-#ytrain <- as.factor(sample(c("a", "10", "d"), size = n, replace = TRUE))
+ytrain <- sample(c("a", "10", "d"), size = n, replace = TRUE)
 m <- 5
 Xtest <- Xtrain[1:m, ] ; ytest <- ytrain[1:m]
 

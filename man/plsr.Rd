@@ -6,7 +6,6 @@
 \alias{summary.Plsr}
 \alias{coef.Plsr}
 \alias{predict.Plsr}
-\encoding{latin1}
 
 \title{PLSR algorithms}
 
@@ -54,7 +53,9 @@ plsrannar(X, Y, weights = NULL, nlv)
 
 \arguments{
 
-\item{X}{For the main functions and \code{summary}: Training X-data (\eqn{n, p}). --- For other auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{plskern}, \code{plsnipals}, \code{plsrannar}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -62,14 +63,37 @@ plsrannar(X, Y, weights = NULL, nlv)
 
 \item{nlv}{The number(s) of LVs to calculate.}
 
+For \code{summary}:
+
+\item{object}{A fitted model, output of a call to the main functions.}
+
+\item{X}{Training X-data (\eqn{n, p}).}
+
+\item{...}{Optional arguments. Not used.}
+
+For \code{coef}:
+
 \item{object}{A fitted model, output of a call to the main functions.}
 
 \item{...}{Optional arguments. Not used.}
 
+\item{nlv}{The number(s) of LVs to consider.}
+
+For \code{transform} and \code{predict}:
+
+\item{object}{A fitted model, output of a call to the main functions.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
+\item{...}{Optional arguments. Not used.}
+
+\item{nlv}{The number(s) of LVs to consider.}
+
 }
 
 \value{
-A list of outputs, such as:
+
+For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such as
 
 \item{T}{The X-score matrix (\eqn{n, nlv}).}
 
@@ -84,6 +108,28 @@ A list of outputs, such as:
 \item{xmeans}{The centering vector of \eqn{X} (\eqn{p, 1}).}
 
 \item{ymeans}{The centering vector of \eqn{Y} (\eqn{q, 1}).}
+
+\item{weights}{Weights applied to the training observations.
+
+\item{TT}{the X-score normalization factor.}
+
+\item{U}{The Y-scores matrix.}
+
+For \code{transform.Plsr}: X-scores matrix for new X-data.
+
+For \code{summary.Plsr}:
+
+\item{explvarx}{matrix of explained variances.}
+
+For \code{coef.Plsr}: 
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+For \code{predict.Plsr}: 
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
 
 }
 

@@ -29,7 +29,9 @@ kplsr(X, Y, weights = NULL, nlv, kern = "krbf",
 
 \arguments{
 
-\item{X}{For main function: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{kplsr}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -39,22 +41,74 @@ kplsr(X, Y, weights = NULL, nlv, kern = "krbf",
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
 \item{tol}{Tolerance level for stopping the NIPALS iterations.}
 
 \item{maxit}{Maximum number of NIPALS iterations.}
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
+For \code{transform.Kplsr}, \code{coef.Kplsr}, \code{predict.Kplsr}:
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
+
+\item{nlv}{The number(s) of LVs to consider.}
+
+For \code{transform.Kplsr} and \code{predict.Kplsr}:
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
 }
 
-\value{See the examples.}
+\value{
+
+For \code{kplsr}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
+
+\item{Kt}{Gram matrix}
+
+\item{T}{X-scores matrix.}
+
+\item{C}{The Y-loading weights matrix.}
+
+\item{U}{The Y-scores matrix.}
+
+\item{R}{The PLS projection matrix (p,nlv).}
+
+\item{ymeans}{the centering vector of Y (q,1).}
+
+\item{weights}{vector of observation weights.}
+
+\item{kern}{kern function.}
+
+\item{dots}{Optional arguments.}
+
+For \code{transform.Kplsr}: X-scores matrix for new X-data.
+
+For \code{coef.Kplsr}:
+
+\item{int}{intercept values matrix.}
+
+\item{beta}{beta coefficient matrix.}
+
+For \code{predict.Kplsr}: 
+
+\item{pred}{predicted values matrix for new X-data.}
+
+}
 
 
 \references{
 
 Rosipal, R., Trejo, L.J., 2001. Kernel Partial Least Squares Regression in Reproducing Kernel Hilbert Space. Journal of Machine Learning Research 2, 97-123.
+
+}
+
+\note{
+
+The second example concerns the fitting of the function sinc(x) described in Rosipal & Trejo 2001 p. 105-106
 
 }
 
@@ -85,8 +139,9 @@ nlv <- 2
 fm <- kplsr(Xtrain, Ytrain, nlv = nlv, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest, nlv = nlv)
 
-####### Example of fitting the function sinc(x)
-####### described in Rosipal & Trejo 2001 p. 105-106 
+}
+
+\examples{
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

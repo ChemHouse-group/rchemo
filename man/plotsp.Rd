@@ -48,6 +48,18 @@ A plot (see examples).
 
 }
 
+\note{
+
+For the first example, see ?hcl.colors and ?hcl.pals, and try with
+col <- hcl.colors(n = n, alpha = 1, rev = FALSE, palette = "Green-Orange")
+col <- terrain.colors(n, rev = FALSE)
+col <- rainbow(n, rev = FALSE, alpha = .2)
+
+The second example is with plotsp1 (Scrolling plot of PCA loadings).
+After running the code, type Enter in the R console for starting the scrolling, and type any character in the R console 
+
+}
+
 \examples{
 
 data(cassav)
@@ -61,11 +73,7 @@ plotsp(X, col = "lightblue",
   xlim = c(500, 1500),
   xlab = "Wawelength (nm)", ylab = "Absorbance")
 
-### See: ?hcl.colors, hcl.pals()
 col <- hcl.colors(n = n, alpha = 1, rev = FALSE, palette = "Grays")
-#col <- hcl.colors(n = n, alpha = 1, rev = FALSE, palette = "Green-Orange")
-#col <- terrain.colors(n, rev = FALSE)
-#col <- rainbow(n, rev = FALSE, alpha = .2)
 plotsp(X, col = col)
 
 plotsp(X, col = "grey")
@@ -80,17 +88,16 @@ col <- hcl.colors(n = n, alpha = 1, rev = FALSE, palette = "Grays")
 plotsp(X, col = col)
 plotsp(X[5, , drop = FALSE], col = "red", lwd = 2, add = TRUE, labels = TRUE)
 
-###### Example with plotsp1
-###### Scrolling plot of PCA loadings 
+}
 
-## After running the code, 
-## type Enter in the R console for starting the scrolling,
-## and type any character in the R console 
+\examples{
 
+data(cassav)
+X <- cassav$Xtest
 fm <- pcaeigenk(X, nlv = 20)
 P <- fm$P
-## Run the plot:
-#plotsp1(t(P), ylab = "Value")
+
+plotsp1(t(P), ylab = "Value")
 
 }
 

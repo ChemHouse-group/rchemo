@@ -10,8 +10,6 @@
 
 Kernel ridge regression models (KRR = LS-SVMR) (Suykens et al. 2000, Bennett & Embrechts 2003, Krell 2018). 
 
-KRR is close to the particular SVMR setting the \eqn{epsilon} coefficient to zero (no marges excluding observations). The difference is that a L2-norm optimization is done, instead L1 in SVM.   
-
 }
 
 \usage{
@@ -26,7 +24,9 @@ krr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \arguments{
 
-\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{krr}: 
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -36,13 +36,55 @@ krr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
+\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
+
+For \code{coef.Krr}: 
+
 \item{object}{A fitted model, output of a call to the main function.}
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
+\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
+
+For \code{predict.Krr}: 
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
+\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
+
+\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
+
 }
 
-\value{See the examples.}
+\value{
+
+For \code{krr}: 
+
+\item{X}{Training X-data (\eqn{n, p}).}
+
+\item{K}{Gram matrix}
+
+\item{Kt}{Gram matrix}
+
+\item{U}{Y score matrix}
+
+\item{UtDY}{}
+
+\item{sv}{eigen values of the matrix (1,n)}
+
+\item{lb}{value of regularization parameter \eqn{lambda}}
+
+\item{ymeans}{the centering vector of Y (q,1)}
+
+\item{weights}{the weights vector of X-variables (p,1)}
+
+\item{kern}{kern function.}
+
+\item{dots}{Optional arguments.}
+
+}
 
 \references{
 
@@ -57,6 +99,14 @@ Saunders, C., Gammerman, A., Vovk, V., 1998. Ridge Regression Learning Algorithm
 Suykens, J.A.K., Lukas, L., Vandewalle, J., 2000. Sparse approximation using least squares support vector machines. 2000 IEEE International Symposium on Circuits and Systems. Emerging Technologies for the 21st Century. Proceedings (IEEE Cat No.00CH36353). https://doi.org/10.1109/ISCAS.2000.856439
 
 Welling, M., n.d. Kernel ridge regression. Department of Computer Science, University of Toronto, Toronto, Canada. https://www.ics.uci.edu/~welling/classnotes/papers_class/Kernel-Ridge.pdf
+
+}
+
+\note{
+
+KRR is close to the particular SVMR setting the \eqn{epsilon} coefficient to zero (no marges excluding observations). The difference is that a L2-norm optimization is done, instead L1 in SVM.   
+
+The second example concerns the fitting of the function sinc(x) described in Rosipal & Trejo 2001 p. 105-106
 
 }
 
@@ -84,8 +134,9 @@ lb <- 2
 fm <- krr(Xtrain, Ytrain, lb = lb, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest)
 
-####### Example of fitting the function sinc(x)
-####### described in Rosipal & Trejo 2001 p. 105-106 
+}
+
+\examples{
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

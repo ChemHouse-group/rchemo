@@ -24,12 +24,16 @@ Remove the vertical gaps in spectra (rows of matrix \eqn{X}), e.g. for ASD. This
 
 \value{The corrected data \eqn{X}.}
 
+\note{
+
+In the example, two gaps are at wavelengths 1000-1001 nm and 1800-1801 nm.
+
+}
+
 \examples{
 
 data(asdgap)
 X <- asdgap$X
-
-## Two gaps are at wavelengths 1000-1001 nm and 1800-1801 nm
 
 indexcol <- which(colnames(X) == "1000" | colnames(X) == "1800")
 indexcol

@@ -55,7 +55,9 @@ lwplsqda(
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{lwplsrda}, \code{lwplslda}, \code{lwplsqda}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -75,13 +77,33 @@ lwplsqda(
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
+For \code{predict.Lwplsrda}, \code{predict.Lwplsprobda} :
+
 \item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
 
 \item{...}{Optional arguments. Not used.}
 
+\item{nlv}{The number(s) of LVs to calculate in the local PLSDA models.}
+
 }
 
-\value{See the examples.}
+\value{
+
+For \code{lwplsrda}, \code{lwplslda}, \code{lwplsqda}: object of class \code{Lwplsrda} or \code{Lwplsprobda},
+
+For \code{predict.Lwplsrda}, \code{predict.Lwplsprobda} :
+
+\item{pred}{class predicted for each observation}
+
+\item{listnn}{list with the neighbors used for each observation to be predicted}
+
+\item{listd}{list with the distances to the neighbors used for each observation to be predicted}
+
+\item{listw}{list with the weights attributed to the neighbors used for each observation to be predicted}
+
+}
 
 \examples{
 

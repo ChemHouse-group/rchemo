@@ -28,9 +28,9 @@ pinv(X, tol = sqrt(.Machine$double.eps))
 
 \value{
 
-A list of outputs, such as:
-
 \item{Xplus}{The MP pseudo-inverse.}
+
+\item{sv}{singular values.}
 
 }
 

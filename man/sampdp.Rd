@@ -26,14 +26,21 @@ sampdp(X, k, diss = c("eucl", "mahal"))
 
 }
 
-\value{Indexes (i.e. row numbers in \eqn{X}) for sets "train" and "test".}
+\value{
+
+\item{train}{Indexes (i.e. row numbers in \eqn{X}) of the selected observations, for the training set.}
+
+\item{test}{Indexes (i.e. row numbers in \eqn{X}) of the selected observations, for the test set.}
+
+\item{remain}{Indexes (i.e., row numbers in \eqn{X}) of the remaining observations.}
+
+}
 
 \references{
 
 Kennard, R.W., Stone, L.A., 1969. Computer aided design of experiments. Technometrics, 11(1), 137-148.
 
 Snee, R.D., 1977. Validation of Regression Models: Methods and Examples. Technometrics 19, 415-428. https://doi.org/10.1080/00401706.1977.10489581
-
 
 }
 

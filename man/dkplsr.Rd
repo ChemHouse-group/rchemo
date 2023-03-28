@@ -41,7 +41,7 @@ For \code{dkplsr}:
 
 
 
-For \code{transform.dkplsr} and \code{predict.dkplsr}: 
+For \code{transform.Dkplsr} and \code{predict.Dkplsr}: 
 
 \item{object}{A fitted model, output of a call to the main function.}
 
@@ -52,7 +52,7 @@ For \code{transform.dkplsr} and \code{predict.dkplsr}:
 \item{nlv}{The number(s) of LVs to consider.}
 
 
-For \code{coef.dkplsr}: 
+For \code{coef.Dkplsr}: 
 
 \item{object}{A fitted model, output of a call to the main function.}
 
@@ -76,15 +76,15 @@ For \code{dkplsr}:
 
 \item{dots}{Optional arguments passed in the kernel function}
 
-For \code{transform.dkplsr} : A matrix (\eqn{m, nlv}) with the projection of the new X-data on the X-scores
+For \code{transform.Dkplsr} : A matrix (\eqn{m, nlv}) with the projection of the new X-data on the X-scores
 
-For \code{predict.dkplsr}: 
+For \code{predict.Dkplsr}: 
 
 \item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
 
 \item{K}{kernel Gram matrix (\eqn{m, nlv}), with values for the new X-data}
 
-For \code{coef.dkplsr}: 
+For \code{coef.Dkplsr}: 
 
 \item{int}{matrix (1,nlv) with the intercepts}
 
