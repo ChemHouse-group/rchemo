@@ -209,13 +209,13 @@
     t((t(X) - c(center)) / c(scale))
 
 .xmedspa <- function(X, delta = 1e-6) {
-    X <- .mat(X, row = FALSE)
+    X <- .mat(X)
     ##### COPY OF FUNCTION 'spatial.median' AVAILABLE IN THE SCRIPT PcaLocantore.R
     ##### OF PACKAGE rrcov v.1.4-3 on R CRAN (Thanks to V. Todorov, 2016)
     x <- X
-    dime <- dim(x)
-    n <- dime[1]
-    p <- dime[2]
+    zdim <- dim(x)
+    n <- zdim[1]
+    p <- zdim[2]
     delta1 <- delta * sqrt(p)
     mu0 <- apply(x, 2, median)
     h <- delta1 + 1

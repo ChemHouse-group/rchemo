@@ -1,5 +1,5 @@
 pcasph <- function(X, weights = NULL, nlv) {
-    X <- .matrix(X)
+    X <- .mat(X)
     zdim <- dim(X)
     n <- zdim[1]
     p <- zdim[2]
