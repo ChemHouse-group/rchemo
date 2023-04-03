@@ -4,6 +4,7 @@
 \alias{pcaeigenk}
 \alias{pcanipals}
 \alias{pcanipalsna}
+\alias{pcasph}
 \alias{transform.Pca}
 \alias{summary.Pca}
 \encoding{latin1}
@@ -18,7 +19,7 @@ Noting \eqn{D} a (\eqn{n, n}) diagonal matrix of weights for the observations (r
 
 - \code{pcasvd}: SVD factorization of \eqn{D^(1/2) * X}, using function \code{\link{svd}}. 
 
-- \code{pcaeigen}:Eigen factorization of \eqn{X' * D * X}, using function \code{\link{eigen}}. 
+- \code{pcaeigen}:Eigen factorization of \eqn{X' * D * X}, using function \code{\link{eigen}}.
 
 - \code{pcaeigenk}: Eigen factorization of \eqn{D^(1/2) * X * X' D^(1/2)}, using function \code{\link{eigen}}. This is the "kernel cross-product trick" version of the PCA algorithm (Wu et al. 1997). For wide matrices (\eqn{n << p}) and \eqn{n} not too large, this algorithm can be much faster than the others. 
 
@@ -26,6 +27,8 @@ Noting \eqn{D} a (\eqn{n, n}) diagonal matrix of weights for the observations (r
 
 - \code{pcanipalsna}: Eigen factorization of \eqn{X' * D * X} using NIPALS allowing missing data in \eqn{X}. 
 
+
+- \code{pcanipalsna}: Robust spherical PCA (Locantore et al. 1990, Maronna 2005, Daszykowski et al. 2007). 
 
 Function \code{pcanipalsna} accepts missing data (\code{NA}s) in \eqn{X}, unlike the other functions. The part of \code{pcanipalsna} accounting specifically for missing missing data is based on the efficient code of K. Wright in the R package \code{nipals} (https://cran.r-project.org/web/packages/nipals/index.html).
 
@@ -127,6 +130,19 @@ Tenenhaus, M., 1998. La régression PLS: théorie et pratique. Editions Technip,
 Wright, K., 2018. Package nipals: Principal Components Analysis using NIPALS with Gram-Schmidt Orthogonalization. https://cran.r-project.org/
 
 Wu, W., Massart, D.L., de Jong, S., 1997. The kernel PCA algorithms for wide data. Part I: Theory and algorithms. Chemometrics and Intelligent Laboratory Systems 36, 165-172. https://doi.org/10.1016/S0169-7439(97)00010-5
+
+
+#-- Specrical PCA
+
+Daszykowski, M., Kaczmarek, K., Vander Heyden, Y., Walczak, B., 2007. 
+Robust statistics in data analysis - A review. Chemometrics and Intelligent 
+Laboratory Systems 85, 203-219. https://doi.org/10.1016/j.chemolab.2006.06.016
+
+Locantore N., Marron J.S., Simpson D.G., Tripoli N., Zhang J.T., Cohen K.L.
+Robust principal component analysis for functional data, Test 8 (1999) 1–7
+
+Maronna, R., 2005. Principal components and orthogonal regression based on 
+robust scales, Technometrics, 47:3, 264-273, DOI: 10.1198/004017005000000166
 
 }
 
