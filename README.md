@@ -28,9 +28,11 @@ news(package = "rchemo")
 
 ## <span style="color:green"> **Installation** </span> 
 
-Using [**Rstudio**](https://www.rstudio.com/products/rstudio/download/) is recommended for installation and usage
+Using [**Rstudio**](https://www.rstudio.com/products/rstudio/download/) is recommended for installation and usage.
 
-#### <span style="color:green"> 1.  Install package **'remotes'** from CRAN </span>
+**rchemo** can be installed from **CRAN**, or from Github using the following steps. 
+
+#### <span style="color:green"> 1.  Install package **'remotes'** from **CRAN** </span>
 
 Use the **Rstudio** menu 
 
@@ -45,7 +47,7 @@ install.packages("remotes")
 
 Write in the R console
 ```{r}
-remotes::install_github("mlesnoff/rchemo", dependencies = TRUE)
+remotes::install_github("ChemHouse-group/rchemo", dependencies = TRUE)
 ```
 In case of the following question during installation process:
 ```{r}
@@ -58,10 +60,10 @@ it is recommended to skip updates (usually choice **3** = None)
 
 e.g. with tag "v0.1-0", write in the R console
 ```{r}
-remotes::install_github("mlesnoff/rchemo@v0.1-0", dependencies = TRUE)
+remotes::install_github("ChemHouse-group/rchemo@v0.1-0", dependencies = TRUE)
 ```
 
-#### <span style="color:green"> 3. Usage </span>
+## <span style="color:green"> **Usage** </span> 
 
 Write in the R console
 ```{r}
