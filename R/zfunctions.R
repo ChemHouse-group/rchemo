@@ -208,3 +208,37 @@
 .scale = function(X, center = rep(0, dim(X)[2]), scale) 
     t((t(X) - c(center)) / c(scale))
 
+.xmedspa <- function(X, delta = 1e-6) {
+    X <- .mat(X, row = FALSE)
+    ##### COPY OF FUNCTION 'spatial.median' AVAILABLE IN THE SCRIPT PcaLocantore.R
+    ##### OF PACKAGE rrcov v.1.4-3 on R CRAN (Thanks to V. Todorov, 2016)
+    x <- X
+    dime <- dim(x)
+    n <- dime[1]
+    p <- dime[2]
+    delta1 <- delta * sqrt(p)
+    mu0 <- apply(x, 2, median)
+    h <- delta1 + 1
+    tt <- 0
+    while(h > delta1) {
+        tt <- tt + 1
+        TT <- matrix(mu0, n, p, byrow = TRUE)
+        U <- (x - TT)^2
+        w <- sqrt(apply(U, 1, sum))
+        w0 <- median(w)
+        ep <- delta*w0
+        z <- (w <= ep)
+        w[z] <- ep
+        w[!z] <- 1 / w[!z]
+        w <- w / sum(w)
+        x1 <- x
+        for(i in seq_len(n))
+            x1[i, ] <- w[i] * x[i, ]
+        mu <- apply(x1, 2, sum)
+        h <- sqrt(sum((mu - mu0)^2))
+        mu0 <- mu
+        }
+    ##### END
+    mu0
+    }
+
