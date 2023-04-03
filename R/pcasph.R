@@ -7,17 +7,17 @@ pcasph <- function(X, weights = NULL, nlv) {
     if(is.null(weights))
         weights <- rep(1, n)
     weights <- .mweights(weights)
-    xmeans <- .xmedspa(X, delta = .001)
+    xmeans <- .colmeds_spa(X, delta = .001)
     X <- .center(X, xmeans)
     tX <- t(X)
-    xnorms <- .xnorm(tX)
+    xnorms <- .colnorms(tX)
     tX <- .scale(tX, center = rep(0, n), xnorms)
     zX <- t(tX)
     z <- svd(sqrt(weights) * zX, nu = 0, nv = nlv)
     P <- z$v
     zT <- zX %*% P
     T <- X %*% P
-    sv <- matrixStats::colMads(zT)
+    sv <- apply(zT, FUN = mad, MARGIN = 2) 
     u <- rev(order(sv))
     P <- P[, u, drop = FALSE]
     T <- T[, u, drop = FALSE]
