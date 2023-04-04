@@ -26,9 +26,10 @@ Sourcing.
 
 
 \examples{
-
+\donttest{
 path <- "D:/Users/Fun"
-#sourcedir(path, FALSE)
+sourcedir(path, FALSE)
+}
 
 }
 

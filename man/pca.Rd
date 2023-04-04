@@ -7,7 +7,6 @@
 \alias{pcasph}
 \alias{transform.Pca}
 \alias{summary.Pca}
-\encoding{latin1}
 
 \title{PCA algorithms}
 
@@ -172,23 +171,17 @@ transform(fm, Xtest, nlv = 2)
 pcaeigen(Xtrain, nlv = 3)$T
 pcaeigen(Xtrain, nlv = 3, weights = 1:n)$T
 
-## Scores
 
 Ttrain <- fm$T
 Ttest <- transform(fm, Xtest)
 T <- rbind(Ttrain, Ttest)
 group <- c(rep("Training", nrow(Ttrain)), rep("Test", nrow(Ttest)))
 i <- 1
-plotxy(T[, i:(i+1)], group = group, pch = 16, zeroes = TRUE, cex = 1.3)
+plotxy(T[, i:(i+1)], group = group, pch = 16, zeroes = TRUE, cex = 1.3, main = "scores")
 
-## Loadings
-
-plotxy(fm$P, zeroes = TRUE, label = TRUE, cex = 2, col = "red3")
-
-## Summary
+plotxy(fm$P, zeroes = TRUE, label = TRUE, cex = 2, col = "red3", main ="loadings")
 
 summary(fm, Xtrain)
-
 res <- summary(fm, Xtrain)
 plotxy(res$cor.circle, zeroes = TRUE, label = TRUE, cex = 2, col = "red3",
     circle = TRUE, ylim = c(-1, 1))

@@ -56,13 +56,17 @@ For \code{blockscal}:
 
 }
 
+\note{
+The second example is equivalent to MB-PLSR
+}
+
 \examples{
 
 n <- 10 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
 m <- 2
-#m <- 1
+
 Xtest <- matrix(rnorm(m * p), ncol = p)
 colnames(Xtest) <- paste("v", 1:p, sep = "")
 Xtrain
@@ -79,7 +83,19 @@ res <- blockscal(zXtrain, zXtest)
 hconcat(res$Xtrain)
 hconcat(res$X)
 
-########## MB-PLSR
+}
+
+\examples{
+
+n <- 10 ; p <- 10
+Xtrain <- matrix(rnorm(n * p), ncol = p)
+ytrain <- rnorm(n)
+m <- 2
+
+Xtest <- matrix(rnorm(m * p), ncol = p)
+colnames(Xtest) <- paste("v", 1:p, sep = "")
+Xtrain
+Xtest
 
 blocks <- list(1:2, 4, 6:8)
 X1 <- mblocks(Xtrain, blocks = blocks)

@@ -10,12 +10,6 @@
 
 Function \code{lwplsr} fits KNN-LWPLSR models described in Lesnoff et al. (2020). The function uses functions \code{\link{getknn}}, \code{\link{locw}} and PLSR functions. See the code for details. Many variants of such pipelines can be build using \code{\link{locw}}.
 
-- LWPLSR: This is a particular case of "weighted PLSR" (WPLSR) (e.g. Schaal et al. 2002). In WPLSR, a priori weights, different from the usual \eqn{1/n} (standard PLSR), are given to the \eqn{n} training observations. These weights are used for calculating (i) the PLS scores and loadings and (ii) the regression model of the response(s) over the scores (by weighted least squares). LWPLSR is a particular case of WPLSR. "L" comes from "localized": the weights are defined from dissimilarities (e.g. distances) between the new observation to predict and the training observations. By definition of LWPLSR, the weights, and therefore the fitted WPLSR model, change for each new observation to predict.
-
-- KNN-LWPLSR: Basic versions of LWPLSR (e.g. Sicard & Sabatier 2006, Kim et al 2011) use, for each observation to predict, all the \eqn{n} training observation. This can be very time consuming, in particular for large \eqn{n}. A faster and often more efficient strategy is to preliminary select, in the training set, a number of \eqn{k} nearest neighbors to the observation to predict (this is referred to as \eqn{"weighting 1"} in function \code{\link{locw}}) and then to apply LWPLSR only to this pre-selected neighborhood (this is referred to as\eqn{weighting "2"} in \code{\link{locw}}). This strategy corresponds to KNN-LWPLSR. 
-
-In function \code{lwplsr}, the dissimilarities used for computing the weights can be calculated from the original X-data or after a dimension reduction (argument \code{nlvdis}). In the last case, global PLS scores are computed from \eqn{(X, Y)} and the dissimilarities are calculated on these scores. For high dimension X-data, the dimension reduction is in general required for using the Mahalanobis distance.   
-
 }
 
 \usage{
@@ -33,11 +27,13 @@ lwplsr(X, Y,
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{lwplsr}: 
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{nlvdis}{The number of LVs to consider in the global PLS used for the dimension reduction before calculating the dissimilarities. If \code{nlvdis = 0}, there is no dimension reduction.}
+\item{nlvdis}{The number of LVs to consider in the global PLS used for the dimension reduction before calculating the dissimilarities (see details). If \code{nlvdis = 0}, there is no dimension reduction.}
 
 \item{diss}{The type of dissimilarity used for defining the neighbors. Possible values are "eucl" (default; Euclidean distance), "mahal" (Mahalanobis distance), or "correlation". Correlation dissimilarities are calculated by sqrt(.5 * (1 - rho)).}
 
@@ -51,13 +47,45 @@ lwplsr(X, Y,
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
+
+
+For \code{predict.Lwplsr}: 
+
 \item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
 
 \item{...}{Optional arguments.}
 
+\item{nlv}{The number(s) of LVs to calculate in the local PLSR models.}
+
 }
 
-\value{See the examples. Not used.}
+\details{
+
+- LWPLSR: This is a particular case of "weighted PLSR" (WPLSR) (e.g. Schaal et al. 2002). In WPLSR, a priori weights, different from the usual \eqn{1/n} (standard PLSR), are given to the \eqn{n} training observations. These weights are used for calculating (i) the PLS scores and loadings and (ii) the regression model of the response(s) over the scores (by weighted least squares). LWPLSR is a particular case of WPLSR. "L" comes from "localized": the weights are defined from dissimilarities (e.g. distances) between the new observation to predict and the training observations. By definition of LWPLSR, the weights, and therefore the fitted WPLSR model, change for each new observation to predict.
+
+- KNN-LWPLSR: Basic versions of LWPLSR (e.g. Sicard & Sabatier 2006, Kim et al 2011) use, for each observation to predict, all the \eqn{n} training observation. This can be very time consuming, in particular for large \eqn{n}. A faster and often more efficient strategy is to preliminary select, in the training set, a number of \eqn{k} nearest neighbors to the observation to predict (this is referred to as \eqn{"weighting 1"} in function \code{\link{locw}}) and then to apply LWPLSR only to this pre-selected neighborhood (this is referred to as\eqn{weighting "2"} in \code{\link{locw}}). This strategy corresponds to KNN-LWPLSR. 
+
+In function \code{lwplsr}, the dissimilarities used for computing the weights can be calculated from the original X-data or after a dimension reduction (argument \code{nlvdis}). In the last case, global PLS scores are computed from \eqn{(X, Y)} and the dissimilarities are calculated on these scores. For high dimension X-data, the dimension reduction is in general required for using the Mahalanobis distance.   
+
+}
+
+\value{
+
+For \code{lwplsr}: object of class \code{Lwplsr}
+
+For \code{predict.Lwplsr}: 
+
+\item{pred}{prediction calculated for each observation}
+
+\item{listnn}{list with the neighbors used for each observation to be predicted}
+
+\item{listd}{list with the distances to the neighbors used for each observation to be predicted}
+
+\item{listw}{list with the weights attributed to the neighbors used for each observation to be predicted}
+
+}
 
 \references{
 

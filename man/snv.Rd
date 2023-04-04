@@ -37,7 +37,6 @@ plotsp(Xp, main = "Corrected signal")
 abline(h = 0, lty = 2, col = "grey")
 par(oldpar)
 
-
 }
 
 \keyword{datagen}

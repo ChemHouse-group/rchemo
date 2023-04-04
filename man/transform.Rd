@@ -2,7 +2,7 @@
 \alias{transform}
 \encoding{latin1}
 
-\title{Generic tranform function}
+\title{Generic transform function}
 
 \description{Transformation of the X-data by a fitted model.}
 
@@ -22,7 +22,11 @@ transform(object, X, ...)
 
 }
 
-\value{See the examples.}
+\value{
+
+the transformed X-data
+
+}
 
 \examples{
 
@@ -31,7 +35,19 @@ X <- matrix(rnorm(n * p), ncol = p)
 y <- rnorm(n)
 
 fm <- pcaeigen(X, nlv = 3)
-#fm <- plskern(X, y, nlv = 3)
+
+fm$T
+transform(fm, X[1:2, ], nlv = 2)
+
+}
+
+\examples{
+
+n <- 6 ; p <- 4
+X <- matrix(rnorm(n * p), ncol = p)
+y <- rnorm(n)
+
+fm <- plskern(X, y, nlv = 3)
 fm$T
 transform(fm, X[1:2, ], nlv = 2)
 

@@ -39,7 +39,6 @@ mahsq_mu(X, mu, Uinv = NULL)
 
 \item{X}{X-data (\eqn{n, p}). }
 
-
 \item{Y}{Data (\eqn{m, p}) compared to \code{X}. If \code{NULL} (default), \code{Y} is set equal to \code{X}.}
 
 \item{mu}{Vector (\eqn{p}) compared to \code{X}.}

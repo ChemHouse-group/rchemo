@@ -44,7 +44,7 @@ locwlv(Xtrain, Ytrain, X, listnn, listw = NULL, fun, nlv, verb = FALSE, ...)
 
 \item{fun}{A function corresponding to the prediction model to fit on the \eqn{m} neighborhoods.}
 
-\item{nlv}{The number of LVs to calculate.}
+\item{nlv}{For \code{locwlv} : The number of LVs to calculate.}
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
@@ -54,7 +54,7 @@ locwlv(Xtrain, Ytrain, X, listnn, listw = NULL, fun, nlv, verb = FALSE, ...)
 
 \value{
 
-See the examples.
+\item{pred}{matrix or list of matrices (if \code{nlv} is a vector), with predictions}
 
 }
 

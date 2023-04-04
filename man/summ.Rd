@@ -20,7 +20,13 @@ Displays summary statistics for each quantitative column of the data set.
 
 }
 
-\value{A dataframe of summary statistics.}
+\value{
+
+\item{tab}{A dataframe of summary statistics : \eqn{NbVal}, \eqn{Mean}, \eqn{Min.}, \eqn{Max.}, \eqn{Stdev}, \eqn{Median}, \eqn{X1st.Qu.}, \eqn{X3rd.Qu.}, \eqn{NbNA}}
+
+\item{ntot}{number of observations}
+
+}
 
 \examples{
 

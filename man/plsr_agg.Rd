@@ -23,7 +23,9 @@ plsr_agg(X, Y, weights = NULL, nlv)
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{plsr_agg}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -31,13 +33,37 @@ plsr_agg(X, Y, weights = NULL, nlv)
 
 \item{nlv}{A character string such as "5:20" defining the range of the numbers of LVs to consider (here: the models with nb LVS = 5, 6, ..., 20 are averaged). Syntax such as "10" is also allowed (here: correponds to the single model with 10 LVs).}
 
+For \code{predict.Plsr_agg}:
+
 \item{object}{A fitted model, output of a call to the main functions.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
 
 \item{...}{Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{plsr_agg}:
+
+\item{fm}{list contaning the model: (\code{fm})=(\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output.}
+
+\item{nlv}{range of the numbers of LVs considered}
+
+For \code{predict.Plsr_agg}:
+
+\item{pred}{Final predictions (after aggregation)}
+
+\item{predlv}{Intermediate predictions (Per nb. LVs)}
+
+}
+
+\note{
+
+In the example, \code{zfm} is the maximal PLSR model, and there is no sense to use gridscorelv or gridcvlv instead of gridscore or gridcv. 
+
+}
 
 \examples{
 
@@ -50,30 +76,25 @@ Xtest <- Xtrain[1:m, , drop = FALSE]
 Ytest <- Ytrain[1:m, , drop = FALSE] ; ytest <- Ytest[1:m, 1]
 
 nlv <- "1:3"
-#nlv <- "2:3"
+
 fm <- plsr_agg(Xtrain, ytrain, nlv = nlv)
 names(fm)
 
-## Maximal PLSR model
 zfm <- fm$fm
 class(zfm)
 names(zfm)
 summary(zfm, Xtrain)
 
-##### Predictions
+
 res <- predict(fm, Xtest)
 names(res)
-## Final predictions (after aggregation)
+
 res$pred
 msep(res$pred, ytest)
-## Intermediate predictions (Per nb. LVs)
+
 res$predlv
 
-## Gridscore
-## Here, there is no sense to use gridscorelv 
 pars <- mpars(nlv = c("1:3", "2:5"))
-## Same as:
-## pars <- list(nlv = c("1:3", "2:5"))
 pars
 res <- gridscore(
     Xtrain, Ytrain, Xtest, Ytest, 
@@ -82,8 +103,6 @@ res <- gridscore(
     pars = pars)
 res
 
-## Gridcv
-## Here, there is no sense to use gridcvlv 
 K = 3
 segm <- segmkf(n = n, K = K, nrep = 1)
 segm

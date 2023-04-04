@@ -26,7 +26,13 @@ sampks(X, k, diss = c("eucl", "mahal"))
 
 }
 
-\value{Indexes (i.e. row numbers in \eqn{X}) for sets "train" and "test".}
+\value{
+
+\item{train}{Indexes (i.e. row numbers in \eqn{X}) of the selected observations, for the training set.}
+
+\item{test}{Indexes (i.e. row numbers in \eqn{X}) of the selected observations, for the test set.}
+
+}
 
 \references{
 

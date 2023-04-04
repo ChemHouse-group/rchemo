@@ -22,7 +22,9 @@ rr(X, Y, weights = NULL, lb = 1e-2)
 
 \arguments{
 
-\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{rr}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -30,13 +32,53 @@ rr(X, Y, weights = NULL, lb = 1e-2)
 
 \item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used.}
 
+For \code{coef.Rr}:
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{...}{Optional arguments. Not used.}
+
+For \code{predict.Rr}:
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
 \item{object}{A fitted model, output of a call to the main function.}
 
 \item{...}{Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{rr}:
+
+\item{V}{eigenvector matrix of the correlation matrix (n,n).}
+
+\item{TtDY}{intermediate output.}
+
+\item{sv}{singular values of the matrix \eqn{(1,n)}.}
+
+\item{lb}{value of regularization parameter \eqn{lambda}.}
+
+\item{xmeans}{the centering vector of X \eqn{(p,1)}.}
+
+\item{ymeans}{the centering vector of Y \eqn{(q,1)}.}
+
+\item{weights}{the weights vector of X-variables \eqn{(p,1)}.}
+
+For \code{coef.Rr}:
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+\item{df}{model complexity (number of degrees of freedom)}
+
+For \code{predict.Rr}:
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
+
+}
 
 \references{
 

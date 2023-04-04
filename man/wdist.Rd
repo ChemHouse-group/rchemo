@@ -65,7 +65,6 @@ res$h <- as.factor(res$h)
 headm(res)
 plotxy(res[, c("d", "w")], asp = 0, group = res$h, pch = 16)
 
-
 }
 
 \keyword{datagen}

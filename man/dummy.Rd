@@ -18,7 +18,15 @@ The function builds a table of dummy variables from a qualitative variable. A bi
 
 }
 
-\value{A matrix of dummy variables (i.e. binary variables), each representing a given level of the qualitative variable.}
+\value{
+
+\item{Y}{A matrix of dummy variables (i.e. binary variables), each representing a given level of the qualitative variable.}
+
+\item{lev}{levels of the qualitative variable.}
+
+\item{ni}{number of observations per level of the qualitative variable.}
+
+}
 
 
 \examples{

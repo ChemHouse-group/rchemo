@@ -39,7 +39,13 @@ xresid(object, X, ..., nlv = NULL)
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{xfit}{matrix of fitted values}
+
+For \code{xresid}{matrix of residuals}
+
+}
 
 \examples{
 

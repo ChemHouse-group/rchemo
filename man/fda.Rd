@@ -3,7 +3,6 @@
 \alias{fdasvd}
 \alias{transform.Fda}
 \alias{summary.Fda}
-\encoding{latin1}
 
 \title{Factorial discriminant analysis}
 
@@ -31,11 +30,25 @@ fdasvd(X, y, nlv = NULL)
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+For \code{fda} and \code{fdasvd}:
+
+\item{X}{For the main functions: Training X-data (\eqn{n, p}).}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
 \item{nlv}{The number(s) of LVs to calculate.}
+
+For \code{transform.Fda}
+
+\item{object}{A fitted model, output of a call to the main function.}
+
+\item{X}{New X-data (\eqn{m, p}) to consider.}
+
+\item{...}{Optional arguments. Not used.}
+
+\item{nlv}{The number(s) of LVs to consider.}
+
+For \code{summary.Fda}
 
 \item{object}{A fitted model, output of a call to the main function.}
 
@@ -43,7 +56,35 @@ fdasvd(X, y, nlv = NULL)
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{fda} and \code{fdasvd}:
+
+\item{T}{X-scores matrix (n,nlv).}
+
+\item{P}{X-loadings matrix (p,nlv) = coefficients of the linear discriminant function = "LD" of function lda of package MASS.}
+
+\item{Tcenters}{projection of the class centers in the score space.}
+
+\item{eig}{vector of eigen values}
+
+\item{sstot}{total variance}
+
+\item{W}{unbiased within covariance matrix}
+
+\item{xmeans}{means of the X variables}
+
+\item{lev}{y levels}
+
+\item{ni}{number of observations per level of the y variable}
+
+For \code{transform.Fda}: scores of the new X-data in the model.
+
+For \code{summary.Fda}:
+
+\item{explvar}{Explained variance by PCA of the class centers in transformed scale.}
+
+}
 
 \references{
 
@@ -61,15 +102,9 @@ table(y)
 
 fm <- fda(X, y)
 headm(fm$T)
+
 transform(fm, X[1:3, ])
-## Tcenters = projection of the class centers in the score space
-fm$Tcenters
-## X-loadings matrix
-## = coefficients of the linear discriminant function
-## = "LD" of function lda of package MASS
-fm$P
-## Explained variance by PCA of the class centers 
-## in transformed scale
+
 summary(fm)
 plotxy(fm$T, group = y, ellipse = TRUE, 
     zeroes = TRUE, pch = 16, cex = 1.5, ncol = 2)
