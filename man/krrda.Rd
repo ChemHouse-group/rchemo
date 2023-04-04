@@ -57,7 +57,7 @@ The training variable \eqn{y} (univariate class membership) is transformed to a 
 
 For \code{krrda}: 
 
-\item{fm}{List with the outputs of the RR ((\code{X}): Training X-data (\eqn{n, p}); (\code{K}): Gram matrix; (\code{Kt}): Gram matrix; (\code{U}): Y score matrix}; (\code{UtDY}): ; (\code{sv}): eigen values of the matrix (1,n); (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1); (\code{kern}): kern function; (\code{dots}): Optional arguments.}}
+\item{fm}{List with the outputs of the RR ((\code{X}): Training X-data (\eqn{n, p}); (\code{K}): Gram matrix; (\code{Kt}): Gram matrix; (\code{U}): intermediate output; (\code{UtDY}): intermediate output; (\code{sv}): singular values of the matrix (1,n); (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1); (\code{kern}): kern function; (\code{dots}): Optional arguments.}
 
 \item{lev}{y levels}
 

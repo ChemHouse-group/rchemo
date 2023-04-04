@@ -54,7 +54,7 @@ For \code{kpca}:
 
 \item{P}{X-loadings matrix.}
 
-\item{sv}{eigen values of the matrix (1,n).}
+\item{sv}{vector of singular values}
 
 \item{eig}{vector of eigenvalues.}
 

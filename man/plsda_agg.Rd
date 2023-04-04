@@ -62,7 +62,7 @@ For \code{predict.Plsda_agg}:
 For \code{plsrda_agg}, \code{plslda_agg} and \code{plsqda_agg}:
 
 \item{fm}{list contaning: 
-the model((\code{fm})=(\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): The Y-scores matrix),  \code{lev}{classes}, \code{ni}{number of observations in each class}}
+the model((\code{fm})=(\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output),  \code{lev}{classes}, \code{ni}{number of observations in each class}}
 
 \item{nlv}{range of the numbers of LVs considered}
 
@@ -85,7 +85,7 @@ the first example concerns PLSRDA-AGG, and the second one concerns PLSLDA-AGG.
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- sample(c(1, 4, 10, 2), size = n, replace = TRUE)
-#ytrain <- sample(c("a", "10", "d"), size = n, replace = TRUE)
+
 m <- 5
 Xtest <- Xtrain[1:m, ] ; ytest <- ytrain[1:m]
 

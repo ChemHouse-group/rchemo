@@ -57,7 +57,7 @@ The training variable \eqn{y} (univariate class membership) is transformed to a 
 
 For \code{kplsrda}: 
 
-\item{fm}{list with the kplsrda model: (\code{X}): the training X-data (\eqn{n, p}); (\code{Kt}): the Gram matrix; (\code{T}): X-scores matrix; (\code{C}): The Y-loading weights matrix; (\code{U}): The Y-scores matrix; (\code{R}): The PLS projection matrix (p,nlv); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{kern}): kern function; (\code{dots}): Optional arguments.}
+\item{fm}{list with the kplsrda model: (\code{X}): the training X-data (\eqn{n, p}); (\code{Kt}): the Gram matrix; (\code{T}): X-scores matrix; (\code{C}): The Y-loading weights matrix; (\code{U}): intermediate output; (\code{R}): The PLS projection matrix (p,nlv); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{kern}): kern function; (\code{dots}): Optional arguments.}
 
 \item{lev}{y levels}
 

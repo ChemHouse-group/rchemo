@@ -86,7 +86,7 @@ For \code{predict.Svm}:
 
 \item{pred}{predictions for each observation.}
 
-For \code{summary.Svm}:display of call, parameters, and number of support vectors:  50
+For \code{summary.Svm}:display of call, parameters, and number of support vectors
 
 }
 

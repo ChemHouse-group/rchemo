@@ -50,9 +50,11 @@ For \code{predict.Rr}:
 
 \value{
 
+For \code{rr}:
+
 \item{V}{eigenvector matrix of the correlation matrix (n,n).}
 
-\item{TtDY}{the Y-scores matrix \eqn{(n,q)}.}
+\item{TtDY}{intermediate output.}
 
 \item{sv}{singular values of the matrix \eqn{(1,n)}.}
 
@@ -63,6 +65,18 @@ For \code{predict.Rr}:
 \item{ymeans}{the centering vector of Y \eqn{(q,1)}.}
 
 \item{weights}{the weights vector of X-variables \eqn{(p,1)}.}
+
+For \code{coef.Rr}:
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+\item{df}{model complexity (number of degrees of freedom)}
+
+For \code{predict.Rr}:
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
 
 }
 

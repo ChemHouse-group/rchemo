@@ -51,11 +51,20 @@ The training variable \eqn{y} (univariate class membership) is transformed to a 
 
 \value{
 
-\item{fm}{List with the outputs of the RR ((\code{V}): eigenvector matrix of the correlation matrix (n,n); (\code{TtDY}): the Y-scores matrix \eqn{(n,q)}; (\code{sv}): singular values of the matrix \eqn{(1,n)}; (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{xmeans}): the centering vector of X \eqn{(p,1)}; (\code{ymeans}): the centering vector of Y \eqn{(q,1)} ; (\code{weights}): the weights vector of X-variables \eqn{(p,1)}.}
+For \code{rrda}:
+
+\item{fm}{List with the outputs of the RR ((\code{V}): eigenvector matrix of the correlation matrix (n,n); (\code{TtDY}): intermediate output; (\code{sv}): singular values of the matrix \eqn{(1,n)}; (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{xmeans}): the centering vector of X \eqn{(p,1)}; (\code{ymeans}): the centering vector of Y \eqn{(q,1)} ; (\code{weights}): the weights vector of X-variables \eqn{(p,1)}.}
 
 \item{lev}{classes}
 
 \item{ni}{number of observations in each class}
+
+For \code{predict.Rrda}:
+
+
+\item{pred}{matrix or list of matrices (if lb is a vector), with predicted class for each observation}
+
+\item{posterior}{matrix or list of matrices (if lb is a vector), calculated probability of belonging to a class for each observation}
 
 }
 

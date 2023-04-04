@@ -62,7 +62,7 @@ For \code{dkrr}:
 
 \item{X}{Matrix with the training X-data (\eqn{n, p}).}
 
-\item{fm}{List with the outputs of the RR ((\code{V}): eigenvector matrix of the correlation matrix (n,n); (\code{TtDY}): the Y-scores matrix (n,q); (\code{sv}): singular values of the matrix (1,n); (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1)}
+\item{fm}{List with the outputs of the RR ((\code{V}): eigenvector matrix of the correlation matrix (n,n); (\code{TtDY}): intermediate output; (\code{sv}): singular values of the matrix (1,n); (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1)}
 
 \item{K}{kernel Gram matrix} 
 
@@ -82,7 +82,7 @@ For \code{coef.Dkrr}:
 
 \item{B}{matrix (n,nlv) with the coefficients}
 
-\item{df}{}
+\item{df}{model complexity (number of degrees of freedom)}
 }
 
 

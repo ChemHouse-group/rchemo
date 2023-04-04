@@ -56,7 +56,7 @@ For \code{lda} and \code{qda}:
 
 \item{ct}{centers (column-wise means) for classes of observations.}
 
-\item{W}{within covariance matrices for classes of observations.}
+\item{W}{unbiased within covariance matrices for classes of observations.}
 
 \item{wprior}{prior probabilities of the classes.}
 

@@ -68,7 +68,7 @@ For \code{dkplsr}:
 
 \item{X}{Matrix with the training X-data (\eqn{n, p}).}
 
-\item{fm}{List with the outputs of the PLSR ((\code{T}): the X-score matrix (n,nlv); (\code{P}): the X-loadings matrix (p,nlv); (\code{R}): The PLS projection matrix (p,nlv); (\code{W}): The X-loading weights matrix (p,nlv); (\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor, (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1)}
+\item{fm}{List with the outputs of the PLSR ((\code{T}): the X-score matrix (n,nlv); (\code{P}): the X-loadings matrix (p,nlv); (\code{R}): The PLS projection matrix (p,nlv); (\code{W}): The X-loading weights matrix (p,nlv); (\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1); (\code{U}): intermediate output.}
 
 \item{K}{kernel Gram matrix} 
 

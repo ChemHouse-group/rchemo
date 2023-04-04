@@ -73,7 +73,7 @@ For \code{kplsr}:
 
 \item{C}{The Y-loading weights matrix.}
 
-\item{U}{The Y-scores matrix.}
+\item{U}{intermediate output.}
 
 \item{R}{The PLS projection matrix (p,nlv).}
 

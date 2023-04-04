@@ -68,11 +68,11 @@ For \code{krr}:
 
 \item{Kt}{Gram matrix}
 
-\item{U}{Y score matrix}
+\item{U}{intermediate output.}
 
-\item{UtDY}{}
+\item{UtDY}{intermediate output.}
 
-\item{sv}{eigen values of the matrix (1,n)}
+\item{sv}{singular values of the matrix (1,n)}
 
 \item{lb}{value of regularization parameter \eqn{lambda}}
 
@@ -83,6 +83,18 @@ For \code{krr}:
 \item{kern}{kern function.}
 
 \item{dots}{Optional arguments.}
+
+For \code{coef.Krr}:
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{alpha}{matrix (n,nlv) with the coefficients}
+
+\item{df}{model complexity (number of degrees of freedom)}
+
+For \code{predict.Krr}:
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
 
 }
 

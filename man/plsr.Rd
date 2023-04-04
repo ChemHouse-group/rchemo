@@ -113,7 +113,7 @@ For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such 
 
 \item{TT}{the X-score normalization factor.}
 
-\item{U}{The Y-scores matrix.}
+\item{U}{intermediate output.}
 
 For \code{transform.Plsr}: X-scores matrix for new X-data.
 

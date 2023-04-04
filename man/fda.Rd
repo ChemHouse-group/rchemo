@@ -70,7 +70,7 @@ For \code{fda} and \code{fdasvd}:
 
 \item{sstot}{total variance}
 
-\item{W}{within covariance matrix}
+\item{W}{unbiased within covariance matrix}
 
 \item{xmeans}{means of the X variables}
 
