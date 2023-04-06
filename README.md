@@ -1,6 +1,6 @@
 ## rchemo - Dimension reduction, Regression and Discrimination for Chemometrics  
 
-**rchemo** is a package for **data exploration and prediction** with focus on **high dimensional data** and **chemometrics**. 
+**rchemo** is a [package](https://github.com/ChemHouse-group/rchemo/blob/main/doc/rchemo_functions_github.md) for **data exploration and prediction** with focus on **high dimensional data** and **chemometrics**. 
 
 The package was initially designed about **partial least squares regression and discrimination models** and variants, in particular locally weighted PLS models (**LWPLS**) (e.g. https://doi.org/10.1002/cem.3209).
 Then, it has been expanded to many other methods for 
