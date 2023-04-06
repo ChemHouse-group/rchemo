@@ -9,7 +9,7 @@ VignetteBuilder: knitr
 Imports: stats, graphics, grDevices, data.table, FNN, signal, e1071
 Depends: R (>= 4.0)
 Suggests: knitr, rmarkdown
-URL: https://github.com/mlesnoff/rchemo/
+URL: https://github.com/ChemHouse-group/rchemo/
 License: GPL-3 + file LICENSE
 LazyData: yes
 NeedsCompilation: no

@@ -1,6 +1,6 @@
 # <span style="color:grey70"> **R Package rchemo** </span>
 
-**https://github.com/mlesnoff/rchemo**
+**https://github.com/ChemHouse-group/rchemo**
 
 #### <span style="color:#1589F0"> PCA </span>
 
@@ -212,6 +212,34 @@
 
 #### <span style="color:#1589F0"> AUTHOR </span>
 
+**Marion Brandolini-Bunlon**
+
+- Université Clermont Auvergne, INRAE, UNH, Plateforme d’Exploration du Métabolisme, MetaboHUB Clermont, 63000 Clermont-Ferrand, France
+
+- [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
+
+**marion.brandolini-bunlon@inrae.fr**
+
+
+**Benoit Jaillais**
+
+- Oniris, INRAE, StatSC, 44322 Nantes, France
+
+- [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
+
+**benoit.jaillais@inrae.fr**
+
+
+**Jean-Michel Roger**
+
+- ITAP, INRAE Montpellier Institut Agro, Université de Montpellier, Montpellier.
+
+- [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
+
+**jean-michel.roger@inrae.fr**
+
+
+
 **Matthieu Lesnoff**
 
 - Cirad, [**UMR Selmet**](https://umr-selmet.cirad.fr/en), Montpellier, France
@@ -222,4 +250,4 @@
 
 #### How to cite
 
-Lesnoff, M. 2021. R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/mlesnoff/rchemo. CIRAD, UMR SELMET, Montpellier, France
+Lesnoff, M. 2021. R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo. CIRAD, UMR SELMET, Montpellier, France

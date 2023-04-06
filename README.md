@@ -72,7 +72,7 @@ library(rchemo)
 
 ## <span style="color:green"> **How to cite** </span> 
 
-R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo.
+R package rchemo: Dimension Reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo.
 
 
 
