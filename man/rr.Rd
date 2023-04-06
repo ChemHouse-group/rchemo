@@ -22,9 +22,7 @@ rr(X, Y, weights = NULL, lb = 1e-2)
 
 \arguments{
 
-For \code{rr}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -32,19 +30,9 @@ For \code{rr}:
 
 \item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used.}
 
-For \code{coef.Rr}:
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments. Not used.}
-
-For \code{predict.Rr}:
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{--- For the auxiliary functions: Optional arguments. Not used.}
 
 }
 

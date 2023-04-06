@@ -1,5 +1,6 @@
 \name{eposvd}
 \alias{eposvd}
+\encoding{UTF-8}
 
 \title{External parameter orthogonalization (EPO)}
 

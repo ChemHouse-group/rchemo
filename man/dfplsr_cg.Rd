@@ -2,6 +2,7 @@
 \alias{dfplsr_cg}
 \alias{dfplsr_cov}
 \alias{dfplsr_div}
+\encoding{UTF-8}
 
 \title{Degrees of freedom of Univariate PLSR Models}
 

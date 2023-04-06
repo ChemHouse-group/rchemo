@@ -35,9 +35,7 @@ plsqda_agg(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 
 \arguments{
 
-For \code{plsrda_agg}, \code{plslda_agg} and \code{plsqda_agg}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -47,13 +45,9 @@ For \code{plsrda_agg}, \code{plslda_agg} and \code{plsqda_agg}:
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
-For \code{predict.Plsda_agg}:
+\item{object}{For the auxiliary function: A fitted model, output of a call to the main functions.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary function: Optional arguments. Not used.}
 
 }
 

@@ -25,7 +25,7 @@ plsr_agg(X, Y, weights = NULL, nlv)
 
 For \code{plsr_agg}:
 
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -33,13 +33,9 @@ For \code{plsr_agg}:
 
 \item{nlv}{A character string such as "5:20" defining the range of the numbers of LVs to consider (here: the models with nb LVS = 5, 6, ..., 20 are averaged). Syntax such as "10" is also allowed (here: correponds to the single model with 10 LVs).}
 
-For \code{predict.Plsr_agg}:
+\item{object}{For the auxiliary function: A fitted model, output of a call to the main functions.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary function: Optional arguments. Not used.}
 
 }
 

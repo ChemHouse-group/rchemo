@@ -27,9 +27,7 @@ lwplsr(X, Y,
 
 \arguments{
 
-For \code{lwplsr}: 
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{--- For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -47,17 +45,9 @@ For \code{lwplsr}:
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
+\item{object}{--- For the auxiliary function: A fitted model, output of a call to the main function.}
 
-
-For \code{predict.Lwplsr}: 
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments.}
-
-\item{nlv}{The number(s) of LVs to calculate in the local PLSR models.}
+\item{...}{--- For the auxiliary function: Optional arguments.}
 
 }
 

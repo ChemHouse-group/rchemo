@@ -23,7 +23,7 @@ rrda(X, y, weights = NULL, lb = 1e-5)
 
 For \code{rrda}:
 
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -31,15 +31,9 @@ For \code{rrda}:
 
 \item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
 
-For \code{predict.Rrda}:
+\item{object}{For the auxiliary function: A fitted model, output of a call to the main functions.}
 
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{...}{Optional arguments. Not used.}
-
-\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
+\item{...}{For the auxiliary function: Optional arguments. Not used.}
 
 }
 

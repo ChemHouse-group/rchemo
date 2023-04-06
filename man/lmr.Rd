@@ -22,21 +22,15 @@ lmr(X, Y, weights = NULL)
 
 \arguments{
 
-For \code{lmr}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-For \code{coef.Lmr} and \code{predict.Lmr}:
+\item{object}{For the auxiliary functions:A fitted model, output of a call to the main functions.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 

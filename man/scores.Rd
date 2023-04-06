@@ -11,6 +11,7 @@
 \alias{err}
 \alias{residreg}
 \alias{residcla}
+\encoding{UTF-8}
 
 \title{Residuals and prediction error rates}
 

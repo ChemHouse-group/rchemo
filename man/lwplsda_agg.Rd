@@ -61,9 +61,7 @@ lwplsqda_agg(
 
 \arguments{
 
-For \code{lwplsrda_agg}, \code{lwplslda_agg} and \code{lwplsqda_agg}: 
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -83,13 +81,9 @@ For \code{lwplsrda_agg}, \code{lwplslda_agg} and \code{lwplsqda_agg}:
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
-For \code{predict.Lwplsrda_agg} and \code{predict.Lwplsprobda_agg}: 
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
@@ -109,7 +103,7 @@ For \code{predict.Lwplsrda_agg} and \code{predict.Lwplsprobda_agg}:
 
 }
 
-\notes{
+\note{
 
 The first example concerns KNN-LWPLSRDA-AGG.
 The second example concerns KNN-LWPLSLDA-AGG. 

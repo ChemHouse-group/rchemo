@@ -21,29 +21,19 @@ kplsrda(X, y, weights = NULL, nlv, kern = "krbf", ...)
 
 \arguments{
 
-For \code{kplsrda}: 
-
-\item{X}{For main functions: Training X-data (\eqn{n, p}).}
+\item{X}{For main function: Training X-data (\eqn{n, p}). --- For auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
 \item{weights}{Weights (\eqn{n}) to apply to the training observations for the PLS2. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-\item{nlv}{The number(s) of LVs to calculate.}
+\item{nlv}{For main function: The number(s) of LVs to calculate. --- For auxiliary function: The number(s) of LVs to consider.}
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
-For \code{predict.Kplsrda}: 
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
-
-\item{nlv}{The number(s) of LVs to consider.}
+\item{object}{For auxiliary function: A fitted model, output of a call to the main functions.}
 
 }
 

@@ -2,6 +2,7 @@
 \alias{kpca}
 \alias{transform.Kpca}
 \alias{summary.Kpca}
+\encoding{UTF-8}
 
 \title{KPCA}
 
@@ -20,9 +21,8 @@ kpca(X, weights = NULL, nlv, kern = "krbf", ...)
 }
 
 \arguments{
-For \code{kpca}:
 
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
@@ -30,15 +30,9 @@ For \code{kpca}:
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
-For \code{transform.Kpca} and \code{summary.Kpca}:
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
-For \code{transform.Kpca}:
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
+\item{object}{--- For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
 }
 

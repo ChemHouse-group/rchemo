@@ -24,9 +24,7 @@ knnr(X, Y,
 
 \arguments{
 
-For \code{knnr}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -38,13 +36,9 @@ For \code{knnr}:
 
 \item{k}{The number of nearest neighbors to select for each observation to predict.}
 
-For \code{predict.Knnr}:
+\item{object}{--- For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{--- For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
