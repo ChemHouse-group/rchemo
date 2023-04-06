@@ -62,6 +62,8 @@ After running the code, type Enter in the R console for starting the scrolling, 
 
 \examples{
 
+## EXAMPLE 1
+
 data(cassav)
 
 X <- cassav$Xtest
@@ -88,9 +90,7 @@ col <- hcl.colors(n = n, alpha = 1, rev = FALSE, palette = "Grays")
 plotsp(X, col = col)
 plotsp(X[5, , drop = FALSE], col = "red", lwd = 2, add = TRUE, labels = TRUE)
 
-}
-
-\examples{
+## EXAMPLE 2 (Scrolling plot of PCA loadings)
 
 data(cassav)
 X <- cassav$Xtest

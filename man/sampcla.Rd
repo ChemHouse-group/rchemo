@@ -54,6 +54,8 @@ The second example is a representative stratified sampling from an unsupervised 
 
 \examples{
 
+## EXAMPLE 1
+
 x <- sample(c(1, 3, 4), size = 20, replace = TRUE)
 table(x)
 
@@ -70,9 +72,7 @@ sampcla(x, y, m = 2)
 s <- sampcla(x, y, m = 2)$test
 x[s]
 
-}
-
-\examples{
+## EXAMPLE 2
 
 data(cassav)
 X <- cassav$Xtrain

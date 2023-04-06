@@ -78,6 +78,8 @@ Tipping, M.E., 2001. Sparse kernel principal component analysis. Advances in neu
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 5 ; p <- 4
 X <- matrix(rnorm(n * p), ncol = p)
 
@@ -90,9 +92,7 @@ transform(fm, X[1:2, ])
 transform(fm, X[1:2, ], nlv = 1)
 summary(fm)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 n <- 5 ; p <- 4
 X <- matrix(rnorm(n * p), ncol = p)

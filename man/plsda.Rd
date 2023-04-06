@@ -79,6 +79,8 @@ The first example concerns PLSDA, and the second one concerns PLS LDA.
 
 \examples{
 
+## EXAMPLE OF PLSDA
+
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
@@ -103,9 +105,7 @@ coef(zfm)
 coef(zfm, nlv = 0)
 coef(zfm, nlv = 2)
 
-}
-
-\examples{
+## EXAMPLE OF PLS LDA
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)

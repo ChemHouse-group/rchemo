@@ -79,6 +79,8 @@ Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourt
 
 \examples{
 
+## EXAMPLE 1
+
 data(iris)
 
 X <- iris[, 1:4]
@@ -105,9 +107,7 @@ headm(res$posterior)
 
 err(res$pred, ytest)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 data(iris)
 

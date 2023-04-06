@@ -96,6 +96,8 @@ The third one illustrates SVMC.
 
 \examples{
 
+## EXAMPLE 1 (SVMR)
+
 n <- 50 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -111,9 +113,7 @@ msep(pred, ytest)
 
 summary(fm)
 
-}
-
-\examples{
+## EXAMPLE 2 
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5
@@ -130,9 +130,7 @@ plot(X, y, type = "p")
 lines(X, zy, lty = 2)
 lines(X, pred, col = "red")
 
-}
-
-\examples{
+## EXAMPLE 3 (SVMC)
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)

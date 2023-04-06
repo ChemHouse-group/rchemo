@@ -83,9 +83,7 @@ res <- blockscal(zXtrain, zXtest)
 hconcat(res$Xtrain)
 hconcat(res$X)
 
-}
-
-\examples{
+## example of equivalence with MB-PLSR
 
 n <- 10 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)

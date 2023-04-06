@@ -106,6 +106,8 @@ The second example concerns the fitting of the function sinc(x) described in Ros
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -128,9 +130,7 @@ lb <- 2
 fm <- krr(Xtrain, Ytrain, lb = lb, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

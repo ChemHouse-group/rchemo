@@ -76,6 +76,8 @@ the first example concerns PLSRDA-AGG, and the second one concerns PLSLDA-AGG.
 
 \examples{
 
+## EXAMPLE OF PLSRDA-AGG
+
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- sample(c(1, 4, 10, 2), size = n, replace = TRUE)
@@ -111,9 +113,7 @@ res <- gridcv(
     verb = TRUE)
 res
 
-}
-
-\examples{
+## EXAMPLE OF PLSLDA-AGG
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)

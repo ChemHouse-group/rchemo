@@ -79,6 +79,8 @@ In the examples, \code{gridscore} and \code{gricv} have been used as there is no
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -102,9 +104,7 @@ names(res)
 res$pred
 msep(res$pred, Ytest)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
@@ -129,9 +129,7 @@ res <- gridscore(
     pars = pars)
 res
 
-}
-
-\examples{
+## EXAMPLE 3
 
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)

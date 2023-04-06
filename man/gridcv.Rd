@@ -76,6 +76,8 @@ Examples are given:
 
 \examples{
 
+## EXAMPLE WITH PLSR
+
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
 y <- rnorm(n)
@@ -99,9 +101,8 @@ gridcvlv(
     score = msep, 
     fun = plskern, 
     nlv = 0:nlv, verb = TRUE)
-}
-
-\examples{
+    
+## EXAMPLE WITH PLSLDA
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
@@ -127,9 +128,8 @@ gridcvlv(
     score = err, 
     fun = plslda,
     nlv = 1:nlv, pars = pars, verb = TRUE)
-}
 
-\examples{
+## EXAMPLE WITH RR
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
@@ -154,9 +154,8 @@ gridcvlb(
     score = msep, 
     fun = rr, 
     lb = lb, verb = TRUE)
-}
 
-\examples{
+## EXAMPLE WITH KRR
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)
@@ -183,9 +182,8 @@ gridcvlb(
     score = msep, 
     fun = krr, 
     lb = lb, pars = pars, verb = TRUE)
-}
 
-\examples{
+## EXAMPLE WITH LWPLSR
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p)

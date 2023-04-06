@@ -112,6 +112,8 @@ The second example concerns KNN-LWPLSLDA-AGG.
 
 \examples{
 
+## KNN-LWPLSRDA-AGG
+
 n <- 50 ; p <- 7
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
 y <- sample(c(1, 4, 10), size = n, replace = TRUE)
@@ -158,9 +160,7 @@ res <- gridcv(
 names(res)
 res$val
 
-}
-
-\examples{
+## KNN-LWPLSLDA-AGG
 
 n <- 50 ; p <- 7
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)

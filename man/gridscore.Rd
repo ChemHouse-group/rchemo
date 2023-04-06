@@ -79,6 +79,8 @@ Examples are given:
 
 \examples{
 
+## EXAMPLE WITH PLSR
+
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
 ytrain <- rnorm(n)
@@ -108,9 +110,7 @@ fm <- plskern(Xtrain, Ytrain, nlv = nlv)
 pred <- predict(fm, Xtest)$pred
 msep(pred, Ytest)
 
-}
-
-\examples{
+## EXAMPLE WITH PLSLDA
 
 n <- 50 ; p <- 8
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
@@ -142,9 +142,7 @@ gridscorelv(
     nlv = 1:nlv, pars = pars, verb = TRUE
     )
     
-}
-
-\examples{
+## EXAMPLE WITH RR
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
@@ -171,9 +169,7 @@ gridscorelb(
     lb = lb, verb = TRUE
     )
 
-}
-
-\examples{
+## EXAMPLE WITH KRR
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
@@ -201,9 +197,8 @@ gridscorelb(
     fun = krr, 
     lb = lb, pars = pars, verb = TRUE
     )
-}
-
-\examples{
+    
+## EXAMPLE WITH LWPLSR
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
