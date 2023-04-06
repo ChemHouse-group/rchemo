@@ -210,7 +210,7 @@
 - ***wdist*** Weights for distances
 - Additional working functions in file **zfunctions.R**
 
-#### <span style="color:#1589F0"> AUTHOR </span>
+#### <span style="color:#1589F0"> AUTHORS </span>
 
 **Marion Brandolini-Bunlon**
 
@@ -239,7 +239,6 @@
 **jean-michel.roger@inrae.fr**
 
 
-
 **Matthieu Lesnoff**
 
 - Cirad, [**UMR Selmet**](https://umr-selmet.cirad.fr/en), Montpellier, France
@@ -248,6 +247,3 @@
 
 **matthieu.lesnoff@cirad.fr**
 
-#### How to cite
-
-Lesnoff, M. 2021. R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo. CIRAD, UMR SELMET, Montpellier, France
