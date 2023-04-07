@@ -24,37 +24,19 @@ krr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \arguments{
 
-For \code{krr}: 
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For main function: Training X-data (\eqn{n, p}). --- For auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
+\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.} 
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
-For \code{coef.Krr}: 
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
-
-\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
-
-For \code{predict.Krr}: 
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
-
-\item{lb}{A value of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
+\item{object}{--- For auxiliary function: A fitted model, output of a call to the main function.}
 
 }
 
@@ -124,6 +106,8 @@ The second example concerns the fitting of the function sinc(x) described in Ros
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -146,9 +130,7 @@ lb <- 2
 fm <- krr(Xtrain, Ytrain, lb = lb, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

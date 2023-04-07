@@ -21,21 +21,15 @@ dmnorm(X = NULL, mu = NULL, sigma = NULL)
 
 \arguments{
 
-For \code{dmnorm}:
-
-\item{X}{Training data (\eqn{n, p}) used for estimating the mean and the covariance matrix population (if \code{mu} or/and \code{sigma} are not provided). }
+\item{X}{For the main function: Training data (\eqn{n, p}) used for estimating the mean and the covariance matrix population (if \code{mu} or/and \code{sigma} are not provided). --- For the auxiliary functions: New data (\eqn{m, p}) for which the density has to be predicted.}
 
 \item{mu}{The mean (\eqn{p, 1}) of the normal distribution. If \code{NULL} (default), \eqn{mu} is estimated by the column-wise mean of the training data.}
 
 \item{sigma}{The covariance matrix (\eqn{p x p}) of the normal distribution. If \code{NULL} (default), \eqn{sigma} is estimated by the empirical covariance matrix (denominator \eqn{n - 1}) of the training data.}
 
-For \code{predict}: 
+\item{object}{For the auxiliary functions: A result of a call to \code{dmnorm}.}
 
-\item{object}{A result of a call to \code{dmnorm}.}
-
-\item{X}{New data (\eqn{m, p}) for which the density has to be predicted.}
-
-\item{...}{Optional arguments.}
+\item{...}{For the auxiliary functions: Optional arguments.}
 
 }
 

@@ -1,6 +1,7 @@
 \name{octane}
 \alias{octane}
 \docType{data}
+\encoding{UTF-8}
 
 
 \title{octane}

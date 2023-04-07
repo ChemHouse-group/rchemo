@@ -1,5 +1,6 @@
 \name{selwold}
 \alias{selwold}
+\encoding{UTF-8}
 
 \title{Heuristic selection of the dimension of a latent variable model with the Wold's criterion}
 

@@ -30,6 +30,8 @@ the transformed X-data
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 X <- matrix(rnorm(n * p), ncol = p)
 y <- rnorm(n)
@@ -39,9 +41,7 @@ fm <- pcaeigen(X, nlv = 3)
 fm$T
 transform(fm, X[1:2, ], nlv = 2)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 n <- 6 ; p <- 4
 X <- matrix(rnorm(n * p), ncol = p)

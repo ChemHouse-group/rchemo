@@ -24,9 +24,7 @@ knnda(X, y,
 
 \arguments{
 
-For \code{knnda}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -38,13 +36,9 @@ For \code{knnda}:
 
 \item{k}{The number of nearest neighbors to select for each observation to predict.}
 
-For \code{predict.Knnda}:
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 

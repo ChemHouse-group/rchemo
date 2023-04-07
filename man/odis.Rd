@@ -1,6 +1,7 @@
 \name{odis}
 \alias{odis}
 \alias{lodis}
+\encoding{UTF-8}
 
 \title{Orthogonal distances from a PCA or PLS score space}
 

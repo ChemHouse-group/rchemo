@@ -29,15 +29,13 @@ kplsr(X, Y, weights = NULL, nlv, kern = "krbf",
 
 \arguments{
 
-For \code{kplsr}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-\item{nlv}{The number(s) of LVs to calculate.}
+\item{nlv}{The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
@@ -47,17 +45,7 @@ For \code{kplsr}:
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
-For \code{transform.Kplsr}, \code{coef.Kplsr}, \code{predict.Kplsr}:
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
-
-\item{nlv}{The number(s) of LVs to consider.}
-
-For \code{transform.Kplsr} and \code{predict.Kplsr}:
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
 }
 
@@ -114,6 +102,8 @@ The second example concerns the fitting of the function sinc(x) described in Ros
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -139,9 +129,7 @@ nlv <- 2
 fm <- kplsr(Xtrain, Ytrain, nlv = nlv, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest, nlv = nlv)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

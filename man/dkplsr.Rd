@@ -25,40 +25,19 @@ dkplsr(X, Y, weights = NULL, nlv, kern = "krbf", ...)
 
 \arguments{
 
-For \code{dkplsr}: 
-
-\item{X}{Matrix with the training X-data (\eqn{n, p}).}
+\item{X}{For the main function:  Matrix with the training X-data (\eqn{n, p}). --- For auxiliary functions: A matrix with new X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Matrix with the training Y-data (\eqn{n, q}).}
 
 \item{weights}{vector of weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-\item{nlv}{The number(s) of LVs to calculate.}
+\item{nlv}{For the main function: The number(s) of LVs to calculate. --- For auxiliary functions: The number(s) of LVs to consider.}
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions (\code{krbf}, \code{kpol}, \code{ktanh}).}
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}, \code{gamma} and \code{coef0} for \code{ktanh}, \code{gamma} and \code{coef0} and \code{degree} for \code{kpol}).}
 
-
-
-For \code{transform.Dkplsr} and \code{predict.Dkplsr}: 
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{A matrix with new X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments to pass to methods.}
-
-\item{nlv}{The number(s) of LVs to consider.}
-
-
-For \code{coef.Dkplsr}: 
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments to pass to methods.}
-
-\item{nlv}{The number(s) of LVs to consider.}
+\item{object}{For auxiliary functions: A fitted model, output of a call to the main function.}
 
 }
 
@@ -107,6 +86,8 @@ The second example concerns the fitting of the function sinc(x) described in Ros
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -132,9 +113,7 @@ nlv <- 2
 fm <- dkplsr(Xtrain, Ytrain, nlv = nlv, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest, nlv = nlv)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

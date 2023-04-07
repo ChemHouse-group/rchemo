@@ -31,9 +31,7 @@ lwplsr_agg(
 
 \arguments{
 
-For \code{lwplsr_agg}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -51,13 +49,9 @@ For \code{lwplsr_agg}:
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
-For \code{predict.Lwplsr_agg}:
+\item{object}{For the auxiliary function: A fitted model, output of a call to the main function.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary function: Optional arguments. Not used.}
 
 }
 
@@ -77,13 +71,15 @@ For \code{predict.Lwplsr_agg}:
 
 }
 
-\notes{
+\note{
 
-In the examples, \code{gridscore} and \code{gricv} have been used as there is no sense to use \code{gridscorelv} and \code{gricvlv}
+In the examples, \code{gridscore} and \code{gricv} have been used as there is no sense to use \code{gridscorelv} and \code{gricvlv}.
 
 }
 
 \examples{
+
+## EXAMPLE 1
 
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
@@ -108,9 +104,7 @@ names(res)
 res$pred
 msep(res$pred, Ytest)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
@@ -135,9 +129,7 @@ res <- gridscore(
     pars = pars)
 res
 
-}
-
-\examples{
+## EXAMPLE 3
 
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)

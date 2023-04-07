@@ -208,3 +208,4 @@
 .scale = function(X, center = rep(0, dim(X)[2]), scale) 
     t((t(X) - c(center)) / c(scale))
 
+

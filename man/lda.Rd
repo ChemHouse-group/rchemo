@@ -3,6 +3,7 @@
 \alias{qda}
 \alias{predict.Lda}
 \alias{predict.Qda}
+\encoding{UTF-8}
 
 \title{LDA and QDA}
 
@@ -24,21 +25,15 @@ qda(X, y, prior = c("unif", "prop"))
 
 \arguments{
 
-For \code{lda} and \code{qda}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
-For \code{predict.Lda} and \code{predict.Qda}:
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
@@ -84,6 +79,8 @@ Venables, W. N. and Ripley, B. D. (2002) Modern Applied Statistics with S. Fourt
 
 \examples{
 
+## EXAMPLE 1
+
 data(iris)
 
 X <- iris[, 1:4]
@@ -110,9 +107,7 @@ headm(res$posterior)
 
 err(res$pred, ytest)
 
-}
-
-\examples{
+## EXAMPLE 2
 
 data(iris)
 

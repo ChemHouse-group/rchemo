@@ -1,50 +1,38 @@
 ## rchemo - Dimension reduction, Regression and Discrimination for Chemometrics  
 
-rchemo provides functions and pipelines for predictions in chemometrics or other domains, with focus on high dimensional data.
+**rchemo** is a [package](https://github.com/ChemHouse-group/rchemo/blob/main/doc/rchemo_functions_github.md) for **data exploration and prediction** with focus on **high dimensional data** and **chemometrics**. 
 
-The package was initially designed about **k-nearest neighbors locally weighted partial least squares regression 
-and discrimination models** (kNN-LWPLSR and kNN-LWPLSDA; e.g. https://doi.org/10.1002/cem.3209).
-It has now been expanded to many other methods for analyzing high dimensional data. 
+The package was initially designed about **partial least squares regression and discrimination models** and variants, in particular locally weighted PLS models (**LWPLS**) (e.g. https://doi.org/10.1002/cem.3209).
+Then, it has been expanded to many other methods for 
+analyzing high dimensional data. 
 
-Generic functions such as **transform**, **predict**, **coef** and **summary** are available. 
-**Tuning the predictive models** is facilitated by functions **gridscore** (validation dataset) and 
+The name **rchemo** comes from the fact that the package is orientated to chemometrics, but most of the provided methods are fully **generic to other domains**. 
+
+Functions such as **transform**, **predict**, **coef** and **summary** are available. 
+**Tuning the predictive models** is facilitated by generic functions **gridscore** (validation dataset) and 
 **gridcv** (cross-validation). Faster versions are also available for models based on latent variables (LVs) 
 (**gridscorelv** and **gridcvlv**) and ridge regularization (**gridscorelb** and **gridcvlb**).
 
-**NOTE: This repository is still in building, for a future replacement of [this one](https://github.com/mlesnoff/rchemo). 
-Please do not use it. An annoucement will be done when it will be ready for use.** 
+All the functions have a **help page** with a documented example. 
 
-## <span style="color:green"> **Available functions** </span> 
-
-**Click** [**HERE**](https://github.com/mlesnoff/rchemo/blob/master/doc/rchemo_functions_github.md) **to see the list of the available functions** 
-
-After the package installation, all the functions have a help page with documented examples. 
+**NOTE**: This repository replaces the previous [rchemo repository](https://github.com/mlesnoff/rchemo) that now is archived. 
 
 ## <span style="color:green"> **News** </span> 
 
-Click [**HERE**](https://github.com/mlesnoff/rchemo/blob/master/inst/NEWS.md) to see **what changed** in the last version 
+Click [**HERE**](https://github.com/ChemHouse-group/rchemo/tree/main/inst/NEWS.md) to see **what changed** in the previous versions. 
 
 or write in the R console
 ```{r}
 news(package = "rchemo")
 ```
 
-## <span style="color:green"> **Dependent packages** </span> 
-
-**rchemo** is dependent to the following packages available on CRAN:
-
-| Package | Which use in rchemo? |
-|---|---|
-| data.table | Fast data management |
-| FNN | Fast search of nearest neighbours |
-| signal | Savitsky-Golay derivation, and signal interpolation |
-| e1071 | SVM models |
-
 ## <span style="color:green"> **Installation** </span> 
 
-Using [**Rstudio**](https://www.rstudio.com/products/rstudio/download/) is recommended for installation and usage
+Using [**Rstudio**](https://www.rstudio.com/products/rstudio/download/) is recommended for installation and usage.
 
-#### <span style="color:green"> 1.  Install package **'remotes'** from CRAN </span>
+**rchemo** can be installed from **CRAN**, or from Github using the following steps. 
+
+#### <span style="color:green"> 1.  Install package **'remotes'** from **CRAN** </span>
 
 Use the **Rstudio** menu 
 
@@ -59,8 +47,7 @@ install.packages("remotes")
 
 Write in the R console
 ```{r}
-remotes::install_github("mlesnoff/rchemo", dependencies = TRUE, 
-  build_vignettes = TRUE)
+remotes::install_github("ChemHouse-group/rchemo", dependencies = TRUE)
 ```
 In case of the following question during installation process:
 ```{r}
@@ -71,27 +58,21 @@ it is recommended to skip updates (usually choice **3** = None)
 
 **b) Any given tagged version**
 
-e.g. with tag "v1.9-0"   (Be carefull, this is not the more recent version)
-
-write in the R console
+e.g. with tag "v0.1-0", write in the R console
 ```{r}
-remotes::install_github("mlesnoff/rchemo@v1.9-0", dependencies = TRUE, 
-  build_vignettes = TRUE)
+remotes::install_github("ChemHouse-group/rchemo@v0.1-0", dependencies = TRUE)
 ```
 
-#### <span style="color:green"> 3. Usage </span>
+## <span style="color:green"> **Usage** </span> 
 
 Write in the R console
 ```{r}
 library(rchemo)
 ```
 
-## <span style="color:green"> **Authors** </span> 
+## <span style="color:green"> **How to cite** </span> 
 
-
-#### How to cite
-
-R package rchemo: Dimension reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo.
+R package rchemo: Dimension Reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo.
 
 
 

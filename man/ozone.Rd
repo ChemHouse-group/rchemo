@@ -30,6 +30,7 @@ Los Angeles ozone pollution data in 1976
     \item{\code{V11}}{Pressure gradient (mm Hg) from LAX to Daggett, CA}
     \item{\code{V12}}{Inversion base temperature (degrees F) at LAX}
     \item{\code{V13}}{Visibility (miles) measured at LAX}
+  }
 }
 
 \source{
@@ -37,7 +38,7 @@ Los Angeles ozone pollution data in 1976
 Breiman L., Friedman J.H. 1985. Estimating optimal transformations for multiple regression and correlation, JASA, 80, pp. 580-598.
 
 Leisch, F. and Dimitriadou, E. (2010). mlbench: Machine Learning Benchmark Problems.
-R package version 1.1-6. https://cran.r-project.org
+R package version 1.1-6. https://cran.r-project.org/.
 
 }
 

@@ -55,9 +55,7 @@ lwplsqda(
 
 \arguments{
 
-For \code{lwplsrda}, \code{lwplslda}, \code{lwplsqda}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -77,15 +75,9 @@ For \code{lwplsrda}, \code{lwplslda}, \code{lwplsqda}:
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
-For \code{predict.Lwplsrda}, \code{predict.Lwplsprobda} :
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
-
-\item{nlv}{The number(s) of LVs to calculate in the local PLSDA models.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 

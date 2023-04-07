@@ -24,8 +24,6 @@ dkrr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \arguments{
 
-For \code{dkrr}:
-
 \item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
@@ -36,23 +34,9 @@ For \code{dkrr}:
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
-For \code{coeff.Dkrr}:
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{lb}{A value of regularization parameter \eqn{lambda}.}
-
-For \code{predict.Dkrr}:
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{A matrix with new X-data (\eqn{m, p}) to consider.}
-
-\item{lb}{A value of regularization parameter \eqn{lambda}.}
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
 }
 
@@ -100,6 +84,8 @@ The second example concerns the fitting of the function sinc(x) described in Ros
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -122,9 +108,8 @@ lb <- 2
 fm <- dkrr(Xtrain, Ytrain, lb = lb, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest)
 
-}
+## EXAMPLE 1
 
-\examples{
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5
 n <- length(x)

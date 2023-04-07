@@ -1,5 +1,6 @@
 \name{aicplsr}
 \alias{aicplsr}
+\encoding{UTF-8}
 
 \title{AIC and Cp for Univariate PLSR Models}
 

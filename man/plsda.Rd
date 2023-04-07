@@ -36,9 +36,7 @@ plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 
 \arguments{
 
-For \code{plsrda}, \code{plslda}, \code{plsqda}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -48,15 +46,9 @@ For \code{plsrda}, \code{plslda}, \code{plsqda}:
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
-For \code{predict.Plsrda}, \code{predict.Plsprobda} :
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
-
-\item{nlv}{The number(s) of LVs to consider.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
@@ -87,6 +79,8 @@ The first example concerns PLSDA, and the second one concerns PLS LDA.
 
 \examples{
 
+## EXAMPLE OF PLSDA
+
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
@@ -111,9 +105,7 @@ coef(zfm)
 coef(zfm, nlv = 0)
 coef(zfm, nlv = 2)
 
-}
-
-\examples{
+## EXAMPLE OF PLS LDA
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)

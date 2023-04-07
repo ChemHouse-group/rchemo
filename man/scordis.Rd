@@ -1,5 +1,6 @@
 \name{scordis}
 \alias{scordis}
+\encoding{UTF-8}
 
 \title{Score distances (SD) in a PCA or PLS score space}
 

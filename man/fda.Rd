@@ -3,6 +3,7 @@
 \alias{fdasvd}
 \alias{transform.Fda}
 \alias{summary.Fda}
+\encoding{UTF-8}
 
 \title{Factorial discriminant analysis}
 
@@ -30,29 +31,15 @@ fdasvd(X, y, nlv = NULL)
 
 \arguments{
 
-For \code{fda} and \code{fdasvd}:
-
-\item{X}{For the main functions: Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}).--- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{nlv}{The number(s) of LVs to calculate.}
+\item{nlv}{For the main functions: The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
 
-For \code{transform.Fda}
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
-
-\item{nlv}{The number(s) of LVs to consider.}
-
-For \code{summary.Fda}
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 

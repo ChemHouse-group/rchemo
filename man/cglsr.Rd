@@ -2,6 +2,7 @@
 \alias{cglsr}
 \alias{coef.Cglsr}
 \alias{predict.Cglsr}
+\encoding{UTF-8}
 
 \title{CG Least Squares Models}
 
@@ -23,9 +24,7 @@ cglsr(X, y, nlv, reorth = TRUE, filt = FALSE)
 
 \arguments{
 
-For \code{cglsr}: 
-
-\item{X}{For main function: Training X-data (\eqn{n, p}).}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider. }
 
 \item{y}{Univariate training Y-data (\eqn{n, 1}).}
 
@@ -35,25 +34,9 @@ For \code{cglsr}:
 
 \item{filt}{Logical. If \code{TRUE}, the filter factors are computed (output \code{F}).}
 
+\item{object}{For auxiliary functions: A fitted model, output of a call to the main functions.}
 
-For \code{coef.Cglsr} : 
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{nlv}{numeric. The number of CG iterations. If \code{NULL}, the nlv in the fitted model}
-
-\item{...}{Optional arguments. Not used.}
-
-
-For \code{predict.Cglsr} : 
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{nlv}{vector with the number(s) of CG iterations. If \code{NULL}, the nlv in the fitted model}
-
-\item{...}{Optional arguments. Not used.}
+\item{...}{For auxiliary functions: Optional arguments. Not used.}
 
 }
 

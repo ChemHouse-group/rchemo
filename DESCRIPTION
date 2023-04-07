@@ -1,15 +1,15 @@
 Package: rchemo
 Type: Package
-Title: Dimension reduction, Regression and Discrimination for Chemometrics
-Version: 0.0-17
-Author: Matthieu Lesnoff <matthieu.lesnoff@cirad.fr>
-Maintainer: Matthieu Lesnoff <matthieu.lesnoff@cirad.fr>
+Title: Dimension Reduction, Regression and Discrimination for Chemometrics
+Version: 0.1-0
+Author: Marion Brandolini-Bunlon, Benoit Jallais, Jean-Michel Roger, Matthieu Lesnoff
+Maintainer: Marion Brandolini-Bunlon <marion.brandolini-bunlon@inrae.fr>
 Description: Dimension reduction, regression and discrimination, with special focus on chemometrics.
 VignetteBuilder: knitr
 Imports: stats, graphics, grDevices, data.table, FNN, signal, e1071
 Depends: R (>= 4.0)
 Suggests: knitr, rmarkdown
-URL: https://github.com/mlesnoff/rchemo
+URL: https://github.com/ChemHouse-group/rchemo/
 License: GPL-3 + file LICENSE
 LazyData: yes
 NeedsCompilation: no

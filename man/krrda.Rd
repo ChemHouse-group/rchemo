@@ -21,9 +21,7 @@ krrda(X, y, weights = NULL, lb = 1e-5, kern = "krbf", ...)
 
 \arguments{
 
-For \code{krrda}: 
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For main function: Training X-data (\eqn{n, p}). --- For auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -35,15 +33,7 @@ For \code{krrda}:
 
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
 
-For \code{predict.Krrda}: 
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
-
-\item{lb}{A value, or vector of values, of regularization parameter \eqn{lambda}. If \code{lb = 0}, a pseudo-inverse is used in the RR.}
+\item{object}{--- For auxiliary function: A fitted model, output of a call to the main functions.}
 
 }
 

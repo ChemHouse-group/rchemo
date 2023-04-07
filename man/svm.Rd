@@ -45,9 +45,7 @@ svmda(X, y, cost = 1, epsilon = .1, gamma = 1, scale = FALSE)
 
 \arguments{
 
-For \code{svmr} and \code{svmda}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training Y-data (\eqn{n}).}
 
@@ -59,19 +57,9 @@ For \code{svmr} and \code{svmda}:
 
 \item{scale}{Logical. If \code{TRUE}, \code{X} and \code{Y} are scaled internally.}
 
-For \code{predict.Svm}:
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments.}
-
-For \code{summary.Svm}:
-
-\item{object}{A fitted model, output of a call to the main function.}
-
-\item{...}{Optional arguments.}
+\item{...}{For the auxiliary functions: Optional arguments.}
 
 }
 
@@ -108,6 +96,8 @@ The third one illustrates SVMC.
 
 \examples{
 
+## EXAMPLE 1 (SVMR)
+
 n <- 50 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -123,9 +113,7 @@ msep(pred, ytest)
 
 summary(fm)
 
-}
-
-\examples{
+## EXAMPLE 2 
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5
@@ -142,9 +130,7 @@ plot(X, y, type = "p")
 lines(X, zy, lty = 2)
 lines(X, pred, col = "red")
 
-}
-
-\examples{
+## EXAMPLE 3 (SVMC)
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)

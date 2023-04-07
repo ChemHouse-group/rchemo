@@ -6,6 +6,7 @@
 \alias{summary.Plsr}
 \alias{coef.Plsr}
 \alias{predict.Plsr}
+\encoding{UTF-8}
 
 \title{PLSR algorithms}
 
@@ -53,41 +54,17 @@ plsrannar(X, Y, weights = NULL, nlv)
 
 \arguments{
 
-For \code{plskern}, \code{plsnipals}, \code{plsrannar}:
-
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-\item{nlv}{The number(s) of LVs to calculate.}
+\item{nlv}{For the main functions: The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
 
-For \code{summary}:
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{Training X-data (\eqn{n, p}).}
-
-\item{...}{Optional arguments. Not used.}
-
-For \code{coef}:
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{...}{Optional arguments. Not used.}
-
-\item{nlv}{The number(s) of LVs to consider.}
-
-For \code{transform} and \code{predict}:
-
-\item{object}{A fitted model, output of a call to the main functions.}
-
-\item{X}{New X-data (\eqn{m, p}) to consider.}
-
-\item{...}{Optional arguments. Not used.}
-
-\item{nlv}{The number(s) of LVs to consider.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
@@ -109,7 +86,7 @@ For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such 
 
 \item{ymeans}{The centering vector of \eqn{Y} (\eqn{q, 1}).}
 
-\item{weights}{Weights applied to the training observations.
+\item{weights}{Weights applied to the training observations.}
 
 \item{TT}{the X-score normalization factor.}
 
