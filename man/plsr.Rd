@@ -6,7 +6,7 @@
 \alias{summary.Plsr}
 \alias{coef.Plsr}
 \alias{predict.Plsr}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{PLSR algorithms}
 
@@ -54,22 +54,23 @@ plsrannar(X, Y, weights = NULL, nlv)
 
 \arguments{
 
-\item{X}{For the main functions and \code{summary}: Training X-data (\eqn{n, p}). --- For other auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: Training X-data (\eqn{n, p}).}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
-\item{nlv}{The number(s) of LVs to calculate.}
+\item{nlv}{For the main functions: The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
 \value{
-A list of outputs, such as:
+
+For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such as
 
 \item{T}{The X-score matrix (\eqn{n, nlv}).}
 
@@ -84,6 +85,28 @@ A list of outputs, such as:
 \item{xmeans}{The centering vector of \eqn{X} (\eqn{p, 1}).}
 
 \item{ymeans}{The centering vector of \eqn{Y} (\eqn{q, 1}).}
+
+\item{weights}{Weights applied to the training observations.}
+
+\item{TT}{the X-score normalization factor.}
+
+\item{U}{intermediate output.}
+
+For \code{transform.Plsr}: X-scores matrix for new X-data.
+
+For \code{summary.Plsr}:
+
+\item{explvarx}{matrix of explained variances.}
+
+For \code{coef.Plsr}: 
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+For \code{predict.Plsr}: 
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
 
 }
 

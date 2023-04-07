@@ -39,9 +39,7 @@ plotjit(x, y, group = NULL,
 
 }
 
-\value{A plot.}
-
-
+\value{Jittered plot.}
 
 \examples{
 

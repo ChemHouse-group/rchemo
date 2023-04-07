@@ -34,13 +34,40 @@ dkrr(X, Y, weights = NULL, lb = 1e-2, kern = "krbf", ...)
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
-\item{object}{A fitted model, output of a call to the main function.}
-
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
+
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{dkrr}: 
+
+\item{X}{Matrix with the training X-data (\eqn{n, p}).}
+
+\item{fm}{List with the outputs of the RR ((\code{V}): eigenvector matrix of the correlation matrix (n,n); (\code{TtDY}): intermediate output; (\code{sv}): singular values of the matrix (1,n); (\code{lb}): value of regularization parameter \eqn{lambda}; (\code{xmeans}): the centering vector of X (p,1); (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): the weights vector of X-variables (p,1)}
+
+\item{K}{kernel Gram matrix} 
+
+\item{kern}{kernel function} 
+
+\item{dots}{Optional arguments passed in the kernel function}
+
+For \code{predict.Dkrr}: 
+
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
+
+\item{K}{kernel Gram matrix (\eqn{m, nlv}), with values for the new X-data}
+
+For \code{coef.Dkrr}: 
+
+\item{int}{matrix (1,nlv) with the intercepts}
+
+\item{B}{matrix (n,nlv) with the coefficients}
+
+\item{df}{model complexity (number of degrees of freedom)}
+}
 
 
 \references{
@@ -51,7 +78,13 @@ Rosipal, R., Trejo, L.J., 2001. Kernel Partial Least Squares Regression in Repro
 
 }
 
+\note{
+The second example concerns the fitting of the function sinc(x) described in Rosipal & Trejo 2001 p. 105-106
+}
+
 \examples{
+
+## EXAMPLE 1
 
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
@@ -75,8 +108,7 @@ lb <- 2
 fm <- dkrr(Xtrain, Ytrain, lb = lb, kern = "kpol", degree = 2, coef0 = 10)
 predict(fm, Xtest)
 
-####### Example of fitting the function sinc(x)
-####### described in Rosipal & Trejo 2001 p. 105-106 
+## EXAMPLE 1
 
 x <- seq(-10, 10, by = .2)
 x[x == 0] <- 1e-5

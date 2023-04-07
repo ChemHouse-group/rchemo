@@ -1,6 +1,6 @@
 \name{scordis}
 \alias{scordis}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{Score distances (SD) in a PCA or PLS score space}
 
@@ -26,7 +26,7 @@ scordis(
 
 \arguments{
 
-\item{object}{A fitted model, output of a call to a fitting function.}
+\item{object}{A fitted model, output of a call to a fitting function (for example from \code{pcasvd}, \code{plskern},...).}
 
 \item{X}{New X-data.}
 
@@ -38,7 +38,15 @@ scordis(
 
 }
 
-\value{See examples.}
+\value{
+
+\item{res.train}{matrix with distances, standardized distances and Winisi "GH", for the training set.}
+
+\item{res}{matrix with distances, standardized distances and Winisi "GH", for new X-data if any.}
+
+\item{cutoff}{cutoff value}
+
+}
 
 \references{
 
@@ -58,7 +66,6 @@ Xtest <- Xtrain[1:3, , drop = FALSE]
 
 nlv <- 3
 fm <- pcasvd(Xtrain, nlv = nlv)
-#fm <- plskern(Xtrain, ytrain, nlv = nlv)
 scordis(fm)
 scordis(fm, nlv = 2)
 scordis(fm, Xtest, nlv = 2)

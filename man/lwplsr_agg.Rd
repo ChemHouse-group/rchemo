@@ -31,7 +31,7 @@ lwplsr_agg(
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
@@ -49,15 +49,37 @@ lwplsr_agg(
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
-\item{object}{A fitted model, output of a call to the main function.}
+\item{object}{For the auxiliary function: A fitted model, output of a call to the main function.}
 
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary function: Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{lwplsr_agg}: object of class \code{Lwplsr_agg}
+
+For \code{predict.Lwplsr_agg}:
+
+\item{pred}{prediction calculated for each observation, which is the most occurent level (vote) over the predictions returned by the models with different numbers of LVS respectively}
+
+\item{listnn}{list with the neighbors used for each observation to be predicted}
+
+\item{listd}{list with the distances to the neighbors used for each observation to be predicted}
+
+\item{listw}{list with the weights attributed to the neighbors used for each observation to be predicted}
+
+}
+
+\note{
+
+In the examples, \code{gridscore} and \code{gricv} have been used as there is no sense to use \code{gridscorelv} and \code{gricvlv}.
+
+}
 
 \examples{
+
+## EXAMPLE 1
 
 n <- 30 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
@@ -82,8 +104,17 @@ names(res)
 res$pred
 msep(res$pred, Ytest)
 
-## Gridscore
-## Here, there is no sense to use gridscorelv 
+## EXAMPLE 2
+
+n <- 30 ; p <- 10
+Xtrain <- matrix(rnorm(n * p), ncol = p)
+ytrain <- rnorm(n)
+Ytrain <- cbind(ytrain, 100 * ytrain)
+m <- 4
+Xtest <- matrix(rnorm(m * p), ncol = p)
+ytest <- rnorm(m)
+Ytest <- cbind(ytest, 10 * ytest)
+
 nlvdis <- 5 ; diss <- "mahal"
 h <- c(2, Inf)
 k <- c(10, 20)
@@ -98,8 +129,17 @@ res <- gridscore(
     pars = pars)
 res
 
-## Gridcv
-## Here, there is no sense to use gridcvlv 
+## EXAMPLE 3
+
+n <- 30 ; p <- 10
+Xtrain <- matrix(rnorm(n * p), ncol = p)
+ytrain <- rnorm(n)
+Ytrain <- cbind(ytrain, 100 * ytrain)
+m <- 4
+Xtest <- matrix(rnorm(m * p), ncol = p)
+ytest <- rnorm(m)
+Ytest <- cbind(ytest, 10 * ytest)
+
 K = 3
 segm <- segmkf(n = n, K = K, nrep = 1)
 segm

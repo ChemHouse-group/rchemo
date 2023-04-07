@@ -2,6 +2,7 @@
 \alias{dfplsr_cg}
 \alias{dfplsr_cov}
 \alias{dfplsr_div}
+\encoding{UTF-8}
 
 \title{Degrees of freedom of Univariate PLSR Models}
 
@@ -116,6 +117,8 @@ Statistics 35, 2173–2192. https://doi.org/10.1214/009053607000000127
 
 \examples{
 
+## EXAMPLE 1
+
 data(ozone)
 
 z <- ozone$X
@@ -142,9 +145,7 @@ abline(h = 1, lty = 2, col = "grey")
 legend("bottomright", legend=c("dfplsr_cg","Naive df","df.kramer"), col=c("red","grey40","black"),
 lty=c(1,1,0), pch=c(NA,NA,16), bty="n")
 
-}
-
-\examples{
+## EXAMPLE 2
 
 data(ozone)
 
@@ -172,7 +173,8 @@ lines(znlv, v$df, col = "blue")
 lines(znlv, znlv + 1, col = "grey40")
 points(znlv, df.kramer, pch = 16)
 abline(h = 1, lty = 2, col = "grey")
-legend("bottomright", legend=c("dfplsr_cov","dfplsr_div","Naive df","df.kramer"), col=c("blue","red","grey40","black"),
+legend("bottomright", legend=c("dfplsr_cov","dfplsr_div","Naive df","df.kramer"), 
+col=c("blue","red","grey40","black"),
 lty=c(1,1,1,0), pch=c(NA,NA,NA,16), bty="n")
 
 }

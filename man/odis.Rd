@@ -1,7 +1,7 @@
 \name{odis}
 \alias{odis}
 \alias{lodis}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{Orthogonal distances from a PCA or PLS score space}
 
@@ -9,7 +9,7 @@
 
 \code{odis} calculates the orthogonal distances (OD = "X-residuals") for a PCA or PLS model. OD is the Euclidean distance of a row observation to its projection to the score plan (see e.g. Hubert et al. 2005, Van Branden & Hubert 2005, p. 66; Varmuza & Filzmoser, 2009, p. 79).
 
-A distance cutoff is computed using a moment estimation of the parameters of a Chi-squared distrbution for OD^2 (see Nomikos & MacGregor 1995, and Pomerantzev 2008). In the function output, column \code{dstand}  is a standardized distance defined as \eqn{OD / cutoff}. A value \code{dstand > 1} can be considered as extreme.
+A distance cutoff is computed using a moment estimation of the parameters of a Chi-squared distribution for OD^2 (see Nomikos & MacGregor 1995, and Pomerantzev 2008). In the function output, column \code{dstand}  is a standardized distance defined as \eqn{OD / cutoff}. A value \code{dstand > 1} can be considered as extreme.
 
 The cutoff for detecting extreme OD values is computed using a moment estimation of a Chi-squared distrbution for the squared distance.
 
@@ -40,7 +40,15 @@ odis(
 
 }
 
-\value{See examples.}
+\value{
+
+\item{res.train}{matrix with distance and a standardized distance calculated for Xtrain.}
+
+\item{res}{matrix with distance and a standardized distance calculated for X.}
+
+\item{cutoff}{distance cutoff computed using a moment estimation of the parameters of a Chi-squared distribution for OD^2.}
+
+}
 
 \references{
 

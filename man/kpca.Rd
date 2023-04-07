@@ -2,7 +2,7 @@
 \alias{kpca}
 \alias{transform.Kpca}
 \alias{summary.Kpca}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{KPCA}
 
@@ -22,7 +22,7 @@ kpca(X, weights = NULL, nlv, kern = "krbf", ...)
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+\item{X}{For the main function: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
@@ -30,13 +30,41 @@ kpca(X, weights = NULL, nlv, kern = "krbf", ...)
 
 \item{kern}{Name of the function defining the considered kernel for building the Gram matrix. See \code{\link{krbf}} for syntax, and other available kernel functions.}
 
-\item{object}{A fitted model, output of a call to the main functions.}
-
 \item{...}{Optional arguments to pass in the kernel function defined in \code{kern} (e.g. \code{gamma} for \code{\link{krbf}}).}
+
+\item{object}{--- For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{kpca}:
+
+\item{X}{Training X-data (\eqn{n, p}).}
+
+\item{Kt}{Gram matrix}
+
+\item{T}{X-scores matrix.}
+
+\item{P}{X-loadings matrix.}
+
+\item{sv}{vector of singular values}
+
+\item{eig}{vector of eigenvalues.}
+
+\item{weights}{vector of observation weights.}
+
+\item{kern}{kern function.}
+
+\item{dots}{Optional arguments.}
+
+For \code{transform.Kpca}: X-scores matrix for new X-data.
+
+For \code{summary.Kpca}: 
+
+\item{explvar}{explained variance matrix.}
+
+}
 
 \references{
 
@@ -50,6 +78,8 @@ Tipping, M.E., 2001. Sparse kernel principal component analysis. Advances in neu
 
 \examples{
 
+## EXAMPLE 1
+
 n <- 5 ; p <- 4
 X <- matrix(rnorm(n * p), ncol = p)
 
@@ -62,7 +92,10 @@ transform(fm, X[1:2, ])
 transform(fm, X[1:2, ], nlv = 1)
 summary(fm)
 
-## Usual PCA
+## EXAMPLE 2
+
+n <- 5 ; p <- 4
+X <- matrix(rnorm(n * p), ncol = p)
 nlv <- 3
 pcasvd(X, nlv = nlv)$T
 kpca(X, nlv = nlv, kern = "kpol")$T

@@ -35,7 +35,7 @@ plsqda_agg(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For auxiliary functions: New X-data (\eqn{m, p}) to consider.}
+\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary function: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -45,42 +45,56 @@ plsqda_agg(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
-\item{object}{A fitted model, output of a call to the main functions.}
+\item{object}{For the auxiliary function: A fitted model, output of a call to the main functions.}
 
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary function: Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{plsrda_agg}, \code{plslda_agg} and \code{plsqda_agg}:
+
+\item{fm}{list contaning: 
+the model((\code{fm})=(\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output),  \code{lev}{classes}, \code{ni}{number of observations in each class}}
+
+\item{nlv}{range of the numbers of LVs considered}
+
+For \code{predict.Plsda_agg}:
+
+\item{pred}{Final predictions (after aggregation)}
+
+\item{predlv}{Intermediate predictions (Per nb. LVs)}
+
+}
+
+\note{
+
+the first example concerns PLSRDA-AGG, and the second one concerns PLSLDA-AGG.
+
+}
 
 \examples{
+
+## EXAMPLE OF PLSRDA-AGG
 
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- sample(c(1, 4, 10, 2), size = n, replace = TRUE)
-#ytrain <- sample(c("a", "10", "d"), size = n, replace = TRUE)
+
 m <- 5
 Xtest <- Xtrain[1:m, ] ; ytest <- ytrain[1:m]
-
-############################# PLSRDA-AGG
 
 nlv <- "2:5"
 fm <- plsrda_agg(Xtrain, ytrain, nlv = nlv)
 names(fm)
 res <- predict(fm, Xtest)
 names(res)
-## Final predictions (after aggregation)
 res$pred
 err(res$pred, ytest)
-## Intermediate predictions (Per nb. LVs)
 res$predlv
 
-## Gridscore and gridcv
-## Here, there is no sense to use gridscorelv and gridcvlv 
-
 pars <- mpars(nlv = c("1:3", "2:5"))
-## Same as:
-## pars <- list(nlv = c("1:3", "2:5"))
 pars
 
 res <- gridscore(
@@ -99,7 +113,14 @@ res <- gridcv(
     verb = TRUE)
 res
 
-############################# PLSLDA-AGG
+## EXAMPLE OF PLSLDA-AGG
+
+n <- 50 ; p <- 8
+Xtrain <- matrix(rnorm(n * p), ncol = p)
+ytrain <- sample(c(1, 4, 10, 2), size = n, replace = TRUE)
+#ytrain <- sample(c("a", "10", "d"), size = n, replace = TRUE)
+m <- 5
+Xtest <- Xtrain[1:m, ] ; ytest <- ytrain[1:m]
 
 nlv <- "2:5"
 fm <- plslda_agg(Xtrain, ytrain, nlv = nlv, prior = "unif")

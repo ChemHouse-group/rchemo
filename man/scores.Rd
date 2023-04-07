@@ -11,6 +11,7 @@
 \alias{err}
 \alias{residreg}
 \alias{residcla}
+\encoding{UTF-8}
 
 \title{Residuals and prediction error rates}
 
@@ -77,6 +78,9 @@ Bellon-Maurel, V., Fernandez-Ahumada, E., Palagos, B., Roger, J.-M., McBratney, 
 }
 
 \examples{
+
+## EXAMPLE 1
+
 n <- 6 ; p <- 4
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
@@ -99,9 +103,9 @@ r2(pred, Ytest)
 rpd(pred, Ytest)
 rpdr(pred, Ytest)
 mse(pred, Ytest, digits = 3)
-}
 
-\examples{
+## EXAMPLE 2
+
 n <- 50 ; p <- 8
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)

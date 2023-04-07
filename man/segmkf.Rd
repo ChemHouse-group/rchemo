@@ -38,9 +38,9 @@ segmts(n, y = NULL, m, nrep)
 
 \item{y}{A vector (\eqn{n}) defining the blocks. Default to \code{NULL}.}
 
-\item{K}{The number of folds (i.e. segments) in the K-fold CV.}
+\item{K}{For \code{segmkf}.The number of folds (i.e. segments) in the K-fold CV.}
 
-\item{type}{The type K-fold CV. Possible values are "random" (default), "consecutive" and "interleaved".}
+\item{type}{For \code{segmkf}.The type K-fold CV. Possible values are "random" (default), "consecutive" and "interleaved".}
 
 \item{m}{For \code{segmts}. If \code{y = NULL}, the number of observations in the segment. If not, the number of blocks in the segment.}
 
@@ -57,35 +57,29 @@ The segments (lists of indexes).
 
 \examples{
 
-######### K-fold
+Kfold <- segmkf(n = 10, K = 3)
 
-segmkf(n = 10, K = 3)
+interleavedKfold <- segmkf(n = 10, K = 3, type = "interleaved")
 
-segmkf(n = 10, K = 3, type = "interleaved")
+LeaveOneOut <- segmkf(n = 10, K = 10)
 
-# Leave-one-out
-segmkf(n = 10, K = 10)
+RepeatedKfold <- segmkf(n = 10, K = 3, nrep = 2)
 
-# Repeated
-segmkf(n = 10, K = 3, nrep = 2)
-
-######### Test-set (repeated)
-
-segmts(n = 10, m = 3, nrep = 5)
-
-######### With blocks
+repeatedTestSet <- segmts(n = 10, m = 3, nrep = 5)
 
 n <- 10
 y <- rep(LETTERS[1:5], 2)
 y
 
-z <- segmkf(n = n, y = y, K = 3, nrep = 1)
+Kfold_withBlocks <- segmkf(n = n, y = y, K = 3, nrep = 1)
+z <- Kfold_withBlocks 
 z
 y[z$rep1$segm1]
 y[z$rep1$segm2]
 y[z$rep1$segm3]
 
-z <- segmts(n = n, y = y, m = 3, nrep = 1)
+TestSet_withBlocks <- segmts(n = n, y = y, m = 3, nrep = 1)
+z <- TestSet_withBlocks
 z
 y[z$rep1$segm1]
 

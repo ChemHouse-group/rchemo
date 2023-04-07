@@ -75,33 +75,52 @@ lwplsqda_agg(
 
 \item{nlv}{A character string such as "5:20" defining the range of the numbers of LVs to consider (here: the models with nb LVS = 5, 6, ..., 20 are averaged). Syntax such as "10" is also allowed (here: correponds to the single model with 10 LVs).}
 
-\item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
+\item{prior}{For \code{lwplslda_agg} and \code{lwplsqda_agg}: The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
 \item{cri}{Argument \code{cri} in function \code{\link{wdist}}.}
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
-\item{object}{A fitted model, output of a call to the main function.}
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{lwplsrda_agg}, \code{lwplslda_agg} and \code{lwplsqda_agg}: object of class \code{lwplsrda_agg}, \code{lwplslda_agg} or \code{lwplsqda_agg}
+
+For \code{predict.Lwplsrda_agg} and \code{predict.Lwplsprobda_agg}: 
+
+\item{pred}{prediction calculated for each observation, which is the most occurent level (vote) over the predictions returned by the models with different numbers of LVS respectively}
+
+\item{listnn}{list with the neighbors used for each observation to be predicted}
+
+\item{listd}{list with the distances to the neighbors used for each observation to be predicted}
+
+\item{listw}{list with the weights attributed to the neighbors used for each observation to be predicted}
+
+}
+
+\note{
+
+The first example concerns KNN-LWPLSRDA-AGG.
+The second example concerns KNN-LWPLSLDA-AGG. 
+
+}
 
 \examples{
+
+## KNN-LWPLSRDA-AGG
 
 n <- 50 ; p <- 7
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
 y <- sample(c(1, 4, 10), size = n, replace = TRUE)
-#y <- sample(c("a", "10", "d"), size = n, replace = TRUE)
-#y <- as.factor(sample(c(1, 4, 10), size = n, replace = TRUE))
-#y <- as.factor(sample(c("a", "10", "d"), size = n, replace = TRUE))
+
 Xtrain <- X ; ytrain <- y
 m <- 5
 Xtest <- X[1:m, ] ; ytest <- y[1:m]
-
-############################# KNN-LWPLSRDA-AGG
 
 nlvdis <- 5 ; diss <- "mahal"
 h <- 2 ; k <- 10
@@ -115,8 +134,7 @@ res <- predict(fm, Xtest)
 res$pred
 res$listnn
 
-## Gridscore & gridcv
-## Here, there is no sense to use gridscorelv & gridcvlv 
+
 nlvdis <- 5 ; diss <- "mahal"
 h <- c(2, Inf)
 k <- c(10, 20)
@@ -142,7 +160,15 @@ res <- gridcv(
 names(res)
 res$val
 
-############################# KNN-LWPLSLDA-AGG
+## KNN-LWPLSLDA-AGG
+
+n <- 50 ; p <- 7
+X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
+y <- sample(c(1, 4, 10), size = n, replace = TRUE)
+
+Xtrain <- X ; ytrain <- y
+m <- 5
+Xtest <- X[1:m, ] ; ytest <- y[1:m]
 
 nlvdis <- 5 ; diss <- "mahal"
 h <- 2 ; k <- 10

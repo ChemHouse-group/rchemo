@@ -21,21 +21,31 @@ dmnorm(X = NULL, mu = NULL, sigma = NULL)
 
 \arguments{
 
-\item{X}{For \code{dmnorm}: Training data (\eqn{n, p}) used for estimating the mean and the covariance matrixhe population (if \code{mu} or/and \code{sigma} are not provided). For \code{predict}: New data (\eqn{m, p}) for which the density has to be predicted.}
+\item{X}{For the main function: Training data (\eqn{n, p}) used for estimating the mean and the covariance matrix population (if \code{mu} or/and \code{sigma} are not provided). --- For the auxiliary functions: New data (\eqn{m, p}) for which the density has to be predicted.}
 
 \item{mu}{The mean (\eqn{p, 1}) of the normal distribution. If \code{NULL} (default), \eqn{mu} is estimated by the column-wise mean of the training data.}
 
 \item{sigma}{The covariance matrix (\eqn{p x p}) of the normal distribution. If \code{NULL} (default), \eqn{sigma} is estimated by the empirical covariance matrix (denominator \eqn{n - 1}) of the training data.}
 
-\item{object}{A result of a call to \code{dmnorm}.}
+\item{object}{For the auxiliary functions: A result of a call to \code{dmnorm}.}
 
-\item{...}{Optional arguments.}
+\item{...}{For the auxiliary functions: Optional arguments.}
 
 }
 
 \value{
 
-See the examples.
+For \code{dmnorm}:
+
+\item{mu}{means of the X variables}
+
+\item{Uinv}{inverse of the Cholesky decomposition of the covariance matrix}
+
+\item{det}{squared determinant of the Cholesky decomposition of the covariance matrix}
+
+For \code{predict}: 
+
+\item{pred}{Prediction of the normal probability density of new multivariate observations}
 
 }
 
@@ -45,8 +55,6 @@ See the examples.
 data(iris)
 
 X <- iris[, 1:2]
-
-## Distribution of the class "Setosa"
 
 Xtrain <- X[1:40, ]
 Xtest <- X[40:50, ]

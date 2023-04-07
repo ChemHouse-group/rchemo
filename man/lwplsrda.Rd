@@ -75,13 +75,27 @@ lwplsqda(
 
 \item{verb}{Logical. If \code{TRUE}, fitting information are printed.}
 
-\item{object}{A fitted model, output of a call to the main function.}
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main function.}
 
-\item{...}{Optional arguments. Not used.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
-\value{See the examples.}
+\value{
+
+For \code{lwplsrda}, \code{lwplslda}, \code{lwplsqda}: object of class \code{Lwplsrda} or \code{Lwplsprobda},
+
+For \code{predict.Lwplsrda}, \code{predict.Lwplsprobda} :
+
+\item{pred}{class predicted for each observation}
+
+\item{listnn}{list with the neighbors used for each observation to be predicted}
+
+\item{listd}{list with the distances to the neighbors used for each observation to be predicted}
+
+\item{listw}{list with the weights attributed to the neighbors used for each observation to be predicted}
+
+}
 
 \examples{
 

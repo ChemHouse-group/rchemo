@@ -1,6 +1,6 @@
 \name{selwold}
 \alias{selwold}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{Heuristic selection of the dimension of a latent variable model with the Wold's criterion}
 
@@ -15,7 +15,6 @@ The criterion is the "precision gain ratio" \eqn{R = 1 - r(a+1) / r(a)} where \e
 In the original article, Wold (1978; see also Bro et al. 2008) used the ratio of \bold{cross-validated} over \bold{training} residual sums of squares, i.e. PRESS over SSR. Instead, \code{selwold} compares values of consistent nature (the successive values in the input vector \eqn{r}), e.g. PRESS only . For instance, \eqn{r} was set to PRESS values in Li et al. (2002) and Andries et al. (2011), which is equivalent to the "punish factor" described in Westad & Martens (2000).
 
 The ratio \eqn{R} is often erratic, making difficult the dimensionnaly selection. Function \code{selwold} proposes to calculate a smoothing of \eqn{R} (argument \eqn{smooth}).
-
 
 }
 
@@ -58,7 +57,7 @@ selwold(
 
 \value{
 
-A list of outputs (see examples), such as:
+\item{res}{matrix with for each number of Lvs: \eqn{r}, the observed error rate quantifying the model performance; \eqn{diff}, the difference between \eqn{r(a+1)} and \eqn{r(a)} ; \eqn{R}, the relative gain in efficiency after a new LV is added to the model; \eqn{Rs}, smoothing of \eqn{R}.}
 
 \item{opt}{The index of the minimum for \eqn{r}.}
 
@@ -99,9 +98,5 @@ res <- gridscorelv(
 selwold(res$y1, res$nlv, f = 2/3)
 
 }
-
-
-
-
 
 \keyword{datagen}

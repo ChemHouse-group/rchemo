@@ -30,7 +30,13 @@ sampcla(x, y = NULL, m)
 
 \value{
 
-Indexes (i.e. position in \eqn{x}) of the selected observations.
+\item{train}{Indexes (i.e. position in \eqn{x}) of the selected observations, for the training set.}
+
+\item{test}{Indexes (i.e. position in \eqn{x}) of the selected observations, for the test set.}
+
+\item{lev}{classes}
+
+\item{ni}{number of observations in each class}
 
 }
 
@@ -40,11 +46,17 @@ Naes, T., 1987. The design of calibration in near infra-red reflectance analysis
 
 }
 
+\note{
+
+The second example is a representative stratified sampling from an unsupervised clustering.
+
+}
+
 \examples{
 
+## EXAMPLE 1
+
 x <- sample(c(1, 3, 4), size = 20, replace = TRUE)
-#x <- sample(c("B", "3", "a"), size = 20, replace = TRUE)
-#x <- as.factor(sample(c("B", "3", "a"), size = 20, replace = TRUE))
 table(x)
 
 sampcla(x, m = 2)
@@ -60,7 +72,7 @@ sampcla(x, y, m = 2)
 s <- sampcla(x, y, m = 2)$test
 x[s]
 
-########## Representative stratified sampling from an unsupervised clustering
+## EXAMPLE 2
 
 data(cassav)
 X <- cassav$Xtrain
@@ -79,16 +91,12 @@ psamp <- .20
 m <- round(psamp * N * p)
 m
 
-## Random
-
-res <- sampcla(x, m = m)
-s <- res$test
+random_sampling <- sampcla(x, m = m)
+s <- random_sampling$test
 table(x[s])
 
-## Systematic for y
-
-res <- sampcla(x, y, m = m)
-s <- res$test
+Systematic_sampling_for_y <- sampcla(x, y, m = m)
+s <- Systematic_sampling_for_y$test
 table(x[s])
 
 }

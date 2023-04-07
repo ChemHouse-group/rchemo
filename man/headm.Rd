@@ -24,7 +24,7 @@ headm(X)
 
 \value{
 
-See the example.
+first 6 rows and columns of a dataset, number of rows, number of columns, dataset class.
 
 }
 

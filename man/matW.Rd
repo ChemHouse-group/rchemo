@@ -29,7 +29,25 @@ matB(X, y)
 
 \value{
 
-Covariance matrices and other information.
+For (\code{matW}):
+
+\item{W}{within covariance matrix.}
+
+\item{Wi}{list of covariance matrices for each class.}
+
+\item{lev}{classes}
+
+\item{ni}{number of observations in each per class}
+
+For (\code{matB}):
+
+\item{B}{between covariance matrix.}
+
+\item{ct}{matrix of class centers.}
+
+\item{lev}{classes}
+
+\item{ni}{number of observations in each per class}
 
 }
 
