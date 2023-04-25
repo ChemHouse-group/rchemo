@@ -11,7 +11,7 @@
 \alias{err}
 \alias{residreg}
 \alias{residcla}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{Residuals and prediction error rates}
 
@@ -73,7 +73,7 @@ Residuals or prediction error rates.
 
 \references{
 
-Bellon-Maurel, V., Fernandez-Ahumada, E., Palagos, B., Roger, J.-M., McBratney, A., 2010. Critical review of chemometric indicators commonly used for assessing the quality of the prediction of soil attributes by NIR spectroscopy. TrAC Trends in Analytical Chemistry 29, 1073–1081. https://doi.org/10.1016/j.trac.2010.05.006
+Bellon-Maurel, V., Fernandez-Ahumada, E., Palagos, B., Roger, J.-M., McBratney, A., 2010. Critical review of chemometric indicators commonly used for assessing the quality of the prediction of soil attributes by NIR spectroscopy. TrAC Trends in Analytical Chemistry 29, 1073-1081. https://doi.org/10.1016/j.trac.2010.05.006
 
 }
 

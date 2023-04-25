@@ -3,7 +3,7 @@
 \alias{qda}
 \alias{predict.Lda}
 \alias{predict.Qda}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{LDA and QDA}
 

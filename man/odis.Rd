@@ -1,7 +1,7 @@
 \name{odis}
 \alias{odis}
 \alias{lodis}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{Orthogonal distances from a PCA or PLS score space}
 
@@ -54,9 +54,9 @@ odis(
 
 M. Hubert, P. J. Rousseeuw, K. Vanden Branden (2005). ROBPCA: a new approach to robust principal components analysis. Technometrics, 47, 64-79.
 
-Nomikos, P., MacGregor, J.F., 1995. Multivariate SPC Charts for Monitoring Batch Processes. null 37, 41–59. https://doi.org/10.1080/00401706.1995.10485888
+Nomikos, P., MacGregor, J.F., 1995. Multivariate SPC Charts for Monitoring Batch Processes. null 37, 41-59. https://doi.org/10.1080/00401706.1995.10485888
 
-Pomerantsev, A.L., 2008. Acceptance areas for multivariate classification derived by projection methods. Journal of Chemometrics 22, 601–609. https://doi.org/10.1002/cem.1147
+Pomerantsev, A.L., 2008. Acceptance areas for multivariate classification derived by projection methods. Journal of Chemometrics 22, 601-609. https://doi.org/10.1002/cem.1147
 
 K. Vanden Branden, M. Hubert (2005). Robuts classification in high dimension based on the SIMCA method. Chem. Lab. Int. Syst, 79, 10-21. 
 

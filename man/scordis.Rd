@@ -1,6 +1,6 @@
 \name{scordis}
 \alias{scordis}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{Score distances (SD) in a PCA or PLS score space}
 
@@ -52,7 +52,7 @@ scordis(
 
 M. Hubert, P. J. Rousseeuw, K. Vanden Branden (2005). ROBPCA: a new approach to robust principal components analysis. Technometrics, 47, 64-79.
 
-Pomerantsev, A.L., 2008. Acceptance areas for multivariate classification derived by projection methods. Journal of Chemometrics 22, 601–609. https://doi.org/10.1002/cem.1147
+Pomerantsev, A.L., 2008. Acceptance areas for multivariate classification derived by projection methods. Journal of Chemometrics 22, 601-609. https://doi.org/10.1002/cem.1147
 
 }
 

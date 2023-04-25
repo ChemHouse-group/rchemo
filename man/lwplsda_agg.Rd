@@ -124,7 +124,7 @@ Xtest <- X[1:m, ] ; ytest <- y[1:m]
 
 nlvdis <- 5 ; diss <- "mahal"
 h <- 2 ; k <- 10
-nlv <- "2:6" 
+nlv <- "2:4" 
 fm <- lwplsrda_agg(
     Xtrain, ytrain, 
     nlvdis = nlvdis, diss = diss,
@@ -137,8 +137,8 @@ res$listnn
 
 nlvdis <- 5 ; diss <- "mahal"
 h <- c(2, Inf)
-k <- c(10, 20)
-nlv <- c("1:3", "2:5")
+k <- c(10, 15)
+nlv <- c("1:3", "2:4")
 pars <- mpars(nlvdis = nlvdis, diss = diss,
               h = h, k = k, nlv = nlv)
 pars
@@ -172,7 +172,7 @@ Xtest <- X[1:m, ] ; ytest <- y[1:m]
 
 nlvdis <- 5 ; diss <- "mahal"
 h <- 2 ; k <- 10
-nlv <- "2:6" 
+nlv <- "2:4" 
 fm <- lwplslda_agg(
     Xtrain, ytrain, 
     nlvdis = nlvdis, diss = diss,
@@ -184,8 +184,8 @@ res$listnn
 
 nlvdis <- 5 ; diss <- "mahal"
 h <- c(2, Inf)
-k <- c(10, 20)
-nlv <- c("1:3", "2:5")
+k <- c(10, 15)
+nlv <- c("1:3", "2:4")
 pars <- mpars(nlvdis = nlvdis, diss = diss,
               h = h, k = k, nlv = nlv, 
               prior = c("unif", "prop"))

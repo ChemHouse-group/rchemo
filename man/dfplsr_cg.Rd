@@ -2,7 +2,7 @@
 \alias{dfplsr_cg}
 \alias{dfplsr_cov}
 \alias{dfplsr_div}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{Degrees of freedom of Univariate PLSR Models}
 
@@ -85,7 +85,7 @@ A list of outputs :
 \references{
 
 Efron, B., 2004. The Estimation of Prediction Error. Journal of the American Statistical Association 99,
-619–632. https://doi.org/10.1198/016214504000000692
+619-632. https://doi.org/10.1198/016214504000000692
 
 Hastie, T., Tibshirani, R.J., 1990. Generalized Additive Models, Monographs on statistics and applied
 probablity. Chapman and Hall/CRC, New York, USA.
@@ -102,16 +102,16 @@ Kramer, N., Sugiyama, M., 2011. The Degrees of Freedom of Partial Least Squares 
 
 Kramer, N., Braun, M. L. 2019. plsdof: Degrees of Freedom and Statistical Inference for Partial Least Squares Regression. R package version 0.2-9. https://cran.r-project.org
 
-Lesnoff, M., Roger, J.M., Rutledge, D.N., 2021. Monte Carlo methods for estimating Mallows’s Cp and AIC criteria for PLSR models. Illustration on agronomic spectroscopic NIR data. Journal of Chemometrics, 35(10), e3369. https://doi.org/10.1002/cem.3369
+Lesnoff, M., Roger, J.M., Rutledge, D.N., 2021. Monte Carlo methods for estimating Mallow's Cp and AIC criteria for PLSR models. Illustration on agronomic spectroscopic NIR data. Journal of Chemometrics, 35(10), e3369. https://doi.org/10.1002/cem.3369
 
 Stein, C.M., 1981. Estimation of the Mean of a Multivariate Normal
-Distribution. The Annals of Statistics 9, 1135–1151.
+Distribution. The Annals of Statistics 9, 1135-1151.
 
 Ye, J., 1998. On Measuring and Correcting the Effects of Data Mining and Model Selection. Journal of
-the American Statistical Association 93, 120–131. https://doi.org/10.1080/01621459.1998.10474094
+the American Statistical Association 93, 120-131. https://doi.org/10.1080/01621459.1998.10474094
 
-Zou, H., Hastie, T., Tibshirani, R., 2007. On the “degrees of freedom” of the lasso. The Annals of
-Statistics 35, 2173–2192. https://doi.org/10.1214/009053607000000127
+Zou, H., Hastie, T., Tibshirani, R., 2007. On the degrees of freedom of the lasso. The Annals of
+Statistics 35, 2173-2192. https://doi.org/10.1214/009053607000000127
 
 }
 

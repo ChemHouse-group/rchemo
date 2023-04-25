@@ -2,7 +2,7 @@
 \alias{kpca}
 \alias{transform.Kpca}
 \alias{summary.Kpca}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{KPCA}
 
@@ -68,7 +68,7 @@ For \code{summary.Kpca}:
 
 \references{
 
-Scholkopf, B., Smola, A., Müller, K.-R., 1997. Kernel principal component analysis, in: Gerstner, W., Germond, A., Hasler, M., Nicoud, J.-D. (Eds.), Artificial Neural Networks — ICANN 97, Lecture Notes in Computer Science. Springer, Berlin, Heidelberg, pp. 583-588. https://doi.org/10.1007/BFb0020217
+Scholkopf, B., Smola, A., Muller, K.-R., 1997. Kernel principal component analysis, in: Gerstner, W., Germond, A., Hasler, M., Nicoud, J.-D. (Eds.), Artificial Neural Networks - ICANN 97, Lecture Notes in Computer Science. Springer, Berlin, Heidelberg, pp. 583-588. https://doi.org/10.1007/BFb0020217
 
 Scholkopf, B., Smola, A.J., 2002. Learning with kernels: support vector machines, regularization, optimization, and beyond, Adaptive computation and machine learning. MIT Press, Cambridge, Mass.
 

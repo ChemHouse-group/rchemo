@@ -1,7 +1,7 @@
 \name{octane}
 \alias{octane}
 \docType{data}
-\encoding{UTF-8}
+\encoding{latin1}
 
 
 \title{octane}
@@ -32,9 +32,9 @@ Todorov, V. 2020. rrcov: Robust Location and Scatter Estimation and Robust Multi
 
 \references{
 
-M. Hubert, P. J. Rousseeuw, K. Vanden Branden (2005), ROBPCA: a new approach to robust principal components analysis, Technometrics, 47, 64–79.
+M. Hubert, P. J. Rousseeuw, K. Vanden Branden (2005), ROBPCA: a new approach to robust principal components analysis, Technometrics, 47, 64-79.
 
-P. J. Rousseeuw, M. Debruyne, S. Engelen and M. Hubert (2006), Robustness and Outlier Detection in Chemometrics, Critical Reviews in Analytical Chemistry, 36(3–4), 221–242.
+P. J. Rousseeuw, M. Debruyne, S. Engelen and M. Hubert (2006), Robustness and Outlier Detection in Chemometrics, Critical Reviews in Analytical Chemistry, 36(3-4), 221-242.
 
 }
 

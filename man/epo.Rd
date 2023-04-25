@@ -1,6 +1,6 @@
 \name{eposvd}
 \alias{eposvd}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{External parameter orthogonalization (EPO)}
 
@@ -41,7 +41,7 @@ Rows of the corrected matrix X_corr are orthogonal to the loadings vectors (colu
 
 \references{
 
-Roger, J.-M., Chauchard, F., Bellon-Maurel, V., 2003. EPO–PLS external parameter orthogonalisation of PLS application to temperature-independent measurement of sugar content of intact fruits. Chemometrics and Intelligent Laboratory Systems 66, 191–204. https://doi.org/10.1016/S0169-7439(03)00051-0
+Roger, J.-M., Chauchard, F., Bellon-Maurel, V., 2003. EPO-PLS external parameter orthogonalisation of PLS application to temperature-independent measurement of sugar content of intact fruits. Chemometrics and Intelligent Laboratory Systems 66, 191-204. https://doi.org/10.1016/S0169-7439(03)00051-0
 
 Roger, J.-M., Boulet, J.-C., 2018. A review of orthogonal projections for calibration. Journal of Chemometrics 32, e3045. https://doi.org/10.1002/cem.3045
 

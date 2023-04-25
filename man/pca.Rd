@@ -7,7 +7,7 @@
 \alias{pcasph}
 \alias{transform.Pca}
 \alias{summary.Pca}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{PCA algorithms}
 
@@ -121,9 +121,9 @@ A list of outputs, such as:
 
 Andrecut, M., 2009. Parallel GPU Implementation of Iterative PCA Algorithms. Journal of Computational Biology 16, 1593-1599. https://doi.org/10.1089/cmb.2008.0221
 
-Gabriel, R. K., 2002. Le biplot - Outil d'exploration de données multidimensionnelles. Journal de la Société Française de la Statistique, 143, 5-55.
+Gabriel, R. K., 2002. Le biplot - Outil d\'exploration de données multidimensionnelles. Journal de la Société Française de la Statistique, 143, 5-55.
 
-Lingen, F.J., 2000. Efficient Gram–Schmidt orthonormalisation on parallel computers. Communications in Numerical Methods in Engineering 16, 57-66. https://doi.org/10.1002/(SICI)1099-0887(200001)16:1<57::AID-CNM320>3.0.CO;2-I
+Lingen, F.J., 2000. Efficient Gram-Schmidt orthonormalisation on parallel computers. Communications in Numerical Methods in Engineering 16, 57-66. https://doi.org/10.1002/(SICI)1099-0887(200001)16:1<57::AID-CNM320>3.0.CO;2-I
 
 Tenenhaus, M., 1998. La régression PLS: théorie et pratique. Editions Technip, Paris, France.
 
@@ -139,7 +139,7 @@ Robust statistics in data analysis - A review. Chemometrics and Intelligent
 Laboratory Systems 85, 203-219. https://doi.org/10.1016/j.chemolab.2006.06.016
 
 Locantore N., Marron J.S., Simpson D.G., Tripoli N., Zhang J.T., Cohen K.L.
-Robust principal component analysis for functional data, Test 8 (1999) 1–7
+Robust principal component analysis for functional data, Test 8 (1999) 1-7
 
 Maronna, R., 2005. Principal components and orthogonal regression based on 
 robust scales, Technometrics, 47:3, 264-273, DOI: 10.1198/004017005000000166

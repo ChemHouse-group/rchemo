@@ -1,6 +1,6 @@
 \name{aicplsr}
 \alias{aicplsr}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{AIC and Cp for Univariate PLSR Models}
 
@@ -74,10 +74,10 @@ The model complexity  \eqn{df} can be computed from three methods (argument \cod
 Burnham, K.P., Anderson, D.R., 2002. Model selection and multimodel inference: a practical informationtheoretic approach, 2nd ed. Springer, New York, NY, USA.
 
 Burnham, K.P., Anderson, D.R., 2004. Multimodel Inference: Understanding AIC and BIC in Model
-Selection. Sociological Methods & Research 33, 261–304. https://doi.org/10.1177/0049124104268644
+Selection. Sociological Methods & Research 33, 261-304. https://doi.org/10.1177/0049124104268644
 
 Efron, B., 2004. The Estimation of Prediction Error. Journal of the American Statistical Association 99,
-619–632. https://doi.org/10.1198/016214504000000692
+619-632. https://doi.org/10.1198/016214504000000692
 
 Eubank, R.L., 1999. Nonparametric Regression and Spline Smoothing, 2nd ed, Statistics: Textbooks
 and Monographs. Marcel Dekker, Inc., New York, USA.
@@ -94,15 +94,15 @@ Generalizations. CRC Press
 Hurvich, C.M., Tsai, C.-L., 1989. Regression and Time Series Model Selection in Small Samples. Biometrika
 76, 297. https://doi.org/10.2307/2336663
 
-Lesnoff, M., Roger, J.M., Rutledge, D.N., Submitted. Monte Carlo methods for estimating Mallows’s Cp and AIC criteria for PLSR models. Illustration on agronomic spectroscopic NIR data. Journal of Chemometrics.
+Lesnoff, M., Roger, J.M., Rutledge, D.N., Submitted. Monte Carlo methods for estimating Mallows's Cp and AIC criteria for PLSR models. Illustration on agronomic spectroscopic NIR data. Journal of Chemometrics.
 
-Mallows, C.L., 1973. Some Comments on Cp. Technometrics 15, 661–675.
+Mallows, C.L., 1973. Some Comments on Cp. Technometrics 15, 661-675.
 https://doi.org/10.1080/00401706.1973.10489103
 
 Ye, J., 1998. On Measuring and Correcting the Effects of Data Mining and Model Selection. Journal of
-the American Statistical Association 93, 120–131. https://doi.org/10.1080/01621459.1998.10474094
+the American Statistical Association 93, 120-131. https://doi.org/10.1080/01621459.1998.10474094
 
-Zuccaro, C., 1992. Mallows’Cp Statistic and Model Selection in Multiple Linear Regression. International Journal of Market Research. 34, 1–10. https://doi.org/10.1177/147078539203400204
+Zuccaro, C., 1992. Mallows'Cp Statistic and Model Selection in Multiple Linear Regression. International Journal of Market Research. 34, 1-10. https://doi.org/10.1177/147078539203400204
 
 }
 

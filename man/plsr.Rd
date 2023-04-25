@@ -6,7 +6,7 @@
 \alias{summary.Plsr}
 \alias{coef.Plsr}
 \alias{predict.Plsr}
-\encoding{UTF-8}
+\encoding{latin1}
 
 \title{PLSR algorithms}
 

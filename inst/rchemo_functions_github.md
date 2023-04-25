@@ -23,7 +23,7 @@
 #### Linear
 
 - ***lmr*** Multiple linear regression
-- ***cglsr***: CGLSR algorithm for ill-conditionned systems (Björck 1996)
+- ***cglsr***: CGLSR algorithm for ill-conditionned systems (Bjorck 1996)
 
 #### Partial least squares
 
@@ -214,7 +214,7 @@
 
 **Marion Brandolini-Bunlon**
 
-- Université Clermont Auvergne, INRAE, UNH, Plateforme d’Exploration du Métabolisme, MetaboHUB Clermont, 63000 Clermont-Ferrand, France
+- Universitee Clermont Auvergne, INRAE, UNH, Plateforme d Exploration du Metabolisme, MetaboHUB Clermont, 63000 Clermont-Ferrand, France
 
 - [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
 
@@ -232,7 +232,7 @@
 
 **Jean-Michel Roger**
 
-- ITAP, INRAE Montpellier Institut Agro, Université de Montpellier, Montpellier.
+- ITAP, INRAE Montpellier Institut Agro, Universite de Montpellier, Montpellier.
 
 - [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
 
