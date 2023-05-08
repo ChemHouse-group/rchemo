@@ -19,7 +19,7 @@ All the functions have a **help page** with a documented example.
 
 ## <span style="color:green"> **News** </span> 
 
-Click [**HERE**](https://github.com/ChemHouse-group/rchemo/inst/NEWS.md) to see **what changed** in the previous versions. 
+Click [**HERE**](https://github.com/ChemHouse-group/rchemo/blob/main/inst/NEWS.md) to see **what changed** in the previous versions. 
 
 or write in the R console
 ```{r}
