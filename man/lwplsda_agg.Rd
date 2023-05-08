@@ -114,7 +114,7 @@ The second example concerns KNN-LWPLSLDA-AGG.
 
 ## KNN-LWPLSRDA-AGG
 
-n <- 50 ; p <- 7
+n <- 40 ; p <- 7
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
 y <- sample(c(1, 4, 10), size = n, replace = TRUE)
 
@@ -162,7 +162,7 @@ res$val
 
 ## KNN-LWPLSLDA-AGG
 
-n <- 50 ; p <- 7
+n <- 40 ; p <- 7
 X <- matrix(rnorm(n * p), ncol = p, byrow = TRUE)
 y <- sample(c(1, 4, 10), size = n, replace = TRUE)
 

@@ -1,6 +1,6 @@
 ## rchemo - Dimension reduction, Regression and Discrimination for Chemometrics  
 
-**rchemo** is a [package](https://github.com/ChemHouse-group/rchemo/blob/main/doc/rchemo_functions_github.md) for **data exploration and prediction** with focus on **high dimensional data** and **chemometrics**. 
+**rchemo** is a [package](https://github.com/ChemHouse-group/rchemo/blob/main/inst/rchemo_functions_github.md) for **data exploration and prediction** with focus on **high dimensional data** and **chemometrics**. 
 
 The package was initially designed about **partial least squares regression and discrimination models** and variants, in particular locally weighted PLS models (**LWPLS**) (e.g. https://doi.org/10.1002/cem.3209).
 Then, it has been expanded to many other methods for 
@@ -19,7 +19,7 @@ All the functions have a **help page** with a documented example.
 
 ## <span style="color:green"> **News** </span> 
 
-Click [**HERE**](https://github.com/ChemHouse-group/rchemo/tree/main/inst/NEWS.md) to see **what changed** in the previous versions. 
+Click [**HERE**](https://github.com/ChemHouse-group/rchemo/inst/NEWS.md) to see **what changed** in the previous versions. 
 
 or write in the R console
 ```{r}
@@ -28,7 +28,7 @@ news(package = "rchemo")
 
 ## <span style="color:green"> **Installation** </span> 
 
-Using [**Rstudio**](https://www.rstudio.com/products/rstudio/download/) is recommended for installation and usage.
+Using [**Rstudio**](https://posit.co/download/rstudio-desktop/) is recommended for installation and usage.
 
 **rchemo** can be installed from **CRAN**, or from Github using the following steps. 
 

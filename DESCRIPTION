@@ -10,6 +10,5 @@ Depends: R (>= 4.0)
 Suggests: knitr, rmarkdown
 URL: https://github.com/ChemHouse-group/rchemo/
 License: GPL-3 + file LICENSE
-Encoding: latin1
 LazyData: yes
 NeedsCompilation: no
