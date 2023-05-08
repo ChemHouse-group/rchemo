@@ -28,7 +28,7 @@ Noting \eqn{D} a (\eqn{n, n}) diagonal matrix of weights for the observations (r
 - \code{pcanipalsna}: Eigen factorization of \eqn{X' * D * X} using NIPALS allowing missing data in \eqn{X}. 
 
 
-- \code{pcanipalsna}: Robust spherical PCA (Locantore et al. 1990, Maronna 2005, Daszykowski et al. 2007). 
+- \code{pcasph}: Robust spherical PCA (Locantore et al. 1990, Maronna 2005, Daszykowski et al. 2007). 
 
 Function \code{pcanipalsna} accepts missing data (\code{NA}s) in \eqn{X}, unlike the other functions. The part of \code{pcanipalsna} accounting specifically for missing missing data is based on the efficient code of K. Wright in the R package \code{nipals} (https://cran.r-project.org/web/packages/nipals/index.html).
 
@@ -65,6 +65,8 @@ pcanipals(X, weights = NULL, nlv,
 pcanipalsna(X, nlv, 
     gs = TRUE,
     tol = .Machine$double.eps^0.5, maxit = 200)
+    
+pcasph(X, weights = NULL, nlv)
   
 \method{transform}{Pca}(object, X, ..., nlv = NULL)  
 
@@ -132,7 +134,7 @@ Wright, K., 2018. Package nipals: Principal Components Analysis using NIPALS wit
 Wu, W., Massart, D.L., de Jong, S., 1997. The kernel PCA algorithms for wide data. Part I: Theory and algorithms. Chemometrics and Intelligent Laboratory Systems 36, 165-172. https://doi.org/10.1016/S0169-7439(97)00010-5
 
 
-#-- Specrical PCA
+For Spherical PCA: 
 
 Daszykowski, M., Kaczmarek, K., Vander Heyden, Y., Walczak, B., 2007. 
 Robust statistics in data analysis - A review. Chemometrics and Intelligent 
