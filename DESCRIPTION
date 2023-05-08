@@ -5,7 +5,6 @@ Version: 0.1-0
 Author: Marion Brandolini-Bunlon, Benoit Jaillais, Jean-Michel Roger, Matthieu Lesnoff
 Maintainer: Marion Brandolini-Bunlon <marion.brandolini-bunlon@inrae.fr>
 Description: Dimension reduction, regression and discrimination, with special focus on chemometrics.
-VignetteBuilder: knitr
 Imports: stats, graphics, grDevices, data.table, FNN, signal, e1071
 Depends: R (>= 4.0)
 Suggests: knitr, rmarkdown
