@@ -73,7 +73,6 @@ Xtest <- Xtrain[1:3, , drop = FALSE]
 
 nlv <- 3
 fm <- pcasvd(Xtrain, nlv = nlv)
-#fm <- plskern(Xtrain, ytrain, nlv = nlv)
 odis(fm, Xtrain)
 odis(fm, Xtrain, nlv = 2)
 odis(fm, Xtrain, X = Xtest, nlv = 2)

@@ -214,7 +214,7 @@
 
 **Marion Brandolini-Bunlon**
 
-- Universitee Clermont Auvergne, INRAE, UNH, Plateforme d Exploration du Metabolisme, MetaboHUB Clermont, 63000 Clermont-Ferrand, France
+- Universite Clermont Auvergne, INRAE, UNH, Plateforme d Exploration du Metabolisme, MetaboHUB Clermont, 63000 Clermont-Ferrand, France
 
 - [**ChemHouse**](https://www.chemproject.org/ChemHouse), Montpellier
 

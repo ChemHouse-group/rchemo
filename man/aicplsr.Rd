@@ -115,17 +115,17 @@ ytrain <- cassav$ytrain
 
 nlv <- 25
 res <- aicplsr(Xtrain, ytrain, nlv = nlv)
-#res <- aicplsr(Xtrain, ytrain, nlv = nlv, meth = "cov", B = 30)
 names(res)
 headm(res$crit)
 
 z <- res$crit
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, 4))
 plot(z$df[-1])
 plot(z$aic[-1], type = "b", main = "AIC")
 plot(z$cp1[-1], type = "b", main = "Cp1")
 plot(z$cp2[-1], type = "b", main = "Cp2")
-par(mfrow = c(1, 1))
+par(oldpar)
 
 }
 

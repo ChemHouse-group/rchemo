@@ -65,8 +65,7 @@ res <- gridscorelv(
     Xtrain, Ytrain, Xtest, Ytest, 
     score = msep, 
     fun = lwplsr, 
-    nlv = 0:nlv, pars = pars, verb = TRUE
-)
+    nlv = 0:nlv, pars = pars, verb = TRUE)
 headm(res)
 group <- paste("h=", res$h, " k=", res$k, sep = "")
 plotscore(res$nlv, res$y1, group = group,

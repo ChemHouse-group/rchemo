@@ -1,10 +1,16 @@
 Package: rchemo
 Type: Package
 Title: Dimension Reduction, Regression and Discrimination for Chemometrics
-Version: 0.1-0
-Author: Marion Brandolini-Bunlon, Benoit Jaillais, Jean-Michel Roger, Matthieu Lesnoff
-Maintainer: Marion Brandolini-Bunlon <marion.brandolini-bunlon@inrae.fr>
-Description: Dimension reduction, regression and discrimination, with special focus on chemometrics.
+Version: 0.1-1
+Author@R: c(
+    person("Marion", "Brandolini-Bunlon", email = "marion.brandolini-bunlon@inrae.fr", role = c("aut", "cre")),
+    person("Benoit", "Jaillais", email = "benoit.jaillais@inrae.fr", role = c("aut")),
+    person("Jean-Michel", "Roger", email = "jean-michel.roger@inrae.fr", role = c("aut")),
+    person("Matthieu", "Lesnoff", email = "matthieu.lesnoff@cirad.fr", role = c("aut")))
+Description: Data exploration and prediction with focus on high dimensional data and chemometrics.
+    The package was initially designed about partial least squares regression and discrimination models and variants, in particular locally weighted PLS models (LWPLS). Then, it has been expanded to many other methods for analyzing high dimensional data.
+    The name rchemo comes from the fact that the package is orientated to chemometrics, but most of the provided methods are fully generic to other domains.
+    Functions such as transform, predict, coef and summary are available. Tuning the predictive models is facilitated by generic functions gridscore (validation dataset) and gridcv (cross-validation). Faster versions are also available for models based on latent variables (LVs) (gridscorelv and gridcvlv) and ridge regularization (gridscorelb and gridcvlb).
 Imports: stats, graphics, grDevices, data.table, FNN, signal, e1071
 Depends: R (>= 4.0)
 Suggests: knitr, rmarkdown

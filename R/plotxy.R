@@ -8,7 +8,7 @@ plotxy <- function(
     X <- as.data.frame(X[, seq_len(2)])
     rownam <- row.names(X)
     fg <- "grey70"
-    op <- par()
+    op <- par(no.readonly = TRUE)
     left <- 4 ; right <- 4
     par(mar = c(5, left, 4, right) + 0.1)
     plot(X, 

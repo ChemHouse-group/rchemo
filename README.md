@@ -58,9 +58,9 @@ it is recommended to skip updates (usually choice **3** = None)
 
 **b) Any given tagged version**
 
-e.g. with tag "v0.1-0", write in the R console
+e.g. with tag "v0.1-1", write in the R console
 ```{r}
-remotes::install_github("ChemHouse-group/rchemo@v0.1-0", dependencies = TRUE)
+remotes::install_github("ChemHouse-group/rchemo@v0.1-1", dependencies = TRUE)
 ```
 
 ## <span style="color:green"> **Usage** </span> 

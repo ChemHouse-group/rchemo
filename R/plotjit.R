@@ -10,7 +10,7 @@ plotjit <- function(
     Class <- jitter(zx, factor = jit)
     ncla <- length(levels(x))
     fg <- "grey70"
-    op <- par()
+    op <- par(no.readonly = TRUE)
     left <- 4 ; right <- 4
     par(mar = c(5, left, 4, right) + 0.1)
     plot(Class, y,
