@@ -7,7 +7,7 @@
 \alias{pcasph}
 \alias{transform.Pca}
 \alias{summary.Pca}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{PCA algorithms}
 
