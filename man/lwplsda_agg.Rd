@@ -160,6 +160,7 @@ res <- gridcv(
 names(res)
 res$val
 
+\donttest{
 ## KNN-LWPLSLDA-AGG
 
 n <- 40 ; p <- 7
@@ -207,6 +208,6 @@ res <- gridcv(
     verb = TRUE)
 names(res)
 res$val
-
+}
 }
 
