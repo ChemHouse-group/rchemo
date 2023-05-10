@@ -26,8 +26,8 @@ Function \code{eposvd} uses a SVD factorization of \eqn{D} and returns \eqn{M (p
 
 \details{
 
-The data corrected from the detrimental information \eqn{D} can be computed by \eqn{X_corrected = X * M}.
-Rows of the corrected matrix X_corr are orthogonal to the loadings vectors (columns of P): \eqn{X_corr * P}.
+The data corrected from the detrimental information \eqn{D} can be computed by \eqn{Xcorrected = X * M}.
+Rows of the corrected matrix Xcorr are orthogonal to the loadings vectors (columns of P): \eqn{Xcorr * P}.
 
 }
 

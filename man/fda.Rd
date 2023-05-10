@@ -3,7 +3,7 @@
 \alias{fdasvd}
 \alias{transform.Fda}
 \alias{summary.Fda}
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{Factorial discriminant analysis}
 
