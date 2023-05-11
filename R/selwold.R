@@ -31,6 +31,7 @@ selwold <- function(
         else
             labs <- seq(xmin, xmax, by = 10)
         op <- par(no.readonly = TRUE)
+        on.exit(par(op))
         right <- left <- 4
         par(mfrow = c(1, 2), mar = c(5, left, 4, right) + 0.1)
         plot(
