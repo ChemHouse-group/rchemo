@@ -30,7 +30,10 @@ news(package = "rchemo")
 
 Using [**Rstudio**](https://posit.co/download/rstudio-desktop/) is recommended for installation and usage.
 
-**rchemo** can be installed from **CRAN**, or from Github using the following steps. 
+**rchemo** can be installed from the official R repo [**CRAN**](https://cran.r-project.org/).
+
+It can also be installed from the [**Chemouse Github repo**](https://github.com/ChemHouse-group/rchemo) 
+using the following steps: 
 
 #### <span style="color:green"> 1.  Install package **'remotes'** from **CRAN** </span>
 
@@ -72,7 +75,9 @@ library(rchemo)
 
 ## <span style="color:green"> **How to cite** </span> 
 
-R package rchemo: Dimension Reduction, Regression and Discrimination for Chemometrics. https://github.com/ChemHouse-group/rchemo.
+Brandolini-Bunlon M., Jallais B., Roger J.M. Lesnoff M., 2023
+R package rchemo: Dimension Reduction, Regression and Discrimination for Chemometrics. 
+https://github.com/ChemHouse-group/rchemo.
 
 
 
