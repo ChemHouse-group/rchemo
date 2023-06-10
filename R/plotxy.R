@@ -9,7 +9,7 @@ plotxy <- function(
     rownam <- row.names(X)
     fg <- "grey70"
     op <- par(no.readonly = TRUE)
-    on.exit(par(op))
+    # on.exit(par(op))
     left <- 4 ; right <- 4
     par(mar = c(5, left, 4, right) + 0.1)
     plot(X, 

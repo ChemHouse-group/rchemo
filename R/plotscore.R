@@ -5,7 +5,7 @@ plotscore <- function(x, y, group = NULL,
         dots$lwd <- 1.8
     fg <- "grey70"
     op <- par(no.readonly = TRUE)
-    on.exit(par(op))
+    # on.exit(par(op))
     right <- left <- 4
     par(mar = c(5, left, 4, right) + 0.1)
     plot(x, y, type = "n", xaxt = "n", las = 1, fg = fg, ...)
