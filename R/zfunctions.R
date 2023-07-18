@@ -209,3 +209,16 @@
     t((t(X) - c(center)) / c(scale))
 
 
+.xmean <- function(X, weights = NULL, row = FALSE) {
+  
+  X <- .mat(X)
+  n <- dim(X)[1]
+  
+  if(is.null(weights))
+    weights <- rep(1 / n, n)
+  else
+    weights <- weights / sum(weights)
+  
+  colSums(weights * X)   
+  
+}

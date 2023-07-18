@@ -9,7 +9,7 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
   ## nb lv by block
   if(length(nlv_vect) == 1){
     for(i in 1:nbl){
-      nlv_vect[i] <- min(nbcolX[i], nbl)
+      nlv_vect[i] <- min(nbcolX[i], nlv_vect)
     }
   }
   
@@ -17,8 +17,8 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
   obsnames <- rownames(X)
   Xnames <- colnames(X)
   Ynames <- colnames(Y)
-  X <- .matrix(X)
-  Y <- .matrix(Y, row = FALSE, prefix.colnam = "y")     
+  X <- .mat(X)
+  Y <- .mat(Y)     
   n <- dim(X)[1]
   p <- dim(X)[2]
   q <- dim(Y)[2]
@@ -31,8 +31,8 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
                    dimnames = list(Xnames, "lv0"))
     fm$T <- matrix(rep(0, n), nrow = n, byrow = TRUE,
                    dimnames = list(obsnames, "comp0"))
-    fm$C <- matrix(rep(0, n*q), nrow = n, byrow = TRUE,
-                   dimnames = list(Xnames, Ynames))
+    fm$C <- matrix(rep(0, q), nrow = q, byrow = TRUE,
+                   dimnames = list(Ynames, "comp0"))
     
     # predictions
     dots <- list(...)
@@ -93,8 +93,8 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
                          dimnames = list(colnames(X[,blocks[[i]],drop=FALSE]), "lv0"))
         Tx[[i]] <- matrix(rep(0, n), nrow = n, byrow = TRUE,
                           dimnames = list(obsnames, "comp0"))
-        C[[i]] <- matrix(rep(0, p*q), nrow = p, byrow = TRUE,
-                          dimnames = list(Xnames, Ynames))
+        C[[i]] <- matrix(rep(0, q), nrow = q, byrow = TRUE,
+                          dimnames = list(Ynames, "comp0"))
         BCoef[[i]] <- list()
         BCoef[[i]]$int <- matrix(ymeans, nrow = 1)
         BCoef[[i]]$B <- matrix(0, nrow = length(blocks[[i]]), ncol=ncol(Y))
@@ -152,5 +152,58 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
   }
   
   fm
+  
+}
+
+blocksel <- function(X, blocks) {
+  
+  X <- .mat(X)
+  n <- dim(X)[1]
+  
+  nbl <- length(blocks)
+  
+  selcol <- unlist(blocks)
+  
+  colnam <- colnames(X)[selcol]
+  
+  X <- X[, selcol, drop = FALSE]
+  colnames(X) <- colnam
+  
+  z <- lapply(seq_len(nbl), function(i) length(blocks[[i]]))
+  lengthblock <- unlist(z)
+  
+  z <- lapply(seq_len(nbl), function(i) rep(i, lengthblock[i]))
+  newcol <- data.frame(newcol = seq_len(sum(lengthblock)), block = unlist(z))
+  newblocks <- lapply(seq_len(nbl), function(i) newcol$newcol[newcol$block == i])
+  
+  list(X = X, blocks = newblocks)  
+  
+}
+
+orthog <- function(X, Y, weights = NULL) {
+  
+  # Y is orthogonalized to X
+  
+  X <- .mat(X)
+  n <- dim(X)[1]
+  
+  Y <- .mat(Y)
+  
+  if(is.null(weights))
+    weights <- rep(1 / n, n)
+  else
+    weights <- weights / sum(weights)
+  
+  fm <- lm(Y ~ X - 1, weights = weights)
+  
+  b <- coef(fm)
+  
+  if(ncol(Y) > 1)
+    Yortho <- fm$residuals
+  else
+    Yortho <- matrix(fm$residuals, ncol = 1, 
+                     dimnames = list(row.names(Y), colnames(Y)))
+  
+  list(Y = Yortho, b = b, weights = weights)
   
 }
