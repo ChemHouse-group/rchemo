@@ -8,6 +8,7 @@ vip <- function(object, X, Y = NULL, nlv = NULL){
     if (class(object)[[1]]%in%c("Plsrda")){
       if(is.numeric(Y)==FALSE){Y <- dummy(as.character(Y))$Y}
       if(is.matrix(Y)==FALSE){Y <- as.matrix(Y)}
+      if(sum(sapply(1:length(Y), function(x) Y[x]%in%c(0,1)==FALSE))>0){Y <- dummy(as.character(Y))$Y}
       Tx <- object$fm$T
       if (sum(rownames(Tx)!=rownames(X))>0){stop("rownames of Tx and X are different")}
       if(is.null(nlv)==TRUE){nlv <- ncol(Tx)}
@@ -20,6 +21,7 @@ vip <- function(object, X, Y = NULL, nlv = NULL){
     if (class(object)[[1]]%in%c("Plsprobda")){
       if(is.numeric(Y)==FALSE){Y <- dummy(as.character(Y))$Y}
       if(is.matrix(Y)==FALSE){Y <- as.matrix(Y)}
+      if(sum(sapply(1:length(Y), function(x) Y[x]%in%c(0,1)==FALSE))>0){Y <- dummy(as.character(Y))$Y}
       Tx <- object$fm[[1]]$T
       if (sum(rownames(Tx)!=rownames(X))>0){stop("rownames of Tx and X are different")}
       if(is.null(nlv)==TRUE){nlv <- ncol(Tx)}
