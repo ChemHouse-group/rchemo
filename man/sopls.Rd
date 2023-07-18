@@ -1,7 +1,7 @@
 \name{sopls}
 \alias{sopls}
 
-\encoding{latin1}
+\encoding{UTF-8}
 
 \title{Block dimension reduction by SO-PLS}
 
@@ -49,7 +49,7 @@ sopls(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...)
 
 \item{BCoef}{A list of matrices with the coefficients calculated for the X-blocks.}
 
-\item{VIP}{A list of matrices with the VIP values calculated for the variables of the X-blocks.}
+\item{VIP}{A list of matrices with the VIP values calculated for the variables of the X-blocks. The VIP calculation is based on the redundancy, as proposed by Tenenhaus (1998).}
 
 \item{Ymeans}{A list of matrices with the mean Y values calculated before each addition of X-block.}
 
@@ -65,6 +65,8 @@ multi-block classification. Chemometrics and Intelligent Laboratory Systems, 141
 - Biancolillo, A. 2016. Method development in the area of multi-block analysis focused on food analysis. PhD. University of copenhagen.
 
 - Menichelli et al., 2014. SO-PLS as an exploratory tool for path modelling. Food Quality and Preference, 36, 122-134.
+
+- Tenenhaus, M., 1998. La régression PLS: théorie et pratique. Editions Technip, Paris, France.
 
 }
 
