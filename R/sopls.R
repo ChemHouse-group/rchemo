@@ -70,7 +70,7 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
     ) 
     
     ## Reorganisation of the data based on the blocks defined in argument 'blocks'
-    newdat <- blocksel(X, blocks)
+    newdat <- .blocksel(X, blocks)
     X <- newdat$X
     newblocks <- newdat$blocks
     
@@ -128,6 +128,7 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
         
         # Bcoef (not in the original function)
         BCoef[[i]] <- coef(fmpls)# equivalent to fm$R %*% t(fm$C) 
+        colnames(BCoef[[i]]$B) <- colnames(BCoef[[i]]$int) <- Ynames
         
         # VIP (not in the rnirs function)
         #VIP[[i]] <- vip(object=fmpls,X=X[, newblocks[[i]], drop = FALSE],Y=Y,nlv=nlv_vect[i])
@@ -152,58 +153,5 @@ sopls <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
   }
   
   fm
-  
-}
-
-blocksel <- function(X, blocks) {
-  
-  X <- .mat(X)
-  n <- dim(X)[1]
-  
-  nbl <- length(blocks)
-  
-  selcol <- unlist(blocks)
-  
-  colnam <- colnames(X)[selcol]
-  
-  X <- X[, selcol, drop = FALSE]
-  colnames(X) <- colnam
-  
-  z <- lapply(seq_len(nbl), function(i) length(blocks[[i]]))
-  lengthblock <- unlist(z)
-  
-  z <- lapply(seq_len(nbl), function(i) rep(i, lengthblock[i]))
-  newcol <- data.frame(newcol = seq_len(sum(lengthblock)), block = unlist(z))
-  newblocks <- lapply(seq_len(nbl), function(i) newcol$newcol[newcol$block == i])
-  
-  list(X = X, blocks = newblocks)  
-  
-}
-
-orthog <- function(X, Y, weights = NULL) {
-  
-  # Y is orthogonalized to X
-  
-  X <- .mat(X)
-  n <- dim(X)[1]
-  
-  Y <- .mat(Y)
-  
-  if(is.null(weights))
-    weights <- rep(1 / n, n)
-  else
-    weights <- weights / sum(weights)
-  
-  fm <- lm(Y ~ X - 1, weights = weights)
-  
-  b <- coef(fm)
-  
-  if(ncol(Y) > 1)
-    Yortho <- fm$residuals
-  else
-    Yortho <- matrix(fm$residuals, ncol = 1, 
-                     dimnames = list(row.names(Y), colnames(Y)))
-  
-  list(Y = Yortho, b = b, weights = weights)
   
 }

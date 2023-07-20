@@ -10,7 +10,7 @@
 - ***pcanipals*** Nipals
 - ***pcanipalsna*** Nipals allowing missing data
 - ***kpca*** Non Linear Kernel PCA  (KPCA) (Scholkopf et al. 2002)
-- ***pcasph*** Specrical PCA
+- ***pcasph*** Spherical PCA
 
 ##### Auxiliary (works also for PLS)
 
@@ -177,6 +177,11 @@
 - ***mblocks*** Makes a list of blocks
 - ***hconcat*** Horizontal block concatenation 
 - ***blockscal*** Block autoscaling
+- ***orthog*** Orthogonalization of two blocks
+- ***sopls*** Sequential and Orthogonalized PLS
+- ***soplsrda*** Sequential and Orthogonalized PLS-RDA
+- ***soplslda*** Sequential and Orthogonalized PLS-LDA
+- ***soplsqda*** Sequential and Orthogonalized PLS-QDA
 
 #### Datasets
 
