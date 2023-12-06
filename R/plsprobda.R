@@ -1,4 +1,4 @@
-.plsprobda <- function(X, y, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.plsprobda <- function(X, y, scaling = "Centered", weights = NULL, nlv, fun, prior = c("unif", "prop")) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -12,7 +12,7 @@
     weights <- .mweights(weights)
     zd <- dummy(y)
     fm <- list()
-    fm[[1]] <- plskern(X, zd$Y, weights = weights, nlv = nlv)
+    fm[[1]] <- plskern(X, zd$Y, scaling = scaling, weights = weights, nlv = nlv)
     ## Should be:
     ## z <- transform(fm[[1]], X)
     ## But same as:
@@ -24,11 +24,11 @@
               class = "Plsprobda")       
 }
 
-plslda <- function(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
-    .plsprobda(X, y, weights, nlv, fun = lda, prior = prior)
+plslda <- function(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
+    .plsprobda(X, y, scaling, weights, nlv, fun = lda, prior = prior)
 
-plsqda <- function(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
-    .plsprobda(X, y, weights, nlv, fun = qda, prior = prior)
+plsqda <- function(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
+    .plsprobda(X, y, scaling, weights, nlv, fun = qda, prior = prior)
 
 
 predict.Plsprobda <- function(object, X, ..., nlv = NULL) {

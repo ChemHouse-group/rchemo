@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-plsrda(X, y, weights = NULL, nlv)
+plsrda(X, y, scaling = "Centered", weights = NULL, nlv)
 
-plslda(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
+plslda(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
 
-plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
+plsqda(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
 
 \method{predict}{Plsrda}(object, X, ..., nlv = NULL) 
 
@@ -39,6 +39,8 @@ plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 \item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: New X-data (\eqn{m, p}) to consider.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
+
+\item{scaling}{Variable scaling among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance)}
 
 \item{weights}{Weights (\eqn{n}) to apply to the training observations for the PLS2. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
@@ -56,7 +58,7 @@ plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 
 For \code{plsrda}, \code{plslda}, \code{plsqda}:
 
-\item{fm}{list with the model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output.}
+\item{fm}{list with the model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){scaling}: scaling; (\code{U}): intermediate output.}
 
 \item{lev}{classes}
 

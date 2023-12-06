@@ -1,4 +1,4 @@
-plskern <- function(X, Y, weights = NULL, nlv) {
+plskern <- function(X, Y, scaling = "Centered", weights = NULL, nlv) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     zdim <- dim(X)
@@ -8,10 +8,28 @@ plskern <- function(X, Y, weights = NULL, nlv) {
     if(is.null(weights))
         weights <- rep(1, n)
     weights <- .mweights(weights)
-    xmeans <- .colmeans(X, weights = weights) 
-    X <- .center(X, xmeans)
+    xmeans <- .colmeans(X, weights = weights)
     ymeans <- .colmeans(Y, weights = weights) 
-    Y <- .center(Y, ymeans)
+    xsds <- sqrt(.colvars(X, weights = weights)*nrow(X)/(nrow(X)-1))
+    ysds <- sqrt(.colvars(Y, weights = weights)*nrow(Y)/(nrow(Y)-1))
+    # xsds <- sqrt(apply(X, MARGIN = 2, FUN= var))
+    # ysds <- sqrt(apply(Y, MARGIN = 2, FUN= var))
+    if(scaling == "Centered"){
+      X <- .center(X, xmeans)
+      Y <- .center(Y, ymeans)
+    }
+    if(scaling == "Pareto"){
+      X <- .center(X, xmeans)
+      X <- scale(X, center = FALSE, scale = sqrt(xsds))
+      Y <- .center(Y, ymeans)
+      Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
+    }
+    if(scaling == "CtReduced"){
+      X <- .center(X, xmeans)
+      X <- scale(X, center = FALSE, scale = xsds)
+      Y <- .center(Y, ymeans)
+      Y <- scale(Y, center = FALSE, scale = ysds)
+    }
     nam <- paste("lv", seq_len(nlv), sep = "")
     T <- matrix(nrow = n, ncol = nlv, dimnames = list(row.names(X), nam))                     
     R <- W <- P <- matrix(nrow = p, ncol = nlv, dimnames = list(colnames(X), nam)) 
@@ -49,7 +67,7 @@ plskern <- function(X, Y, weights = NULL, nlv) {
     }
     structure(
         list(T = T, P = P, R = R, W = W, C = C, TT = TT,
-             xmeans = xmeans, ymeans = ymeans, weights = weights, U = NULL),
+             xmeans = xmeans, ymeans = ymeans, xsds = xsds, ysds = ysds, weights = weights, scaling = scaling, U = NULL),
         class = c("Plsr"))
     }
 
@@ -57,7 +75,25 @@ summary.Plsr <- function(object, X, ...) {
     zdim <- dim(object$T)
     n <- zdim[1]
     nlv <- zdim[2]
-    X <- .center(X, object$xmeans)
+    
+    if(object$scaling == "Centered"){
+      X <- .center(X, object$xmeans)
+      # Y <- .center(Y, object$ymeans)
+    }
+    if(object$scaling == "Pareto"){
+      X <- .center(X, object$xmeans)
+      X <- scale(X, center = FALSE, scale = sqrt(object$xsds))
+      # Y <- .center(Y, object$ymeans)
+      # Y <- scale(Y, center = FALSE, scale = sqrt(object$ysds))
+    }
+    if(object$scaling == "CtReduced"){
+      X <- .center(X, object$xmeans)
+      X <- scale(X, center = FALSE, scale = object$xsds)
+      # Y <- .center(Y, object$ymeans)
+      # Y <- scale(Y, center = FALSE, scale = object$ysds)
+    }
+    
+    #X <- .center(X, object$xmeans)
     sstot <- sum(object$weights * X * X, na.rm = TRUE)
     tt <- object$TT
     ## Only valid if scores T are orthogonal (or approximate)
@@ -76,8 +112,15 @@ transform.Plsr <- function(object, X, ..., nlv = NULL) {
         nlv <- a
     else 
         nlv <- min(a, nlv)
-    T <- .center(.mat(X), 
-                 object$xmeans) %*% object$R[, seq_len(nlv), drop = FALSE]
+    if(object$scaling == "Centered"){
+      T <- .center(.mat(X), object$xmeans) %*% object$R[, seq_len(nlv), drop = FALSE]
+    }
+    if(object$scaling == "Pareto"){
+      T <- scale(.center(.mat(X), object$xmeans), center = FALSE, scale = sqrt(object$xsds)) %*% object$R[, seq_len(nlv), drop = FALSE]
+    }
+    if(object$scaling == "CtReduced"){
+      T <- scale(.center(.mat(X), object$xmeans), center = FALSE, scale = object$xsds) %*% object$R[, seq_len(nlv), drop = FALSE]
+    }
     colnames(T) <- paste("lv", seq_len(dim(T)[2]), sep = "")
     T
 }
@@ -90,7 +133,17 @@ coef.Plsr <- function(object, ..., nlv = NULL) {
     else 
         nlv <- min(a, nlv)
     beta <- t(object$C)[seq_len(nlv), , drop = FALSE]
-    B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
+    if(object$scaling == "Centered"){
+      B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
+    }
+    if(object$scaling == "Pareto"){
+      B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
+      B <- B * matrix(rep(sqrt(object$ysds), each = nrow(B)), ncol=ncol(B)) / t(matrix(rep(sqrt(object$xsds), each = ncol(B)), ncol=nrow(B)))
+    }
+    if(object$scaling == "CtReduced"){
+      B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
+      B <- B * matrix(rep(object$ysds, each = nrow(B)), ncol=ncol(B)) / t(matrix(rep(object$xsds, each = ncol(B)), ncol=nrow(B)))
+    }
     int <- object$ymeans - t(object$xmeans) %*% B
     list(int = int, B = B) 
 }
