@@ -25,10 +25,10 @@
 }
 
 plslda <- function(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
-    .plsprobda(X, y, scaling, weights, nlv, fun = lda, prior = prior)
+    .plsprobda(X, y, scaling, weights, nlv, fun = rchemo::lda, prior = prior)
 
 plsqda <- function(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
-    .plsprobda(X, y, scaling, weights, nlv, fun = qda, prior = prior)
+    .plsprobda(X, y, scaling, weights, nlv, fun = rchemo::qda, prior = prior)
 
 
 predict.Plsprobda <- function(object, X, ..., nlv = NULL) {
