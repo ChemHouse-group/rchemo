@@ -28,7 +28,7 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \code{summary} returns summary information for the model.
 
-\code{coef} Calculates b-coefficients from the model, adaptated for raw data.
+\code{coef} Calculates b-coefficients from the model, adjuted for raw data.
 
 \code{predict} Calculates the predictions for any new matrix \eqn{X} from the model.
 
@@ -54,11 +54,11 @@ mbplsrannar(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1], blocksc
 
 \arguments{
 
-\item{Xlist}{For the main functions: list of training X-data (\eqn{n}rows). --- For the auxiliary functions: list of new X-data (\eqn{n} rows), with the same variables than the training X-data.}
+\item{Xlist}{For the main functions: list of training X-data (\eqn{n}rows). --- For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance)}
+\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance).}
 
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
@@ -98,7 +98,7 @@ For \code{mbplskern}, \code{mbplsnipals}, \code{mbplsrannar}: A list of outputs,
 
 \item{TT}{the X-score normalization factor.}
 
-\item{scaling}{vector of scaling.}
+\item{scaling}{vector of variable scaling for each block.}
 
 \item{blockscaling}{block scaling.}
 

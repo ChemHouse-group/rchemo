@@ -87,7 +87,7 @@ mbplskern <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1
         list(T = T, P = P, R = R, W = W, C = C, TT = TT,
              xmeans = xmeanslist, ymeans = ymeans, xsds = xsdslist, ysds = ysds, weights = weights, scaling = scaling, blockscaling = blockscaling, Xnorms = Xnorms, U = NULL),
         class = c("mbPlsr"))
-    }
+}
 
 summary.mbPlsr <- function(object, Xlist, ...) {
     zdim <- dim(object$T)
