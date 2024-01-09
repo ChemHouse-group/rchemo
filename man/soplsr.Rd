@@ -25,7 +25,7 @@ The function allows giving a priori weights to the rows of the reference matrix 
 
 \usage{
 
-soplsr(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1], weights = NULL, nlv, ...)
+soplsr(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv, ...)
 
 \method{transform}{Soplsr}(object, Xlist, ...)  
 
@@ -39,7 +39,7 @@ soplsr(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1], weights = NU
 
 \item{Y}{A \eqn{n x q} matrix or data frame, or a vector of length \eqn{n}, of reference (= training) responses.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance).}
+\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "centered", "pareto", "ctreduced" (for centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{weights}{a priori weights to the rows of the reference matrix in the calculations.}
 
@@ -65,9 +65,9 @@ soplsr(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1], weights = NU
 
 \item{weights}{Weights applied to the training observations.}
 
-\item{scaling}{vector of variable scaling for each block.}
+\item{scaling}{vector of variable scaling for each X-block.}
 
-\item{nlv}{vector of numbers of latent variables from each block.}
+\item{nlv}{vector of numbers of latent variables from each X-block.}
 
 }
 
@@ -118,6 +118,7 @@ ncomp <- c(2, 0, 3)
 soplsr(X_list, Y, nlv = ncomp)
 transform(soplsr(X_list, Y, nlv = ncomp), X_list)
 predict(soplsr(X_list, Y, nlv = ncomp), X_list)
+mse(predict(soplsr(X_list, Y, nlv = ncomp), X_list), Y)
 
 ncomp <- 0
 soplsr(X_list, Y, nlv = ncomp)
