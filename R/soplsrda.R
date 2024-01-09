@@ -1,31 +1,54 @@
-soplsrda <- function(X_list, Y, nlv_vect, blocknames = NULL, weights = NULL, ...) {
+soplsrda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv) {
 
-  if(is.numeric(Y)==FALSE){Y <- dummy(as.character(Y))$Y}
-  if(is.matrix(Y)==FALSE){Y <- as.matrix(Y)}
-  if(sum(sapply(1:length(Y), function(x) Y[x]%in%c(0,1)==FALSE))>0){Y <- dummy(as.character(Y))$Y}
+  if(is.factor(y)){y <- as.character(y)}
+
+  Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
   
-  # model
-  
-  soplsmodel <- sopls(X_list, Y, nlv_vect, blocknames, weights) 
-  
-  # classif
-    
-  # outputs
-  fm <- list()
-  fm$W <- soplsmodel$W
-  fm$T <- soplsmodel$Tx
-  fm$C <- soplsmodel$C
-  fm$BCoef <- soplsmodel$BCoef
-  fm$VIP   <- soplsmodel$VIP
-  fm$Ymeans   <- soplsmodel$Ymeans
-  #names(fm$W) <- names(fm$T) <- names(fm$C) <- names(fm$BCoef) <- names(fm$VIP) <- names(fm$Ymeans) <- blocknames
-  fm$Fit <- soplsmodel$Fit
-  fm$lev <- colnames(Y)
-  fm$ni <- apply(Y, MARGIN = 2, FUN = sum)
-  names(fm$ni) <- fm$lev
-  fm$call  <- match.call()
-  
-  fm
-  
+  n <- nrow(Xlist[[1]])
+  p <- sapply(1:length(Xlist), function(x) ncol(Xlist[[x]]))
+  nlv <- sapply(1:length(nlv), function(x) min(nlv[x], n, p[x]))
+  if(is.null(weights))
+    weights <- rep(1, n)
+  weights <- .mweights(weights)
+  z <- dummy(y)
+  fm <- soplsr(Xlist, z$Y, scaling = scaling, weights = weights, nlv = nlv)
+  structure(
+    list(fm = fm, lev = z$lev, ni = z$ni),
+    class = c("Soplsrda"))       
 }
 
+transform.Soplsrda<- function(object, Xlist){
+  
+  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
+  nbl <- length(object$fm$fm)
+  if(object$fm$nlv[1]>0){
+    T <- transform(object$fm$fm[[1]], Xlist[[1]])
+  }else{
+    T <- NULL
+  }
+  
+  if (nbl > 1){
+    for (i in 2:nbl){
+      if(object$fm$nlv[i]>0){
+        X = Xlist[[i]] - T %*% object$fm$b[[i]]
+        T = cbind(T, transform(object$fm$fm[[i]], X))
+      }
+    }
+  }
+  T
+}
+
+predict.Soplsrda <- function(object, Xlist) {
+  Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
+  rownam <- row.names(Xlist[[1]])
+  colnam <- "y1"
+
+  posterior <- predict(object$fm, Xlist)
+  dimnames(posterior) <- list(rownam, object$lev)
+  
+  z <- apply(posterior, FUN = .findmax, MARGIN = 1)
+  pred <- matrix(.replace_bylev(z, object$lev), ncol = 1)
+  dimnames(pred) <- list(rownam, colnam)
+ 
+  list(pred = pred, posterior = posterior)
+}

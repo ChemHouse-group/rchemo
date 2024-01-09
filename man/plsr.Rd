@@ -12,7 +12,7 @@
 
 \description{
 
-Algorithms fitting a (centered) PLS1 or PLS2 model between dependent variables \eqn{X} and responses \eqn{Y}.
+Algorithms fitting a PLS1 or PLS2 model between dependent variables \eqn{X} and responses \eqn{Y}.
 
 - \code{plskern}: "Improved kernel algorithm #1" proposed by Dayal and MacGregor (1997). This algorithm is stable and fast (Andersson 2009), and returns the same results as the NIPALS. 
 
@@ -36,11 +36,11 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-plskern(X, Y, scaling = "Centered", weights = NULL, nlv)
+plskern(X, Y, scaling = "centered", weights = NULL, nlv)
 
-plsnipals(X, Y, scaling = "Centered", weights = NULL, nlv)
+plsnipals(X, Y, scaling = "centered", weights = NULL, nlv)
 
-plsrannar(X, Y, scaling = "Centered", weights = NULL, nlv)
+plsrannar(X, Y, scaling = "centered", weights = NULL, nlv)
 
 \method{transform}{Plsr}(object, X, ..., nlv = NULL)  
 
@@ -58,7 +58,7 @@ plsrannar(X, Y, scaling = "Centered", weights = NULL, nlv)
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{scaling}{Variable scaling among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance)}
+\item{scaling}{Variable scaling among "centered", "pareto", "ctreduced" (for mean-centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 

@@ -1,4 +1,4 @@
-mbplskern <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
+mbplskern <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
     Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
     Y <- .mat(Y, "y")
     
@@ -8,25 +8,25 @@ mbplskern <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1
     
     xmeanslist <- lapply(1:length(Xlist), function(X) .colmeans(Xlist[[X]], weights = weights))
     ymeans     <- .colmeans(Y, weights = weights) 
-    xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights)*nrow(Xlist[[X]])/(nrow(Xlist[[X]])-1)))
-    ysds       <- sqrt(.colvars(Y, weights = weights)*nrow(Y)/(nrow(Y)-1))
+    xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights)))#*nrow(Xlist[[X]])/(nrow(Xlist[[X]])-1)))
+    ysds       <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
    
     Y <- .center(Y, ymeans)
     
     if((length(scaling)=1) & (length(Xlist)>1)){scaling= rep(scaling, length(Xlist))}
     
     for(i in 1:length(Xlist)){
-      if(scaling[i] == "Centered"){
+      if(scaling[i] == "centered"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         # Y <- .center(Y, ymeans)
       }
-      if(scaling[i] == "Pareto"){
+      if(scaling[i] == "pareto"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(xsdslist[[i]]))
         # Y <- .center(Y, ymeans)
         # Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
       }
-      if(scaling[i] == "CtReduced"){
+      if(scaling[i] == "ctreduced"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = xsdslist[[i]])
         # Y <- .center(Y, ymeans)
@@ -86,26 +86,26 @@ mbplskern <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1
     structure(
         list(T = T, P = P, R = R, W = W, C = C, TT = TT,
              xmeans = xmeanslist, ymeans = ymeans, xsds = xsdslist, ysds = ysds, weights = weights, scaling = scaling, blockscaling = blockscaling, Xnorms = Xnorms, U = NULL),
-        class = c("mbPlsr"))
+        class = c("Mbplsr"))
 }
 
-summary.mbPlsr <- function(object, Xlist, ...) {
+summary.Mbplsr <- function(object, Xlist, ...) {
     zdim <- dim(object$T)
     n <- zdim[1]
     nlv <- zdim[2]
     
     for(i in 1:length(Xlist)){
-      if(object$scaling[i] == "Centered"){
+      if(object$scaling[i] == "centered"){
         Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
         # Y <- .center(Y, object$ymeans)
       }
-      if(object$scaling[i] == "Pareto"){
+      if(object$scaling[i] == "pareto"){
         Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(object$xsds[[i]]))
         # Y <- .center(Y, object$ymeans)
         # Y <- scale(Y, center = FALSE, scale = sqrt(object$ysds))
       }
-      if(object$scaling[i] == "CtReduced"){
+      if(object$scaling[i] == "ctreduced"){
         Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = object$xsds[[i]])
         # Y <- .center(Y, object$ymeans)
@@ -129,7 +129,7 @@ summary.mbPlsr <- function(object, Xlist, ...) {
     list(explvarx = explvar)
 }
 
-transform.mbPlsr <- function(object, Xlist, ..., nlv = NULL) {
+transform.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
     a <- dim(object$T)[2]
     if(is.null(nlv)){
       nlv <- a
@@ -138,13 +138,13 @@ transform.mbPlsr <- function(object, Xlist, ..., nlv = NULL) {
     }
 
     for(i in 1:length(Xlist)){
-      if(object$scaling[i] == "Centered"){
+      if(object$scaling[i] == "centered"){
         Xlist[[i]] <- .center(.mat(Xlist[[i]]), object$xmeans[[i]])
       }
-      if(object$scaling[i] == "Pareto"){
+      if(object$scaling[i] == "pareto"){
         Xlist[[i]] <- scale(.center(.mat(Xlist[[i]]), object$xmeans[[i]]), center = FALSE, scale = sqrt(object$xsds[[i]]))
       }
-      if(object$scaling[i] == "CtReduced"){
+      if(object$scaling[i] == "ctreduced"){
         Xlist[[i]] <- scale(.center(.mat(Xlist), object$xmeans[[i]]), center = FALSE, scale = object$xsds[[i]])
       }
     }  
@@ -156,7 +156,7 @@ transform.mbPlsr <- function(object, Xlist, ..., nlv = NULL) {
     T
 }
 
-coef.mbPlsr <- function(object, ..., nlv = NULL) {
+coef.Mbplsr <- function(object, ..., nlv = NULL) {
     ## Works also for nlv = 0
     a <- dim(object$T)[2]
     if(is.null(nlv)){
@@ -174,14 +174,14 @@ coef.mbPlsr <- function(object, ..., nlv = NULL) {
     Blist <- list()
     if(object$blockscaling == TRUE){
       for(i in 1:length(object$xmeans)){
-        if(object$scaling[i] == "Centered"){
+        if(object$scaling[i] == "centered"){
           Blist[[i]] <- (object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta)/object$Xnorms[i]
         }
-        if(object$scaling[i] == "Pareto"){
+        if(object$scaling[i] == "pareto"){
           Blist[[i]] <- (object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta)/object$Xnorms[i]
           Blist[[i]] <- Blist[[i]] * matrix(rep(sqrt(object$ysds), each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(sqrt(object$xsds[[i]]), each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
         }
-        if(object$scaling[i] == "CtReduced"){
+        if(object$scaling[i] == "ctreduced"){
           Blist[[i]] <- (object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta)/object$Xnorms[i]
           Blist[[i]] <- Blist[[i]] * matrix(rep(object$ysds, each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(object$xsds[[i]], each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
         }
@@ -189,14 +189,14 @@ coef.mbPlsr <- function(object, ..., nlv = NULL) {
     }
     if(object$blockscaling != TRUE){
       for(i in 1:length(object$xmeans)){
-        if(object$scaling[i] == "Centered"){
+        if(object$scaling[i] == "centered"){
           Blist[[i]] <- object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta
         }
-        if(object$scaling[i] == "Pareto"){
+        if(object$scaling[i] == "pareto"){
           Blist[[i]] <- object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta
           Blist[[i]] <- Blist[[i]] * matrix(rep(sqrt(object$ysds), each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(sqrt(object$xsds[[i]]), each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
         }
-        if(object$scaling[i] == "CtReduced"){
+        if(object$scaling[i] == "ctreduced"){
           Blist[[i]] <- object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta
           Blist[[i]] <- Blist[[i]] * matrix(rep(object$ysds, each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(object$xsds[[i]], each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
         }
@@ -208,7 +208,7 @@ coef.mbPlsr <- function(object, ..., nlv = NULL) {
     list(int = int, B = B) 
 }
 
-predict.mbPlsr <- function(object, Xlist, ..., nlv = NULL) {
+predict.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
   Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
     X <- do.call("cbind",Xlist)
     q <- length(object$ymeans)

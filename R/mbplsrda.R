@@ -1,4 +1,4 @@
-mbplsrda <- function(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
+mbplsrda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
     if(is.factor(y))
         y <- as.character(y)
     Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
@@ -13,10 +13,10 @@ mbplsrda <- function(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1]
     fm <- mbplskern(Xlist, z$Y, scaling = scaling, blockscaling = blockscaling, weights = weights, nlv = nlv)
     structure(
         list(fm = fm, lev = z$lev, ni = z$ni),
-        class = c("mbPlsrda"))       
+        class = c("Mbplsrda"))       
 }
 
-predict.mbPlsrda <- function(object, Xlist, ..., nlv = NULL) {
+predict.Mbplsrda <- function(object, Xlist, ..., nlv = NULL) {
     Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
     rownam <- row.names(Xlist[[1]])
     colnam <- "y1"
@@ -42,4 +42,3 @@ predict.mbPlsrda <- function(object, Xlist, ..., nlv = NULL) {
     }
     list(pred = pred, posterior = posterior)
 }
-

@@ -1,4 +1,4 @@
-.mbplsprobda <- function(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.mbplsprobda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -21,17 +21,17 @@
     for(i in seq_len(nlv))
         fm[[2]][[i]] <- fun(z[, seq_len(i), drop = FALSE], y, prior = prior)
     structure(list(fm = fm, lev = zd$lev, ni = zd$ni), 
-              class = "mbPlsprobda")       
+              class = "Mbplsprobda")       
 }
 
-mbplslda <- function(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplslda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
     .mbplsprobda(Xlist, y, scaling, blockscaling, weights, nlv, fun = rchemo::lda, prior = prior)
 
-mbplsqda <- function(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplsqda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
     .mbplsprobda(Xlist, y, scaling, blockscaling, weights, nlv, fun = rchemo::qda, prior = prior)
 
 
-predict.mbPlsprobda <- function(object, Xlist, ..., nlv = NULL) {
+predict.Mbplsprobda <- function(object, Xlist, ..., nlv = NULL) {
     Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
     A <- length(object$fm[[2]])
     if(is.null(nlv))

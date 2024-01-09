@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-plsrda(X, y, scaling = "Centered", weights = NULL, nlv)
+plsrda(X, y, scaling = "centered", weights = NULL, nlv)
 
-plslda(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
+plslda(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"))
 
-plsqda(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"))
+plsqda(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"))
 
 \method{predict}{Plsrda}(object, X, ..., nlv = NULL) 
 
@@ -40,7 +40,7 @@ plsqda(X, y, scaling = "Centered", weights = NULL, nlv, prior = c("unif", "prop"
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{Variable scaling among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance)}
+\item{scaling}{Variable scaling among "centered", "pareto", "ctreduced" (for centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{weights}{Weights (\eqn{n}) to apply to the training observations for the PLS2. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 

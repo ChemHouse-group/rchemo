@@ -1,4 +1,4 @@
-plsnipals <- function(X, Y, scaling = "Centered", weights = NULL, nlv) {
+plsnipals <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     zdim <- dim(X)
@@ -10,22 +10,20 @@ plsnipals <- function(X, Y, scaling = "Centered", weights = NULL, nlv) {
     weights <- .mweights(weights)
     xmeans <- .colmeans(X, weights = weights)
     ymeans <- .colmeans(Y, weights = weights) 
-    xsds <- sqrt(.colvars(X, weights = weights)*nrow(X)/(nrow(X)-1))
-    ysds <- sqrt(.colvars(Y, weights = weights)*nrow(Y)/(nrow(Y)-1))
-    # xsds <- sqrt(apply(X, MARGIN = 2, FUN= var))
-    # ysds <- sqrt(apply(Y, MARGIN = 2, FUN= var))
-    
-    if(scaling == "Centered"){
+    xsds <- sqrt(.colvars(X, weights = weights))#*nrow(X)/(nrow(X)-1))
+    ysds <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
+
+    if(scaling == "centered"){
       X <- .center(X, xmeans)
       Y <- .center(Y, ymeans)
     }
-    if(scaling == "Pareto"){
+    if(scaling == "pareto"){
       X <- .center(X, xmeans)
       X <- scale(X, center = FALSE, scale = sqrt(xsds))
       Y <- .center(Y, ymeans)
       Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
     }
-    if(scaling == "CtReduced"){
+    if(scaling == "ctreduced"){
       X <- .center(X, xmeans)
       X <- scale(X, center = FALSE, scale = xsds)
       Y <- .center(Y, ymeans)

@@ -2,8 +2,8 @@
 \alias{mbplsrda}
 \alias{mbplslda}
 \alias{mbplsqda}
-\alias{predict.mbPlsrda}
-\alias{predict.mbPlsprobda}
+\alias{predict.Mbplsrda}
+\alias{predict.Mbplsprobda}
 \encoding{latin1}
 
 \title{multi-block PLSDA models}
@@ -14,23 +14,23 @@ Multi-block discrimination (DA) based on PLS.
 
 The training variable \eqn{y} (univariate class membership) is firstly transformed to a dummy table containing \eqn{nclas} columns, where \eqn{nclas} is the number of classes present in \eqn{y}. Each column is a dummy variable (0/1). Then, a PLS2 is implemented on the \eqn{X-}data and the dummy table, returning latent variables (LVs) that are used as dependent variables in a DA model.
 
-- \code{plsrda}: Usual "PLSDA". A linear regression model predicts the Y-dummy table from the PLS2 LVs. This corresponds to the PLSR2 of the X-data and the Y-dummy table. For a given observation, the final prediction is the class corresponding to the dummy variable for which the prediction is the highest.
+- \code{mbplsrda}: Usual "PLSDA". A linear regression model predicts the Y-dummy table from the PLS2 LVs. This corresponds to the PLSR2 of the X-data and the Y-dummy table. For a given observation, the final prediction is the class corresponding to the dummy variable for which the prediction is the highest.
 
-- \code{plslda} and \code{plsqda}: Probabilistic LDA and QDA are run over the PLS2 LVs, respectively.
+- \code{mbplslda} and \code{mbplsqda}: Probabilistic LDA and QDA are run over the PLS2 LVs, respectively.
 
 }
 
 \usage{
 
-mbplsrda(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv)
+mbplsrda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv)
 
-mbplslda(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplslda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
 
-mbplsqda(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplsqda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
 
-\method{predict}{mbPlsrda}(object, Xlist, ..., nlv = NULL) 
+\method{predict}{Mbplsrda}(object, Xlist, ..., nlv = NULL) 
 
-\method{predict}{mbPlsprobda}(object, Xlist, ..., nlv = NULL) 
+\method{predict}{Mbplsprobda}(object, Xlist, ..., nlv = NULL) 
 
 }
 
@@ -40,7 +40,7 @@ mbplsqda(Xlist, y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscali
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "Centered", "Pareto", "CtReduced" (for centered and scaled to unit variance)}
+\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "centered", "pareto", "ctreduced" (for centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used. Note: After binary transformation, Y-variables are always mean-centered.}
 
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
@@ -66,7 +66,7 @@ For \code{mbplsrda}, \code{mbplslda}, \code{mbplsqda}:
 
 \item{ni}{number of observations in each class}
 
-For \code{predict.Plsrda}, \code{predict.Plsprobda}: 
+For \code{predict.Mbplsrda}, \code{predict.Mbplsprobda}: 
 
 \item{pred}{predicted class for each observation}
 

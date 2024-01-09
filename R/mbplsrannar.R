@@ -1,4 +1,4 @@
-mbplsrannar <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
+mbplsrannar <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
     Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
     Y <- .mat(Y, "y")  
     
@@ -8,25 +8,25 @@ mbplsrannar <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")
     
     xmeanslist <- lapply(1:length(Xlist), function(X) .colmeans(Xlist[[X]], weights = weights))
     ymeans     <- .colmeans(Y, weights = weights) 
-    xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights)*nrow(Xlist[[X]])/(nrow(Xlist[[X]])-1)))
-    ysds       <- sqrt(.colvars(Y, weights = weights)*nrow(Y)/(nrow(Y)-1))
+    xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights)))#*nrow(Xlist[[X]])/(nrow(Xlist[[X]])-1)))
+    ysds       <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
     
     Y <- .center(Y, ymeans)
     
     if((length(scaling)=1) & (length(Xlist)>1)){scaling= rep(scaling, length(Xlist))}
     
     for(i in 1:length(Xlist)){
-      if(scaling[i] == "Centered"){
+      if(scaling[i] == "centered"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         # Y <- .center(Y, ymeans)
       }
-      if(scaling[i] == "Pareto"){
+      if(scaling[i] == "pareto"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(xsdslist[[i]]))
         # Y <- .center(Y, ymeans)
         # Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
       }
-      if(scaling[i] == "CtReduced"){
+      if(scaling[i] == "ctreduced"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = xsdslist[[i]])
         # Y <- .center(Y, ymeans)
@@ -84,5 +84,5 @@ mbplsrannar <- function(Xlist, Y, scaling = c("Centered", "Pareto", "CtReduced")
     structure(
         list(T = Tclass, P = P, R = R, W = W, C = C, TT = TT,
             xmeans = xmeanslist, ymeans = ymeans, xsds = xsdslist, ysds = ysds, weights = weights, scaling = scaling, blockscaling = blockscaling, Xnorms = Xnorms, U = U),
-        class = c("mbPlsr", "mbPls"))    
+        class = c("Mbplsr", "Mbpls"))    
     }
