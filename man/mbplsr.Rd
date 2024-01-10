@@ -170,7 +170,7 @@ X1 <- mblocks(Xtrain, blocks = blocks)
 X2 <- mblocks(Xtest, blocks = blocks)
 
 nlv <- 3
-fm <- mbplskern(Xlist = X1, Y = ytrain, scaling = "Centered", blockscaling = TRUE, weights = NULL, nlv = nlv)
+fm <- mbplskern(Xlist = X1, Y = ytrain, scaling = c("ctreduced","centered"), blockscaling = TRUE, weights = NULL, nlv = nlv)
 
 summary(fm, X1)
 coef(fm)

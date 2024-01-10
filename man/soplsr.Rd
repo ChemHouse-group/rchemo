@@ -101,36 +101,37 @@ Y
 n <- nrow(X)
 
 X_list <- list(X[,1:4], X[,5:7], X[,9:ncol(X)])
+X_list_2 <- list(X[1:2,1:4], X[1:2,5:7], X[1:2,9:ncol(X)])
 
 ncomp <- 2
-soplsr(X_list, Y, nlv = ncomp)
-transform(soplsr(X_list, Y, nlv = ncomp), X_list)
-predict(soplsr(X_list, Y, nlv = ncomp), X_list)
+fm <- soplsr(X_list, Y, nlv = ncomp)
+transform(fm, X_list_2)
+predict(fm, X_list_2)
 
-mse(predict(soplsr(X_list, Y, nlv = ncomp), X_list), Y)
+mse(predict(fm, X_list), Y)
 
 # VIP calculation based on the proportion of Y-variance explained by the components
-vip(soplsr(X_list, Y, nlv = ncomp)$fm[[1]], X_list[[1]], Y = NULL, nlv = ncomp)
-vip(soplsr(X_list, Y, nlv = ncomp)$fm[[2]], X_list[[2]], Y = NULL, nlv = ncomp)
-vip(soplsr(X_list, Y, nlv = ncomp)$fm[[3]], X_list[[3]], Y = NULL, nlv = ncomp)
+vip(fm$fm[[1]], X_list[[1]], Y = NULL, nlv = ncomp)
+vip(fm$fm[[2]], X_list[[2]], Y = NULL, nlv = ncomp)
+vip(fm$fm[[3]], X_list[[3]], Y = NULL, nlv = ncomp)
 
 ncomp <- c(2, 0, 3)
-soplsr(X_list, Y, nlv = ncomp)
-transform(soplsr(X_list, Y, nlv = ncomp), X_list)
-predict(soplsr(X_list, Y, nlv = ncomp), X_list)
-mse(predict(soplsr(X_list, Y, nlv = ncomp), X_list), Y)
+fm <- soplsr(X_list, Y, nlv = ncomp)
+transform(fm, X_list_2)
+predict(fm, X_list_2)
+mse(predict(fm, X_list), Y)
 
 ncomp <- 0
-soplsr(X_list, Y, nlv = ncomp)
-transform(soplsr(X_list, Y, nlv = ncomp), X_list)
-predict(soplsr(X_list, Y, nlv = ncomp), X_list)
+fm <- soplsr(X_list, Y, nlv = ncomp)
+transform(fm, X_list_2)
+predict(fm, X_list_2)
 
 ncomp <- 2
 weights <- rep(1 / n, n)
 #w <- 1:n
-soplsr(X_list, Y, nlv = ncomp, weights = weights)
-transform(soplsr(X_list, Y, nlv = ncomp, weights = weights), X_list)
-predict(soplsr(X_list, Y, nlv = ncomp, weights = weights), X_list)
+fm <- soplsr(X_list, Y, scaling = c("ctreduced","pareto","centered"), nlv = ncomp, weights = weights)
+transform(fm, X_list_2)
+predict(fm, X_list_2)
 
 }
 

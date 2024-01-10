@@ -35,8 +35,9 @@
 
 *Auxiliary*
 
-- ***dfplsr_cg***, ***dfplsr_cov***, ***dfplsr_div***: Model complexity estiamtion for PLSR
+- ***dfplsr_cg***, ***dfplsr_cov***, ***dfplsr_div***: Model complexity estimation for PLSR
 - ***aicplsr***: Cp and AIC for PLSR models
+- ***vip*** Variable Importance in Projection (works also for PLSDA models)
 
 #### Ridge
 
@@ -178,6 +179,10 @@
 - ***hconcat*** Horizontal block concatenation 
 - ***blockscal*** Block autoscaling
 - ***orthog*** Orthogonalization of two blocks
+- ***mbplsr***, ***mbplskern***, ***mbplsnipals***, ***mbplsrannar***: Multi-Block PLS
+- ***mbplsrda*** Multi-Block PLS-RDA
+- ***mbplslda*** Multi-Block PLS-LDA
+- ***mbplsqda*** Multi-Block PLS-QDA
 - ***sopls*** Sequential and Orthogonalized PLS
 - ***soplsrda*** Sequential and Orthogonalized PLS-RDA
 - ***soplslda*** Sequential and Orthogonalized PLS-LDA

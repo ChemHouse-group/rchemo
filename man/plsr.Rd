@@ -153,7 +153,11 @@ Xtest <- Xtrain[1:m, , drop = FALSE]
 Ytest <- Ytrain[1:m, , drop = FALSE] ; ytest <- Ytest[1:m, 1]
 
 nlv <- 3
-plskern(Xtrain, Ytrain, nlv = nlv)
+plskern(Xtrain, Ytrain, scaling = "ctreduced", nlv = nlv)
+plsnipals(Xtrain, Ytrain, scaling = "ctreduced", nlv = nlv)
+plsrannar(Xtrain, Ytrain, scaling = "ctreduced", nlv = nlv)
+
+plskern(Xtrain, Ytrain, scaling = "centered", nlv = nlv)
 plskern(Xtrain, Ytrain, nlv = nlv)$T
 plskern(Xtrain, Ytrain, nlv = nlv, weights = 1:n)$T
 

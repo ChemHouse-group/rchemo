@@ -95,7 +95,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplsrda(Xtrainlist, ytrain, nlv = nlv)
+fm <- mbplsrda(Xtrainlist, ytrain, scaling = "ctreduced", nlv = nlv)
 names(fm)
 
 predict(fm, Xtestlist)
@@ -124,7 +124,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplslda(Xtrainlist, ytrain, nlv = nlv)
+fm <- mbplslda(Xtrainlist, ytrain, scaling = "centered", nlv = nlv)
 predict(fm, Xtestlist)
 predict(fm, Xtestlist, nlv = 1:2)$pred
 
@@ -147,7 +147,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplsqda(Xtrainlist, ytrain, nlv = nlv)
+fm <- mbplsqda(Xtrainlist, ytrain, scaling = "centered", nlv = nlv)
 predict(fm, Xtestlist)
 predict(fm, Xtestlist, nlv = 1:2)$pred
 

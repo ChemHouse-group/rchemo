@@ -108,26 +108,35 @@ set.seed(NULL)
 n <- nrow(X)
 
 X_list <- list(X[,1:4], X[,5:7], X[,9:ncol(X)])
+X_list_2 <- list(X[1:2,1:4], X[1:2,5:7], X[1:2,9:ncol(X)])
 
+# EXEMPLE WITH SO-PLS-RDA
 ncomp <- 2
-soplsrda(X_list, y, nlv = ncomp)
-predict(soplsrda(X_list, y, nlv = ncomp),X_list)
-transform(soplsrda(X_list, y, nlv = ncomp),X_list)
+fm <- soplsrda(X_list, y, nlv = ncomp)
+predict(fm,X_list_2)
+transform(fm,X_list_2)
 
 ncomp <- c(2, 0, 3)
-soplsrda(X_list, y, nlv = ncomp)
-predict(soplsrda(X_list, y, nlv = ncomp),X_list)
-transform(soplsrda(X_list, y, nlv = ncomp),X_list)
+fm <- soplsrda(X_list, y, nlv = ncomp)
+predict(fm,X_list_2)
+transform(fm,X_list_2)
 
 ncomp <- 0
-soplsrda(X_list, y, nlv = ncomp)
-predict(soplsrda(X_list, y, nlv = ncomp),X_list)
-transform(soplsrda(X_list, y, nlv = ncomp),X_list)
+fm <- soplsrda(X_list, y, nlv = ncomp)
+predict(fm,X_list_2)
+transform(fm,X_list_2)
 
+# EXEMPLE WITH SO-PLS-LDA
 ncomp <- 2
 weights <- rep(1 / n, n)
 #w <- 1:n
-soplsrda(X_list, y, nlv = ncomp, weights = weights)
+soplslda(X_list, y, scaling = "centered", nlv = ncomp, weights = weights)
+soplslda(X_list, y, scaling = "pareto", nlv = ncomp, weights = weights)
+soplslda(X_list, y, scaling = "ctreduced", nlv = ncomp, weights = weights)
+
+fm <- soplslda(X_list, y, scaling = c("ctreduced","pareto","centered"), nlv = ncomp, weights = weights)
+predict(fm,X_list_2)
+transform(fm,X_list_2)
 
 }
 

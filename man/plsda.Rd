@@ -90,7 +90,7 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
 nlv <- 5
-fm <- plsrda(Xtrain, ytrain, nlv = nlv)
+fm <- plsrda(Xtrain, ytrain, scaling = "ctreduced", nlv = nlv)
 names(fm)
 
 predict(fm, Xtest)
@@ -115,7 +115,7 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
 nlv <- 5
-fm <- plslda(Xtrain, ytrain, nlv = nlv)
+fm <- plslda(Xtrain, ytrain, scaling = "ctreduced", nlv = nlv)
 predict(fm, Xtest)
 predict(fm, Xtest, nlv = 1:2)$pred
 
