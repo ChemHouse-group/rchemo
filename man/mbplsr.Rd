@@ -28,7 +28,7 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-mbplsr(Xlist, Y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
+mbplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
 
 \method{transform}{Mbplsr}(object, Xlist, ..., nlv = NULL)  
 
@@ -46,7 +46,9 @@ mbplsr(Xlist, Y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, we
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used. Note: Y-variables are always mean-centered.}
+\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
+
+\item{Yscaling}{character. variable scaling for the Y-block, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
@@ -86,7 +88,9 @@ A list of outputs, such as
 
 \item{TT}{the X-score normalization factor.}
 
-\item{scaling}{vector of variable scaling for each block.}
+\item{Xscaling}{vector of variable scaling for each X-block.}
+
+\item{Yscaling}{variable scaling for the Y-block.}
 
 \item{blockscaling}{block scaling.}
 
@@ -155,7 +159,7 @@ X1 <- mblocks(Xtrain, blocks = blocks)
 X2 <- mblocks(Xtest, blocks = blocks)
 
 nlv <- 3
-fm <- mbplsr(Xlist = X1, Y = ytrain, scaling = c("sd","none"), blockscaling = TRUE, weights = NULL, nlv = nlv)
+fm <- mbplsr(Xlist = X1, Y = ytrain, Xscaling = c("sd","none"), blockscaling = TRUE, weights = NULL, nlv = nlv)
 
 summary(fm, X1)
 coef(fm)

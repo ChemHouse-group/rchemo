@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-mbplsrda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
+mbplsrda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
 
-mbplslda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
 
-mbplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
 
 \method{predict}{Mbplsrda}(object, Xlist, ..., nlv = NULL) 
 
@@ -40,7 +40,9 @@ mbplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, 
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used. Note: After binary transformation, Y-variables are always mean-centered.}
+\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+
+\item{Yscaling}{character. variable scaling for the Y-block after binary transformation, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
@@ -58,9 +60,19 @@ mbplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, 
 
 \value{
 
-For \code{mbplsrda}, \code{mbplslda}, \code{mbplsqda}:
+For \code{mbplsrda}:
 
-\item{fm}{list with the model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){scaling}: scaling; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.}
+\item{fm}{list with the MB-PLS model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){Xscaling}: X variable scaling for each X-block; (\code){Yscaling}: variable scaling for the Y-block; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.}
+
+\item{lev}{classes}
+
+\item{ni}{number of observations in each class}
+
+For \code{mbplslda}, \code{mbplsqda}:
+
+\item{fm}{list with 
+[[1]] the MB-PLS model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vectors of X;  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){Xscaling}: X variable scaling for each X-block; (\code){Yscaling}: variable scaling for the Y-block; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.
+[[2]] lda or qda models.}
 
 \item{lev}{classes}
 
@@ -95,7 +107,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplsrda(Xtrainlist, ytrain, scaling = "sd", nlv = nlv)
+fm <- mbplsrda(Xtrainlist, ytrain, Xscaling = "sd", nlv = nlv)
 names(fm)
 
 predict(fm, Xtestlist)
@@ -124,7 +136,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplslda(Xtrainlist, ytrain, scaling = "none", nlv = nlv)
+fm <- mbplslda(Xtrainlist, ytrain, Xscaling = "none", nlv = nlv)
 predict(fm, Xtestlist)
 predict(fm, Xtestlist, nlv = 1:2)$pred
 
@@ -147,7 +159,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplsqda(Xtrainlist, ytrain, scaling = "none", nlv = nlv)
+fm <- mbplsqda(Xtrainlist, ytrain, Xscaling = "none", nlv = nlv)
 predict(fm, Xtestlist)
 predict(fm, Xtestlist, nlv = 1:2)$pred
 

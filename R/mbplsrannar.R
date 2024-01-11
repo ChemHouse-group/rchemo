@@ -11,37 +11,41 @@
     xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights)))#*nrow(Xlist[[X]])/(nrow(Xlist[[X]])-1)))
     ysds       <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
     
-    Y <- .center(Y, ymeans)
-    
-    if((length(scaling)=1) & (length(Xlist)>1)){scaling= rep(scaling, length(Xlist))}
+    if((length(Xscaling)=1) & (length(Xlist)>1)){Xscaling = rep(Xscaling, length(Xlist))}
     
     for(i in 1:length(Xlist)){
-      if(scaling[i] == "none"){
+      if(Xscaling[i] == "none"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
-        # Y <- .center(Y, ymeans)
       }
-      if(scaling[i] == "pareto"){
+      if(Xscaling[i] == "pareto"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(xsdslist[[i]]))
-        # Y <- .center(Y, ymeans)
-        # Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
       }
-      if(scaling[i] == "sd"){
+      if(Xscaling[i] == "sd"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = xsdslist[[i]])
-        # Y <- .center(Y, ymeans)
-        # Y <- scale(Y, center = FALSE, scale = ysds)
       }
     }
     
     if(blockscaling==TRUE){
-      Xscaling <- blockscal(Xtrain = Xlist, weights = weights)
-      Xlist <- Xscaling$Xtrain
-      Xnorms <- Xscaling$disp
+      Xblockscaled <- blockscal(Xtrain = Xlist, weights = weights)
+      Xlist <- Xblockscaled$Xtrain
+      Xnorms <- Xblockscaled$disp
     }else{
       Xnorms <- NA
     }
     
+    if(Yscaling == "none"){
+      Y <- .center(Y, ymeans)
+    }
+    if(Yscaling == "pareto"){
+      Y <- .center(Y, ymeans)
+      Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
+    }
+    if(Yscaling == "sd"){
+      Y <- .center(Y, ymeans)
+      Y <- scale(Y, center = FALSE, scale = ysds)
+    }
     
     X <- do.call("cbind",Xlist)
     #zdim <- dim(X)
