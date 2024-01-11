@@ -1,8 +1,5 @@
-\name{mbplskern}
+\name{mbplsr}
 \alias{mbplsr}
-\alias{mbplskern}
-\alias{mbplsnipals}
-\alias{mbplsrannar}
 \alias{transform.Mbplsr}
 \alias{summary.Mbplsr}
 \alias{coef.Mbplsr}
@@ -13,13 +10,7 @@
 
 \description{
 
-Algorithms fitting a multi-block PLS1 or PLS2 model between dependent variables \eqn{Xlist} and responses \eqn{Y}.
-
-- \code{mbplsr} or \code{mbplskern}: multi-block PLS based on the "Improved kernel algorithm #1" proposed by Dayal and MacGregor (1997). This algorithm is stable and fast (Andersson 2009), and returns the same results as the NIPALS. 
-
-- \code{mbplsnipals}: multi-block PLS based on the NIPALS algorithm (e.g. Tenenhaus 1998, Wold 2002). In the function, the usual PLS2 NIPALS iterative is replaced by a direct calculation of the weights vector \eqn{w} by SVD decomposition of matrix \eqn{X'Y} (Hoskuldsson 1988 p.213).  
-
-- \code{mbplsrannar}: multi-block PLS based on the Kernel algorithm proposed by Rannar et al. (1994) for "wide" matrices, i.e.  with low number of rows and very large number of columns (p >> n; e.g. p = 20000). In such a situation, this algorithm is faster than the others (but it becomes much slower in other situations). If the algorithm converges, it returns the same results as the NIPALS (Note: discrepancies can be observed if too many PLS components are requested compared to the low number of observations).
+Algorithm fitting a multi-block PLS1 or PLS2 model between dependent variables \eqn{Xlist} and responses \eqn{Y}, based on the "Improved kernel algorithm #1" proposed by Dayal and MacGregor (1997). 
 
 For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2006, Kim et al. 2011 and Lesnoff et al. 2020.
 
@@ -37,13 +28,7 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-mbplsr(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv)
-
-mbplskern(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv)
-
-mbplsnipals(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv)
-
-mbplsrannar(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv)
+mbplsr(Xlist, Y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
 
 \method{transform}{Mbplsr}(object, Xlist, ..., nlv = NULL)  
 
@@ -61,7 +46,7 @@ mbplsrannar(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blocksc
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{scaling}{vector (of length Xlist) of X-variable scaling for each datablock, among "centered", "pareto", "ctreduced" (for mean-centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used. Note: Y-variables are always mean-centered.}
+\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used. Note: Y-variables are always mean-centered.}
 
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
@@ -77,7 +62,7 @@ mbplsrannar(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blocksc
 
 \value{
 
-For \code{mbplsr}, \code{mbplskern}, \code{mbplsnipals}, \code{mbplsrannar}: A list of outputs, such as
+A list of outputs, such as
 
 \item{T}{The X-score matrix (\eqn{n, nlv}).}
 
@@ -170,7 +155,7 @@ X1 <- mblocks(Xtrain, blocks = blocks)
 X2 <- mblocks(Xtest, blocks = blocks)
 
 nlv <- 3
-fm <- mbplskern(Xlist = X1, Y = ytrain, scaling = c("ctreduced","centered"), blockscaling = TRUE, weights = NULL, nlv = nlv)
+fm <- mbplsr(Xlist = X1, Y = ytrain, scaling = c("sd","none"), blockscaling = TRUE, weights = NULL, nlv = nlv)
 
 summary(fm, X1)
 coef(fm)

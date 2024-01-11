@@ -1,4 +1,4 @@
-mbplsrda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
+mbplsrda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv) {
     if(is.factor(y))
         y <- as.character(y)
     Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
@@ -10,7 +10,7 @@ mbplsrda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1]
         weights <- rep(1, n)
     weights <- .mweights(weights)
     z <- dummy(y)
-    fm <- mbplskern(Xlist, z$Y, scaling = scaling, blockscaling = blockscaling, weights = weights, nlv = nlv)
+    fm <- mbplsr(Xlist, z$Y, scaling = scaling, blockscaling = blockscaling, weights = weights, nlv = nlv)
     structure(
         list(fm = fm, lev = z$lev, ni = z$ni),
         class = c("Mbplsrda"))       

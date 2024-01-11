@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-plsrda(X, y, scaling = "centered", weights = NULL, nlv)
+plsrda(X, y, scaling = "none", weights = NULL, nlv)
 
-plslda(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"))
+plslda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
 
-plsqda(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"))
+plsqda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
 
 \method{predict}{Plsrda}(object, X, ..., nlv = NULL) 
 
@@ -40,7 +40,7 @@ plsqda(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{Variable scaling among "centered", "pareto", "ctreduced" (for centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
+\item{scaling}{Variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{weights}{Weights (\eqn{n}) to apply to the training observations for the PLS2. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
@@ -90,7 +90,7 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
 nlv <- 5
-fm <- plsrda(Xtrain, ytrain, scaling = "ctreduced", nlv = nlv)
+fm <- plsrda(Xtrain, ytrain, scaling = "sd", nlv = nlv)
 names(fm)
 
 predict(fm, Xtest)
@@ -115,7 +115,7 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
 nlv <- 5
-fm <- plslda(Xtrain, ytrain, scaling = "ctreduced", nlv = nlv)
+fm <- plslda(Xtrain, ytrain, scaling = "sd", nlv = nlv)
 predict(fm, Xtest)
 predict(fm, Xtest, nlv = 1:2)$pred
 

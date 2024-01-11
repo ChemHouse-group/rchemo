@@ -1,5 +1,5 @@
 
-.soplsr <- function (Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv){
+.soplsr <- function (Xlist, Y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv){
   
   # Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
   # Y <- .mat(Y)
@@ -71,7 +71,7 @@
 }
 
 
-soplsr <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv){
+soplsr <- function(Xlist, Y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv){
   
   # if(is.null(weights))
   #   weights <- rep(1, nrow(Y))

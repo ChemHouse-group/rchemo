@@ -1,4 +1,4 @@
-soplsrda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv) {
+soplsrda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv) {
 
   if(is.factor(y)){y <- as.character(y)}
 

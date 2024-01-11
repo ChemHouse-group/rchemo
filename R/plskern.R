@@ -1,4 +1,4 @@
-plskern <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
+plskern <- function(X, Y, scaling = "none", weights = NULL, nlv) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     zdim <- dim(X)
@@ -13,7 +13,7 @@ plskern <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
     xsds <- sqrt(.colvars(X, weights = weights))#*nrow(X)/(nrow(X)-1))
     ysds <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
 
-    if(scaling == "centered"){
+    if(scaling == "none"){
       X <- .center(X, xmeans)
       Y <- .center(Y, ymeans)
     }
@@ -23,7 +23,7 @@ plskern <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
       Y <- .center(Y, ymeans)
       Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
     }
-    if(scaling == "ctreduced"){
+    if(scaling == "sd"){
       X <- .center(X, xmeans)
       X <- scale(X, center = FALSE, scale = xsds)
       Y <- .center(Y, ymeans)
@@ -75,7 +75,7 @@ summary.Plsr <- function(object, X, ...) {
     n <- zdim[1]
     nlv <- zdim[2]
     
-    if(object$scaling == "centered"){
+    if(object$scaling == "none"){
       X <- .center(X, object$xmeans)
       # Y <- .center(Y, object$ymeans)
     }
@@ -85,7 +85,7 @@ summary.Plsr <- function(object, X, ...) {
       # Y <- .center(Y, object$ymeans)
       # Y <- scale(Y, center = FALSE, scale = sqrt(object$ysds))
     }
-    if(object$scaling == "ctreduced"){
+    if(object$scaling == "sd"){
       X <- .center(X, object$xmeans)
       X <- scale(X, center = FALSE, scale = object$xsds)
       # Y <- .center(Y, object$ymeans)
@@ -111,13 +111,13 @@ transform.Plsr <- function(object, X, ..., nlv = NULL) {
         nlv <- a
     else 
         nlv <- min(a, nlv)
-    if(object$scaling == "centered"){
+    if(object$scaling == "none"){
       T <- .center(.mat(X), object$xmeans) %*% object$R[, seq_len(nlv), drop = FALSE]
     }
     if(object$scaling == "pareto"){
       T <- scale(.center(.mat(X), object$xmeans), center = FALSE, scale = sqrt(object$xsds)) %*% object$R[, seq_len(nlv), drop = FALSE]
     }
-    if(object$scaling == "ctreduced"){
+    if(object$scaling == "sd"){
       T <- scale(.center(.mat(X), object$xmeans), center = FALSE, scale = object$xsds) %*% object$R[, seq_len(nlv), drop = FALSE]
     }
     colnames(T) <- paste("lv", seq_len(dim(T)[2]), sep = "")
@@ -132,14 +132,14 @@ coef.Plsr <- function(object, ..., nlv = NULL) {
     else 
         nlv <- min(a, nlv)
     beta <- t(object$C)[seq_len(nlv), , drop = FALSE]
-    if(object$scaling == "centered"){
+    if(object$scaling == "none"){
       B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
     }
     if(object$scaling == "pareto"){
       B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
       B <- B * matrix(rep(sqrt(object$ysds), each = nrow(B)), ncol=ncol(B)) / t(matrix(rep(sqrt(object$xsds), each = ncol(B)), ncol=nrow(B)))
     }
-    if(object$scaling == "ctreduced"){
+    if(object$scaling == "sd"){
       B <- object$R[, seq_len(nlv), drop = FALSE] %*% beta
       B <- B * matrix(rep(object$ysds, each = nrow(B)), ncol=ncol(B)) / t(matrix(rep(object$xsds, each = ncol(B)), ncol=nrow(B)))
     }

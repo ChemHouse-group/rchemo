@@ -25,11 +25,11 @@ In\code{soplslda} and \code{soplsqda}, probabilistic LDA and QDA are run over th
 
 \usage{
 
-soplsrda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv, ...)
+soplsrda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
 
-soplslda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv, ...)
+soplslda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
 
-soplsqda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv, ...)
+soplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
 
 
 \method{transform}{Soplsrda}(object, Xlist) 
@@ -48,7 +48,7 @@ soplsqda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = 
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "centered", "pareto", "ctreduced" (for centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
+\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{weights}{a priori weights to the rows of the reference matrix in the calculations.}
 
@@ -130,11 +130,11 @@ transform(fm,X_list_2)
 ncomp <- 2
 weights <- rep(1 / n, n)
 #w <- 1:n
-soplslda(X_list, y, scaling = "centered", nlv = ncomp, weights = weights)
+soplslda(X_list, y, scaling = "none", nlv = ncomp, weights = weights)
 soplslda(X_list, y, scaling = "pareto", nlv = ncomp, weights = weights)
-soplslda(X_list, y, scaling = "ctreduced", nlv = ncomp, weights = weights)
+soplslda(X_list, y, scaling = "sd", nlv = ncomp, weights = weights)
 
-fm <- soplslda(X_list, y, scaling = c("ctreduced","pareto","centered"), nlv = ncomp, weights = weights)
+fm <- soplslda(X_list, y, scaling = c("none","pareto","sd"), nlv = ncomp, weights = weights)
 predict(fm,X_list_2)
 transform(fm,X_list_2)
 

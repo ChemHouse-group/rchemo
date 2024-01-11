@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-mbplsrda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv)
+mbplsrda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
 
-mbplslda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplslda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
 
-mbplsqda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
+mbplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
 
 \method{predict}{Mbplsrda}(object, Xlist, ..., nlv = NULL) 
 
@@ -40,7 +40,7 @@ mbplsqda(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscali
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "centered", "pareto", "ctreduced" (for centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used. Note: After binary transformation, Y-variables are always mean-centered.}
+\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used. Note: After binary transformation, Y-variables are always mean-centered.}
 
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
@@ -95,7 +95,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplsrda(Xtrainlist, ytrain, scaling = "ctreduced", nlv = nlv)
+fm <- mbplsrda(Xtrainlist, ytrain, scaling = "sd", nlv = nlv)
 names(fm)
 
 predict(fm, Xtestlist)
@@ -124,7 +124,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplslda(Xtrainlist, ytrain, scaling = "centered", nlv = nlv)
+fm <- mbplslda(Xtrainlist, ytrain, scaling = "none", nlv = nlv)
 predict(fm, Xtestlist)
 predict(fm, Xtestlist, nlv = 1:2)$pred
 
@@ -147,7 +147,7 @@ Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
-fm <- mbplsqda(Xtrainlist, ytrain, scaling = "centered", nlv = nlv)
+fm <- mbplsqda(Xtrainlist, ytrain, scaling = "none", nlv = nlv)
 predict(fm, Xtestlist)
 predict(fm, Xtestlist, nlv = 1:2)$pred
 

@@ -1,4 +1,4 @@
-mbplsr <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
+mbplsr <- function(Xlist, Y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv) {
     Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
     Y <- .mat(Y, "y")
     
@@ -16,7 +16,7 @@ mbplsr <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], 
     if((length(scaling)=1) & (length(Xlist)>1)){scaling= rep(scaling, length(Xlist))}
     
     for(i in 1:length(Xlist)){
-      if(scaling[i] == "centered"){
+      if(scaling[i] == "none"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         # Y <- .center(Y, ymeans)
       }
@@ -26,7 +26,7 @@ mbplsr <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], 
         # Y <- .center(Y, ymeans)
         # Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
       }
-      if(scaling[i] == "ctreduced"){
+      if(scaling[i] == "sd"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = xsdslist[[i]])
         # Y <- .center(Y, ymeans)
@@ -89,3 +89,148 @@ mbplsr <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], 
         class = c("Mbplsr"))
 }
 
+summary.Mbplsr <- function(object, Xlist, ...) {
+    zdim <- dim(object$T)
+    n <- zdim[1]
+    nlv <- zdim[2]
+    
+    for(i in 1:length(Xlist)){
+      if(object$scaling[i] == "none"){
+        Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
+        # Y <- .center(Y, object$ymeans)
+      }
+      if(object$scaling[i] == "pareto"){
+        Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
+        Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(object$xsds[[i]]))
+        # Y <- .center(Y, object$ymeans)
+        # Y <- scale(Y, center = FALSE, scale = sqrt(object$ysds))
+      }
+      if(object$scaling[i] == "sd"){
+        Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
+        Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = object$xsds[[i]])
+        # Y <- .center(Y, object$ymeans)
+        # Y <- scale(Y, center = FALSE, scale = object$ysds)
+      }
+    }
+    
+    if(object$blockscaling==TRUE){Xlist <- blockscal(Xtrain = Xlist, weights = object$weights)$Xtrain}
+    
+    X <- do.call("cbind",Xlist)
+    
+    sstot <- sum(object$weights * X * X, na.rm = TRUE)
+    tt <- object$TT
+    ## Only valid if scores T are orthogonal (or approximate)
+    tt.adj <- colSums(object$P * object$P) * tt
+    pvar <- tt.adj / sstot
+    cumpvar <- cumsum(pvar)
+    xvar <- tt.adj / n
+    explvar <- data.frame(nlv = seq(nlv), var = xvar, pvar = pvar, cumpvar = cumpvar)
+    row.names(explvar) <- seq(nlv)
+    list(explvarx = explvar)
+}
+
+transform.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
+    a <- dim(object$T)[2]
+    if(is.null(nlv)){
+      nlv <- a
+    }else{
+      nlv <- min(a, nlv)
+    }
+
+    for(i in 1:length(Xlist)){
+      if(object$scaling[i] == "none"){
+        Xlist[[i]] <- .center(.mat(Xlist[[i]]), object$xmeans[[i]])
+      }
+      if(object$scaling[i] == "pareto"){
+        Xlist[[i]] <- scale(.center(.mat(Xlist[[i]]), object$xmeans[[i]]), center = FALSE, scale = sqrt(object$xsds[[i]]))
+      }
+      if(object$scaling[i] == "sd"){
+        Xlist[[i]] <- scale(.center(.mat(Xlist), object$xmeans[[i]]), center = FALSE, scale = object$xsds[[i]])
+      }
+    }  
+    
+    if(object$blockscaling==TRUE){Xlist <- lapply(1:length(Xlist), function(i) Xlist[[i]]/object$Xnorms[i])}
+    
+    T <- do.call("cbind",Xlist) %*% object$R[, seq_len(nlv), drop = FALSE]
+    colnames(T) <- paste("lv", seq_len(dim(T)[2]), sep = "")
+    T
+}
+
+coef.Mbplsr <- function(object, ..., nlv = NULL) {
+    ## Works also for nlv = 0
+    a <- dim(object$T)[2]
+    if(is.null(nlv)){
+      nlv <- a
+    }else{
+      nlv <- min(a, nlv)
+    }
+        
+    beta <- t(object$C)[seq_len(nlv), , drop = FALSE]
+    
+    plist <- lapply(1:length(object$xmeans), function(P) length(object$xmeans[[P]]))
+    cumsumPlist <- cumsum(plist)
+    cumsumPlist1 <- c(1, cumsumPlist + 1)
+    
+    Blist <- list()
+    if(object$blockscaling == TRUE){
+      for(i in 1:length(object$xmeans)){
+        if(object$scaling[i] == "none"){
+          Blist[[i]] <- (object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta)/object$Xnorms[i]
+        }
+        if(object$scaling[i] == "pareto"){
+          Blist[[i]] <- (object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta)/object$Xnorms[i]
+          Blist[[i]] <- Blist[[i]] * matrix(rep(sqrt(object$ysds), each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(sqrt(object$xsds[[i]]), each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
+        }
+        if(object$scaling[i] == "sd"){
+          Blist[[i]] <- (object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta)/object$Xnorms[i]
+          Blist[[i]] <- Blist[[i]] * matrix(rep(object$ysds, each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(object$xsds[[i]], each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
+        }
+      }
+    }
+    if(object$blockscaling != TRUE){
+      for(i in 1:length(object$xmeans)){
+        if(object$scaling[i] == "none"){
+          Blist[[i]] <- object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta
+        }
+        if(object$scaling[i] == "pareto"){
+          Blist[[i]] <- object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta
+          Blist[[i]] <- Blist[[i]] * matrix(rep(sqrt(object$ysds), each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(sqrt(object$xsds[[i]]), each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
+        }
+        if(object$scaling[i] == "sd"){
+          Blist[[i]] <- object$R[cumsumPlist1[i]:cumsumPlist[i], seq_len(nlv), drop = FALSE] %*% beta
+          Blist[[i]] <- Blist[[i]] * matrix(rep(object$ysds, each = nrow(Blist[[i]])), ncol=ncol(Blist[[i]])) / t(matrix(rep(object$xsds[[i]], each = ncol(Blist[[i]])), ncol=nrow(Blist[[i]])))
+        }
+      }
+    }
+    
+    B <- do.call("rbind",Blist)
+    int <- object$ymeans - t(do.call("c",object$xmeans)) %*% B
+    list(int = int, B = B) 
+}
+
+predict.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
+  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
+    X <- do.call("cbind",Xlist)
+    q <- length(object$ymeans)
+    rownam <- row.names(X)
+    colnam <- paste("y", seq_len(q), sep = "")
+    a <- dim(object$T)[2]
+    if(is.null(nlv))
+        nlv <- a 
+    else 
+        nlv <- seq(min(nlv), min(max(nlv), a))
+    le_nlv <- length(nlv)
+    pred <- vector(mode = "list", length = le_nlv)
+    for(i in seq_len(le_nlv)) {
+        z <- coef(object, nlv = nlv[i])
+        zpred <- t(c(z$int) + t(X %*% z$B))
+        ## Same but faster than:
+        ## zpred <- cbind(rep(1, m), X) %*% rbind(z$int, z$B)
+        dimnames(zpred) <- list(rownam, colnam)
+        pred[[i]] <- zpred
+        }
+    names(pred) <- paste("lv", nlv, sep = "")
+    if(le_nlv == 1)
+        pred <- pred[[1]] 
+    list(pred = pred)
+}

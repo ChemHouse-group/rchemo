@@ -1,4 +1,4 @@
-plsrda <- function(X, y, scaling = "centered", weights = NULL, nlv) {
+plsrda <- function(X, y, scaling = "none", weights = NULL, nlv) {
     if(is.factor(y))
         y <- as.character(y)
     X <- .mat(X)

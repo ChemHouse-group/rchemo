@@ -36,11 +36,11 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-plskern(X, Y, scaling = "centered", weights = NULL, nlv)
+plskern(X, Y, scaling = "none", weights = NULL, nlv)
 
-plsnipals(X, Y, scaling = "centered", weights = NULL, nlv)
+plsnipals(X, Y, scaling = "none", weights = NULL, nlv)
 
-plsrannar(X, Y, scaling = "centered", weights = NULL, nlv)
+plsrannar(X, Y, scaling = "none", weights = NULL, nlv)
 
 \method{transform}{Plsr}(object, X, ..., nlv = NULL)  
 
@@ -58,7 +58,7 @@ plsrannar(X, Y, scaling = "centered", weights = NULL, nlv)
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{scaling}{Variable scaling among "centered", "pareto", "ctreduced" (for mean-centered and scaled to unit variance). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
+\item{scaling}{Variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
@@ -153,11 +153,11 @@ Xtest <- Xtrain[1:m, , drop = FALSE]
 Ytest <- Ytrain[1:m, , drop = FALSE] ; ytest <- Ytest[1:m, 1]
 
 nlv <- 3
-plskern(Xtrain, Ytrain, scaling = "ctreduced", nlv = nlv)
-plsnipals(Xtrain, Ytrain, scaling = "ctreduced", nlv = nlv)
-plsrannar(Xtrain, Ytrain, scaling = "ctreduced", nlv = nlv)
+plskern(Xtrain, Ytrain, scaling = "sd", nlv = nlv)
+plsnipals(Xtrain, Ytrain, scaling = "sd", nlv = nlv)
+plsrannar(Xtrain, Ytrain, scaling = "sd", nlv = nlv)
 
-plskern(Xtrain, Ytrain, scaling = "centered", nlv = nlv)
+plskern(Xtrain, Ytrain, scaling = "none", nlv = nlv)
 plskern(Xtrain, Ytrain, nlv = nlv)$T
 plskern(Xtrain, Ytrain, nlv = nlv, weights = 1:n)$T
 

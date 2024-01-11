@@ -1,4 +1,4 @@
-.plsprobda <- function(X, y, scaling = "centered", weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.plsprobda <- function(X, y, scaling = "none", weights = NULL, nlv, fun, prior = c("unif", "prop")) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -24,10 +24,10 @@
               class = "Plsprobda")       
 }
 
-plslda <- function(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"))
+plslda <- function(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
     .plsprobda(X, y, scaling, weights, nlv, fun = rchemo::lda, prior = prior)
 
-plsqda <- function(X, y, scaling = "centered", weights = NULL, nlv, prior = c("unif", "prop"))
+plsqda <- function(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
     .plsprobda(X, y, scaling, weights, nlv, fun = rchemo::qda, prior = prior)
 
 

@@ -1,4 +1,4 @@
-plsnipals <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
+plsnipals <- function(X, Y, scaling = "none", weights = NULL, nlv) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     zdim <- dim(X)
@@ -13,7 +13,7 @@ plsnipals <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
     xsds <- sqrt(.colvars(X, weights = weights))#*nrow(X)/(nrow(X)-1))
     ysds <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
 
-    if(scaling == "centered"){
+    if(scaling == "none"){
       X <- .center(X, xmeans)
       Y <- .center(Y, ymeans)
     }
@@ -23,7 +23,7 @@ plsnipals <- function(X, Y, scaling = "centered", weights = NULL, nlv) {
       Y <- .center(Y, ymeans)
       Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
     }
-    if(scaling == "ctreduced"){
+    if(scaling == "sd"){
       X <- .center(X, xmeans)
       X <- scale(X, center = FALSE, scale = xsds)
       Y <- .center(Y, ymeans)

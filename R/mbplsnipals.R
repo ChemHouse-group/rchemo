@@ -1,4 +1,4 @@
-mbplsnipals <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv) {
+.mbplsnipals <- function(Xlist, Y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv) {
     Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
     Y <- .mat(Y, "y") 
     
@@ -16,7 +16,7 @@ mbplsnipals <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")
     if((length(scaling)=1) & (length(Xlist)>1)){scaling= rep(scaling, length(Xlist))}
     
     for(i in 1:length(Xlist)){
-      if(scaling[i] == "centered"){
+      if(scaling[i] == "none"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         # Y <- .center(Y, ymeans)
       }
@@ -26,7 +26,7 @@ mbplsnipals <- function(Xlist, Y, scaling = c("centered", "pareto", "ctreduced")
         # Y <- .center(Y, ymeans)
         # Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
       }
-      if(scaling[i] == "ctreduced"){
+      if(scaling[i] == "sd"){
         Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
         Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = xsdslist[[i]])
         # Y <- .center(Y, ymeans)

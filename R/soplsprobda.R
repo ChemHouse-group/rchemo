@@ -1,4 +1,4 @@
-.soplsprobda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.soplsprobda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -23,10 +23,10 @@
               class = "Soplsprobda")       
 }
 
-soplslda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv, prior = c("unif", "prop"))
+soplslda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"))
     .soplsprobda(Xlist, y, scaling = scaling, weights = weights, nlv = nlv, fun = rchemo::lda, prior = prior)
 
-soplsqda <- function(Xlist, y, scaling = c("centered", "pareto", "ctreduced")[1], weights = NULL, nlv, prior = c("unif", "prop"))
+soplsqda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"))
     .soplsprobda(Xlist, y, scaling = scaling, weights = weights, nlv = nlv, fun = rchemo::qda, prior = prior)
 
 
