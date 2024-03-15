@@ -59,13 +59,21 @@ soplsr(Xlist, Y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ..
 
 \item{pred}{A matrice \eqn{n x q} with the calculated fitted values.}
 
-\item{ymeans}{A list of matrices with the mean Y values calculated before each addition of X-block.}
+\item{xmeans}{list of vectors of X-mean values.}
+
+\item{ymeans}{vector of Y-mean values.}
+
+\item{xsds}{list of vectors of X-mean standard deviations.}
+
+\item{ysds}{vector of Y-mean standard deviations.}
 
 \item{b}{A list of X-loading weights, used in the orthogonalization step.}
 
 \item{weights}{Weights applied to the training observations.}
 
-\item{scaling}{vector of variable scaling for each X-block.}
+\item{Xscaling}{vector of variable scaling for each X-block.}
+
+\item{Yscaling}{scaling for the Y-block.}
 
 \item{nlv}{vector of numbers of latent variables from each X-block.}
 
