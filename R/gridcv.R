@@ -14,10 +14,19 @@ gridcv <- function(X, Y, segm, score, fun, pars, verb = TRUE) {
             if(verb)
                 cat("segm=", j, " ", sep = "")
             s <- sort(listsegm[[j]])
-            zres[[j]] <- gridscore(
+            if(is.list(X)){
+              zres[[j]] <- gridscore(
+                lapply(1:length(X), function(k) X[[k]][-s, , drop = FALSE]), 
+                Y[-s, , drop = FALSE],
+                lapply(1:length(X), function(k) X[[k]][s, , drop = FALSE]), 
+                Y[s, , drop = FALSE],
+                score = score, fun = fun, pars = pars)
+            }else{
+              zres[[j]] <- gridscore(
                 X[-s, , drop = FALSE], Y[-s, , drop = FALSE],
                 X[s, , drop = FALSE], Y[s, , drop = FALSE],
                 score = score, fun = fun, pars = pars)
+            }
         }
         zres <- setDF(rbindlist(zres))
         res_rep[[i]] <- cbind(rep = rep(i, nsegm * nco),
