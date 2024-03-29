@@ -193,7 +193,7 @@ predict.Soplsr <- function (object, Xlist){
   }else{
     T <- NULL
     pred <- matrix(rep(object$ymeans, m), nrow=m, byrow=TRUE)*0
-    rownames(pred) <- rownames(object$pred)
+    rownames(pred) <- rownames(Xlist[[1]])
     colnames(pred) <- colnames(object$pred)
   }
 

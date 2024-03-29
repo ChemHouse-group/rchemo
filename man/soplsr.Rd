@@ -25,7 +25,7 @@ The function allows giving a priori weights to the rows of the reference matrix 
 
 \usage{
 
-soplsr(Xlist, Y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplsr(Xlist, Y, , Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
 
 \method{transform}{Soplsr}(object, Xlist, ...)  
 
@@ -39,7 +39,9 @@ soplsr(Xlist, Y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ..
 
 \item{Y}{A \eqn{n x q} matrix or data frame, or a vector of length \eqn{n}, of reference (= training) responses.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
+\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+
+\item{Yscaling}{variable scaling for the Y-block, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{weights}{a priori weights to the rows of the reference matrix in the calculations.}
 
