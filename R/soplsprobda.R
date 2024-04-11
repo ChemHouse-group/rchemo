@@ -1,4 +1,4 @@
-.soplsprobda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.soplsprobda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, fun, prior = c("unif", "prop")) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -12,7 +12,7 @@
     weights <- .mweights(weights)
     zd <- dummy(y)
     fm <- list()
-    fm[[1]] <- soplsr(Xlist, zd$Y, scaling = scaling, weights = weights, nlv = nlv)
+    fm[[1]] <- soplsr(Xlist, zd$Y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv = nlv)
     ## Should be:
     ## z <- transform(fm[[1]], X)
     ## But same as:
@@ -23,11 +23,11 @@
               class = "Soplsprobda")       
 }
 
-soplslda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"))
-    .soplsprobda(Xlist, y, scaling = scaling, weights = weights, nlv = nlv, fun = rchemo::lda, prior = prior)
+soplslda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"))
+    .soplsprobda(Xlist, y, Xscaling = Xscaling, weights = weights, nlv = nlv, fun = rchemo::lda, prior = prior)
 
-soplsqda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"))
-    .soplsprobda(Xlist, y, scaling = scaling, weights = weights, nlv = nlv, fun = rchemo::qda, prior = prior)
+soplsqda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"))
+    .soplsprobda(Xlist, y, Xscaling = Xscaling, weights = weights, nlv = nlv, fun = rchemo::qda, prior = prior)
 
 
 transform.Soplsprobda <- function(object, Xlist){

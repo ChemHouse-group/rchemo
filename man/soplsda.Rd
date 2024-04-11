@@ -25,11 +25,11 @@ In\code{soplslda} and \code{soplsqda}, probabilistic LDA and QDA are run over th
 
 \usage{
 
-soplsrda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplsrda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
 
-soplslda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
 
-soplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
 
 
 \method{transform}{Soplsrda}(object, Xlist) 
@@ -48,7 +48,9 @@ soplsqda(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, 
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
+\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+
+\item{Yscaling}{variable scaling for the Y-block, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{weights}{a priori weights to the rows of the reference matrix in the calculations.}
 

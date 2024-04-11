@@ -1,4 +1,4 @@
-soplsrda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights = NULL, nlv) {
+soplsrda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv) {
 
   if(is.factor(y)){y <- as.character(y)}
 
@@ -11,13 +11,13 @@ soplsrda <- function(Xlist, y, scaling = c("none", "pareto", "sd")[1], weights =
     weights <- rep(1, n)
   weights <- .mweights(weights)
   z <- dummy(y)
-  fm <- soplsr(Xlist, z$Y, scaling = scaling, weights = weights, nlv = nlv)
+  fm <- soplsr(Xlist, z$Y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv = nlv)
   structure(
     list(fm = fm, lev = z$lev, ni = z$ni),
     class = c("Soplsrda"))       
 }
 
-transform.Soplsrda<- function(object, Xlist){
+transform.Soplsrda <- function(object, Xlist){
   
   Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
   nbl <- length(object$fm$fm)

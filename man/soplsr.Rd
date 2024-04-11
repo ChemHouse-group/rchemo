@@ -25,7 +25,7 @@ The function allows giving a priori weights to the rows of the reference matrix 
 
 \usage{
 
-soplsr(Xlist, Y, , Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
 
 \method{transform}{Soplsr}(object, Xlist, ...)  
 

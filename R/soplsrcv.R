@@ -17,7 +17,7 @@
 ##            if NULL, the first observation is set in the first fold, the second observation in the second fold, etc...
 ## nfolds : An integer, setting the number of partitions to create. Default value is 7.
 ## optimisation : "global" or "sequential" optimisation of the number of components.
-## nlvXlist : A list of same length as the number of X-blocks. Each component of the list gives the number of PLS components of the corresponding X-block to test.
+## nlvlist : A list of same length as the number of X-blocks. Each component of the list gives the number of PLS components of the corresponding X-block to test.
 ## selection : a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","NoSignifDecrease1"
 ##                "localmin": the optimal combination corresponds to the first local maximum of the mean CV global accuracy
 ##                "globalmin" : the optimal combination corresponds to the maximum mean CV global accuracy
@@ -43,18 +43,12 @@
 ## res_ExplVarCV : matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and response variables included in Yselection
 ## res_ExplVarC : matrix or list of matrices of mean and sd of explained variances in the model for each combination and response variables included in Yselection
 
-#####################
 
-# DEPENDENCIES
-
-#source("C:\\Users\\mbrandolini\\Documents\\sauvegardeSept17\\DEVELOPPEMENTS\\main\\SOPLS(PM)\\TestDimSOPLS_function.R")
-
-
-soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", nlvXlist=list(), selection="1std", majorityvote=FALSE){
+soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", nlvlist=list(), selection="1std", majorityvote=FALSE){
   
   # verifications
   
-  if(length(Xlist) != length(nlvXlist)){stop("the number of nbcolXlist or nlvXlist elements is not correct")}
+  if(length(Xlist) != length(nlvlist)){stop("the number of nbcolXlist or nlvlist elements is not correct")}
   if((is.vector(Y)==FALSE) & (sum(rownames(Xlist[[1]])!= rownames(Y))>0)){stop("the rownames of Xlist and Y are different")}
   if((is.vector(Y)==TRUE) & (nrow(Xlist[[1]])!= length(Y))){stop("the row numbers of Xlist and Y are different")}
   if((is.null(samplingk)==FALSE) & (nrow(Xlist[[1]])!= length(samplingk))){stop("the length of samplingk is not correct")}
@@ -110,7 +104,7 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
   ## GLOBAL optimisation
   if((optimisation=="global")|(nXblocks==1)){
     
-    lvcombi <- as.matrix(expand.grid(nlvXlist))
+    lvcombi <- as.matrix(expand.grid(nlvlist))
     colnames(lvcombi) <- paste0(rep("Xlist",nXblocks),1:nXblocks)
     rownames(lvcombi) <- paste0("lvcombi",1:nrow(lvcombi))
     
@@ -348,12 +342,12 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
     for (m in 1:nXblocks) {
       # combinations
       if(m==1){
-        lvcombi[[1]] <- as.matrix(expand.grid(nlvXlist[[1]]))
+        lvcombi[[1]] <- as.matrix(expand.grid(nlvlist[[1]]))
         colnames(lvcombi[[1]]) <- "Xlist1"
         rownames(lvcombi[[1]]) <- paste0("lvcombi",1:nrow(lvcombi[[1]]))
       }
       if(m>1){
-        lvcombi[[m]] <- data.frame(matrix(rep(unlist(optimcombi),length(nlvXlist[[m]])),nrow=length(nlvXlist[[m]]),byrow=TRUE),as.matrix(expand.grid(nlvXlist[[m]])))
+        lvcombi[[m]] <- data.frame(matrix(rep(unlist(optimcombi),length(nlvlist[[m]])),nrow=length(nlvlist[[m]]),byrow=TRUE),as.matrix(expand.grid(nlvlist[[m]])))
         colnames(lvcombi[[m]]) <- paste0(rep("Xlist",m),1:m)
         rownames(lvcombi[[m]]) <- paste0("lvcombi",1:nrow(lvcombi[[m]]))
       }
@@ -515,7 +509,7 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
       # optim combination
       optimcombi <- as.vector(unlist(lvcombi[[m]][kchoix,]))
       names(optimcombi) <- paste0(rep("Xlist",m),1:m)
-      nlvXlist[[m]] <- lvcombi[[m]][kchoix,m]
+      nlvlist[[m]] <- lvcombi[[m]][kchoix,m]
     }# end loop on m
     
 
@@ -565,7 +559,7 @@ if(FALSE){
   
   Xlist = list(A,B,C,E)
   Y = D
-  nlvXlist=list(0:2,1:ncol(B),0:3,0:1)
+  nlvlist=list(0:2,1:ncol(B),0:3,0:1)
     
   nbrep=3
   cvmethod="kfolds"
@@ -579,6 +573,6 @@ if(FALSE){
   Yscaling = c("none","pareto","sd")[3]
   weights = NULL
   
-  test <- soplsrcv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, nlvXlist=nlvXlist, selection=selection, majorityvote=FALSE)
+  test <- soplsrcv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, nlvlist=nlvlist, selection=selection, majorityvote=FALSE)
     
 }
