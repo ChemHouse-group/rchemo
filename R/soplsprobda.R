@@ -14,7 +14,7 @@
     fm <- list()
     fm[[1]] <- soplsr(Xlist, zd$Y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv = nlv)
     ## Should be:
-    ## z <- transform(fm[[1]], X)
+    ## z <- transform(fm[[1]], Xlist)
     ## But same as:
     z <- fm[[1]]$T
     

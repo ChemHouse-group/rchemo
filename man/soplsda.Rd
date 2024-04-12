@@ -113,11 +113,7 @@ For \code{soplsrdacv}:
 
 \item{optimcombi}{the number of PLS components of each X-block allowing the optimisation of the mean rmseCV.}
 
-\item{rmseCV_byY}{matrix or list of matrices of mean and sd of cross-validated RMSE in the model for each combination and each response variable.}
-
-\item{ExplVarCV_byY}{matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and each response variable.}
-
-\item{optimExplVarCV}{cross-validated explained variance for the optimal sopls model.}
+\item{optimExplVarCV}{cross-validated explained variance for the optimal soplsda model.}
 
 \item{rmseCV}{matrix or list of matrices of mean and sd of cross-validated rmse in the model for each combination and response variables.}
 
