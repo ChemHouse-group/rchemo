@@ -6,6 +6,7 @@
 \alias{transform.Soplsprobda}
 \alias{predict.Soplsrda}
 \alias{predict}.Soplsprobda} 
+\alias{soplsrdacv}
 
 \encoding{UTF-8}
 
@@ -14,6 +15,8 @@
 \description{
 
 Function \code{soplsrda} implements dimension reductions of pre-selected blocks of variables (= set of columns) of a reference (= training) matrix, by sequential orthogonalization-PLS (said "SO-PLS") in a context of discrimination. 
+
+Function \code{soplsrdacv} perfoms repeteated cross-validation of an SO-PLS-RDA model in order to choose the optimal lv combination from the different blocks.
 
 The block reduction consists in calculating latent variables (= scores) for each block, each block being sequentially orthogonalized to the information computed from the previous blocks.
 
@@ -31,6 +34,7 @@ soplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 
 soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
 
+soplsrdacv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criteria = "err", selection="1std")
 
 \method{transform}{Soplsrda}(object, Xlist) 
 
@@ -55,6 +59,25 @@ soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 \item{weights}{a priori weights to the rows of the reference matrix in the calculations.}
 
 \item{nlv}{A vector of same length as the number of blocks defining the number of scores to calculate for each block, or a single number. In this last case, the same number of scores is used for all the blocks.}
+
+\item{nlvlist}{A list of same length as the number of X-blocks. Each component of the list gives the number of PLS components of the corresponding X-block to test.}
+
+\item{nbrep}{An integer, setting the number of CV repetitions. Default value is 30.}
+
+\item{cvmethod}{"kfolds" for k-folds cross-validation, or "loo" for leave-one-out.}
+
+\item{seed}{a numeric. Seed used for the repeated resampling, and if cvmethod is "kfolds" and samplingk is not NULL.}
+
+\item{samplingk}{A vector of length n. The elements are the values of a qualitative variable used for stratified partition creation. If NULL, the first observation is set in the first fold, the second observation in the second fold, etc...}
+
+\item{nfolds}{An integer, setting the number of partitions to create. Default value is 7.}
+
+\item{optimisation}{"global" or "sequential" optimisation of the number of components. If "sequential", the optimal lv number is found for the first X-block, then for the 2nd one, etc...}
+
+\item{criteria}{optimisation criteria among "rmse" and "err" (for classification error rate)}
+
+\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse or error rate. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse or error rate. If "1std" : it corresponds to the first combination after which the mean cross-validated rmse or error rate does not decrease significantly.}
+
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
@@ -81,6 +104,26 @@ For \code{predict.Soplsrda}, \code{predict.Soplsprobda}:
 \item{pred}{predicted class for each observation}
 
 \item{posterior}{calculated probability of belonging to a class for each observation}
+
+For \code{soplsrdacv}:
+
+\item{lvcombi}{matrix or list of matrices, of tested component combinations.}
+
+\item{optimCombiLine}{number of the combination line corresponding to the optimal one. In the case of a sequential optimisation, it is the number of the combination line in the model with all the X-blocks.}
+
+\item{optimcombi}{the number of PLS components of each X-block allowing the optimisation of the mean rmseCV.}
+
+\item{rmseCV_byY}{matrix or list of matrices of mean and sd of cross-validated RMSE in the model for each combination and each response variable.}
+
+\item{ExplVarCV_byY}{matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and each response variable.}
+
+\item{optimExplVarCV}{cross-validated explained variance for the optimal sopls model.}
+
+\item{rmseCV}{matrix or list of matrices of mean and sd of cross-validated rmse in the model for each combination and response variables.}
+
+\item{ExplVarCV}{matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and response variables.}
+
+\item{errCV}{matrix or list of matrices of mean and sd of cross-validated classification error rates in the model for each combination and response variables.}
 
 }
 
