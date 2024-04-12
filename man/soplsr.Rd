@@ -1,5 +1,6 @@
 \name{sopls}
 \alias{soplsr}
+\alias{soplsrcv}
 
 \encoding{UTF-8}
 
@@ -8,6 +9,8 @@
 \description{
 
 Function \code{soplsr} implements dimension reductions of pre-selected blocks of variables (= set of columns) of a reference (= training) matrix, by sequential orthogonalization-PLS (said "SO-PLS"). 
+
+Function \code{soplsrcv} perfoms cross-validation of an SO-PLS model in order to choose the optimal lv combination from the different blocks.
 
 SO-PLS is described for instance in Menichelli et al. (2014), Biancolillo et al. (2015) and Biancolillo (2016). 
 
@@ -26,6 +29,9 @@ The function allows giving a priori weights to the rows of the reference matrix 
 \usage{
 
 soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+
+soplsrcv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE)
+
 
 \method{transform}{Soplsr}(object, Xlist, ...)  
 
@@ -47,6 +53,24 @@ soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "
 
 \item{nlv}{A vector of same length as the number of blocks defining the number of scores to calculate for each block, or a single number. In this last case, the same number of scores is used for all the blocks.}
 
+\item{nlvlist}{A list of same length as the number of X-blocks. Each component of the list gives the number of PLS components of the corresponding X-block to test.}
+
+\item{nbrep}{An integer, setting the number of CV repetitions. Default value is 30.}
+
+\item{cvmethod}{"kfolds" for k-folds cross-validation, or "loo" for leave-one-out.}
+
+\item{seed}{a numeric. Seed used for the repeated resampling, and if cvmethod is "kfolds" and samplingk is not NULL.}
+
+\item{samplingk}{A vector of length n. The elements are the values of a qualitative variable used for stratified partition creation. If NULL, the first observation is set in the first fold, the second observation in the second fold, etc...}
+
+\item{nfolds}{An integer, setting the number of partitions to create. Default value is 7.}
+
+\item{optimisation}{"global" or "sequential" optimisation of the number of components. If "sequential", the optimal lv number is found for the first X-block, then for the 2nd one, etc...}
+
+\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","NoSignifDecrease1". If "localmin": the optimal combination corresponds to the first local maximum of the mean CV rmse. If "globalmin" : the optimal combination corresponds to the maximum mean CV rmse. If "1std" : it corresponds to the first combination after which the mean cross-validated accuracy does not increase significantly.}
+
+\item{majorityvote}{only if optimisation is "global" or one X-block. If majorityvote is TRUE, the optimal combination is chosen for each Y variable, with the chosen selection, before a majority vote. If majorityvote is "FALSE, the optimal combination is simply chosen with the chosen selection.}
+
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
 \item{...}{For the auxiliary functions: Optional arguments. Not used.}
@@ -54,6 +78,8 @@ soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "
 }
 
 \value{
+
+For \code{soplsr}:
 
 \item{fm}{A list of the plsr models.}
 
@@ -78,6 +104,24 @@ soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "
 \item{Yscaling}{scaling for the Y-block.}
 
 \item{nlv}{vector of numbers of latent variables from each X-block.}
+
+For \code{soplsr}:
+
+\item{vcombi}{matrix or list of matrices, of tested component combinations.}
+
+\item{optimCombiLine}{number of the combination line corresponding to the optimal one. In the case of a sequential optimisation, it is the number of the combination line in the model with all the X-blocks.}
+
+\item{optimcombi}{the number of PLS components of each X-block allowing the optimisation of the mean rmseCV.}
+
+\item{rmseCV_byY}{matrix or list of matrices of mean and sd of cross-validated RMSE in the model for each combination and each response variable.}
+
+\item{ExplVarCV_byY}{matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and each response variable.}
+
+\item{optimExplVarCV}{cross-validated explained variance for the optimal sopls model.}
+
+\item{rmseCV}{matrix or list of matrices of mean and sd of cross-validated RMSE in the model for each combination and response variables.}
+
+\item{ExplVarCV}{matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and response variables.}
 
 }
 
