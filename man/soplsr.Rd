@@ -10,7 +10,7 @@
 
 Function \code{soplsr} implements dimension reductions of pre-selected blocks of variables (= set of columns) of a reference (= training) matrix, by sequential orthogonalization-PLS (said "SO-PLS"). 
 
-Function \code{soplsrcv} perfoms cross-validation of an SO-PLS model in order to choose the optimal lv combination from the different blocks.
+Function \code{soplsrcv} perfoms repeteated cross-validation of an SO-PLS model in order to choose the optimal lv combination from the different blocks.
 
 SO-PLS is described for instance in Menichelli et al. (2014), Biancolillo et al. (2015) and Biancolillo (2016). 
 
@@ -67,7 +67,7 @@ soplsrcv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 
 \item{optimisation}{"global" or "sequential" optimisation of the number of components. If "sequential", the optimal lv number is found for the first X-block, then for the 2nd one, etc...}
 
-\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","NoSignifDecrease1". If "localmin": the optimal combination corresponds to the first local maximum of the mean CV rmse. If "globalmin" : the optimal combination corresponds to the maximum mean CV rmse. If "1std" : it corresponds to the first combination after which the mean cross-validated accuracy does not increase significantly.}
+\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse. If "1std" : it corresponds to the first combination after which the mean cross-validated rmse does not decrease significantly.}
 
 \item{majorityvote}{only if optimisation is "global" or one X-block. If majorityvote is TRUE, the optimal combination is chosen for each Y variable, with the chosen selection, before a majority vote. If majorityvote is "FALSE, the optimal combination is simply chosen with the chosen selection.}
 
@@ -105,9 +105,13 @@ For \code{soplsr}:
 
 \item{nlv}{vector of numbers of latent variables from each X-block.}
 
-For \code{soplsr}:
+For \code{transform.Soplsr}:  the LVs Calculated for the new matrices list \eqn{Xlist} from the model.
 
-\item{vcombi}{matrix or list of matrices, of tested component combinations.}
+For \code{predict.Soplsr}: predicted values for each observation
+
+For \code{soplsrcv}:
+
+\item{lvcombi}{matrix or list of matrices, of tested component combinations.}
 
 \item{optimCombiLine}{number of the combination line corresponding to the optimal one. In the case of a sequential optimisation, it is the number of the combination line in the model with all the X-blocks.}
 

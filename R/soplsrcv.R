@@ -18,7 +18,7 @@
 ##            if NULL, the first observation is set in the first fold, the second observation in the second fold, etc...
 ## nfolds : An integer, setting the number of partitions to create. Default value is 7.
 ## optimisation : "global" or "sequential" optimisation of the number of components.
-## selection : a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","NoSignifDecrease1"
+## selection : a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std"
 ##                "localmin": the optimal combination corresponds to the first local maximum of the mean CV global accuracy
 ##                "globalmin" : the optimal combination corresponds to the maximum mean CV global accuracy
 ##                "1std" : it corresponds to the first combination after which the mean cross-validated accuracy does not increase significantly
