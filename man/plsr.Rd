@@ -36,11 +36,11 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-plskern(X, Y, scaling = "none", weights = NULL, nlv)
+plskern(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
 
-plsnipals(X, Y, scaling = "none", weights = NULL, nlv)
+plsnipals(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
 
-plsrannar(X, Y, scaling = "none", weights = NULL, nlv)
+plsrannar(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
 
 \method{transform}{Plsr}(object, X, ..., nlv = NULL)  
 
@@ -58,11 +58,13 @@ plsrannar(X, Y, scaling = "none", weights = NULL, nlv)
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{scaling}{Variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
-
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
 \item{nlv}{For the main functions: The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
+
+\item{Xscaling}{X variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+
+\item{Yscaling}{Y variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
@@ -88,9 +90,9 @@ For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such 
 
 \item{ymeans}{The centering vector of \eqn{Y} (\eqn{q, 1}).}
 
-\item{xsds}{The vector of \eqn{X} variable standard deviations (\eqn{p, 1}).}
+\item{xscales}{The vector of \eqn{X} variable standard deviations (\eqn{p, 1}).}
 
-\item{ysds}{The vector of \eqn{Y} variable standard deviations (\eqn{q, 1}).}
+\item{yscales}{The vector of \eqn{Y} variable standard deviations (\eqn{q, 1}).}
 
 \item{weights}{Weights applied to the training observations.}
 

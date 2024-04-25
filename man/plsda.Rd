@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-plsrda(X, y, scaling = "none", weights = NULL, nlv)
+plsrda(X, y, scaling = "none", weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
 
-plslda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
+plslda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = "none", Yscaling = "none")
 
-plsqda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
+plsqda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = "none", Yscaling = "none")
 
 \method{predict}{Plsrda}(object, X, ..., nlv = NULL) 
 
@@ -40,13 +40,15 @@ plsqda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"))
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
-\item{scaling}{Variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
-
 \item{weights}{Weights (\eqn{n}) to apply to the training observations for the PLS2. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
 \item{nlv}{The number(s) of LVs to calculate.}
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
+
+\item{Xscaling}{X variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+
+\item{Yscaling}{Y variable scaling, once converted to binary variables, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 

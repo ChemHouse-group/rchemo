@@ -1,4 +1,4 @@
-plsrannar <- function(X, Y, scaling = "none", weights = NULL, nlv) {
+plsrannar <- function(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none") {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     n <- dim(X)[1]
@@ -8,25 +8,16 @@ plsrannar <- function(X, Y, scaling = "none", weights = NULL, nlv) {
     weights <- .mweights(weights)
     xmeans <- .colmeans(X, weights = weights) 
     ymeans <- .colmeans(Y, weights = weights)
-    xsds <- sqrt(.colvars(X, weights = weights))#*nrow(X)/(nrow(X)-1))
-    ysds <- sqrt(.colvars(Y, weights = weights))#*nrow(Y)/(nrow(Y)-1))
-
-    if(scaling == "none"){
-      X <- .center(X, xmeans)
-      Y <- .center(Y, ymeans)
-    }
-    if(scaling == "pareto"){
-      X <- .center(X, xmeans)
-      X <- scale(X, center = FALSE, scale = sqrt(xsds))
-      Y <- .center(Y, ymeans)
-      Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
-    }
-    if(scaling == "sd"){
-      X <- .center(X, xmeans)
-      X <- scale(X, center = FALSE, scale = xsds)
-      Y <- .center(Y, ymeans)
-      Y <- scale(Y, center = FALSE, scale = ysds)
-    }
+    
+    if(Xscaling == "none") {xscales <- rep(1, p)}
+    if(Yscaling == "none") {yscales <- rep(1, q)}
+    if(Xscaling == "sd") {xscales <- sqrt(.colvars(X, weights = weights))}
+    if(Yscaling == "sd") {yscales <- sqrt(.colvars(Y, weights = weights))}
+    if(Xscaling == "pareto") {xscales <- sqrt(sqrt(.colvars(X, weights = weights)))}
+    if(Yscaling == "pareto") {yscales <- sqrt(sqrt(.colvars(Y, weights = weights)))}
+    
+    X <- scale(X, center = xmeans, scale = xscales)
+    Y <- scale(Y, center = ymeans, scale = yscales)
     
     nam <- paste("lv", seq_len(nlv), sep = "")
     U <- T <- Tclass <- matrix(nrow = n, ncol = nlv, 
@@ -53,7 +44,7 @@ plsrannar <- function(X, Y, scaling = "none", weights = NULL, nlv) {
         Tclass[, a] <- tclass
         U[, a] <- u
         TT[a] <- tt
-        }
+    }
     W <- crossprod(Xd, U)
     W <- .scale(W, scale = .colnorms(W))
     Z <- solve(crossprod(T))
@@ -63,6 +54,7 @@ plsrannar <- function(X, Y, scaling = "none", weights = NULL, nlv) {
     R <- W %*% solve(crossprod(P, W))
     structure(
         list(T = Tclass, P = P, R = R, W = W, C = C, TT = TT,
-            xmeans = xmeans, ymeans = ymeans, xsds = xsds, ysds = ysds, weights = weights, scaling = scaling, U = U),
+            xmeans = xmeans, ymeans = ymeans, xscales = xscales, yscales = yscales, weights = weights, scaling = scaling, U = U),
         class = c("Plsr", "Pls"))    
-    }
+}
+

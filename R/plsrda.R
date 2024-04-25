@@ -1,4 +1,4 @@
-plsrda <- function(X, y, scaling = "none", weights = NULL, nlv) {
+plsrda <- function(X, y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none") {
     if(is.factor(y))
         y <- as.character(y)
     X <- .mat(X)
@@ -10,7 +10,7 @@ plsrda <- function(X, y, scaling = "none", weights = NULL, nlv) {
         weights <- rep(1, n)
     weights <- .mweights(weights)
     z <- dummy(y)
-    fm <- plskern(X, z$Y, scaling = scaling, weights = weights, nlv = nlv)
+    fm <- plskern(X, z$Y, weights = weights, nlv = nlv, Xscaling = Xscaling, Yscaling = Yscaling)
     structure(
         list(fm = fm, lev = z$lev, ni = z$ni),
         class = c("Plsrda"))       
