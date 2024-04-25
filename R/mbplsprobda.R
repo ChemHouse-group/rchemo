@@ -1,4 +1,4 @@
-.mbplsprobda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.mbplsprobda <- function(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, fun, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -12,7 +12,7 @@
     weights <- .mweights(weights)
     zd <- dummy(y)
     fm <- list()
-    fm[[1]] <- mbplsr(Xlist, zd$Y, Xscaling = Xscaling, Yscaling = Yscaling, blockscaling = blockscaling, weights = weights, nlv = nlv)
+    fm[[1]] <- mbplsr(Xlist, zd$Y, blockscaling = blockscaling, weights = weights, nlv = nlv, Xscaling = Xscaling, Yscaling = Yscaling)
     ## Should be:
     ## z <- transform(fm[[1]], X)
     ## But same as:
@@ -24,11 +24,11 @@
               class = "Mbplsprobda")       
 }
 
-mbplslda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1],blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
-    .mbplsprobda(Xlist, y, Xscaling, Yscaling, blockscaling, weights, nlv, fun = rchemo::lda, prior = prior)
+mbplslda <- function(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+    .mbplsprobda(Xlist, y, blockscaling, weights, nlv, fun = rchemo::lda, prior = prior, Xscaling, Yscaling)
 
-mbplsqda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1],blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"))
-    .mbplsprobda(Xlist, y, Xscaling, Yscaling, blockscaling, weights, nlv, fun = rchemo::qda, prior = prior)
+mbplsqda <- function(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+    .mbplsprobda(Xlist, y, blockscaling, weights, nlv, fun = rchemo::qda, prior = prior, Xscaling, Yscaling)
 
 
 predict.Mbplsprobda <- function(object, Xlist, ..., nlv = NULL) {

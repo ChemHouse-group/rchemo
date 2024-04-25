@@ -28,7 +28,7 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-mbplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], blockscaling = TRUE, weights = NULL, nlv)
+mbplsr(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
 \method{transform}{Mbplsr}(object, Xlist, ..., nlv = NULL)  
 
@@ -46,15 +46,15 @@ mbplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 
-\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
-
-\item{Yscaling}{character. variable scaling for the Y-block, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "ctreduced", uncorrected standard deviation is used.}
-
 \item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
 \item{nlv}{For the main functions: The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
+
+\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+
+\item{Yscaling}{character. variable scaling for the Y-block, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
