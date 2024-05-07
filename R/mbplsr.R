@@ -74,7 +74,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     }
     structure(
         list(T = T, P = P, R = R, W = W, C = C, TT = TT,
-             xmeans = xmeanslist, ymeans = ymeans, xscales = xscaleslist, yscales = yscales, weights = weights, Xscaling = Xscaling, Yscaling = Yscaling, blockscaling = blockscaling, Xnorms = Xnorms, U = NULL),
+             xmeans = xmeanslist, ymeans = ymeans, xscales = xscaleslist, yscales = yscales, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, U = NULL),
         class = c("Mbplsr"))
 }
 
@@ -150,7 +150,7 @@ coef.Mbplsr <- function(object, ..., nlv = NULL) {
 }
 
 predict.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
-  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
+    Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
     X <- do.call("cbind",Xlist)
     q <- length(object$ymeans)
     rownam <- row.names(X)

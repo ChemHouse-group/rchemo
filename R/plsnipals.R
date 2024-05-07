@@ -51,6 +51,6 @@ plsnipals <- function(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "
     R <- W %*% solve(crossprod(P, W))
     structure(
         list(T = T, P = P, R = R, W = W, C = C, TT = TT,
-             xmeans = xmeans, ymeans = ymeans, xscales = xscales, yscales = yscales, weights = weights, scaling = scaling, U = NULL),
+             xmeans = xmeans, ymeans = ymeans, xscales = xscales, yscales = yscales, weights = weights,  U = NULL),
         class = c("Plsr", "Pls"))
 }
