@@ -14,36 +14,19 @@
   
   xmeanslist <- lapply(1:length(Xlist), function(X) .colmeans(Xlist[[X]], weights = weights))
   ymeans     <- .colmeans(Y, weights = weights) 
-  xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights)))
-  #xsdslist   <- lapply(1:length(Xlist), function(X) sqrt(.colvars(Xlist[[X]], weights = weights))*nrow(Xlist[[X]])/(nrow(Xlist[[X]])-1))
-  ysds       <- sqrt(.colvars(Y, weights = weights))
-  #ysds       <- sqrt(.colvars(Y, weights = weights)*nrow(Y)/(nrow(Y)-1))
   
+  xscaleslist <- list()
   for(i in 1:length(Xlist)){
-    if(Xscaling[i] == "none"){
-      Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
-    }
-    if(Xscaling[i] == "pareto"){
-      Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
-      Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(xsdslist[[i]]))
-    }
-    if(Xscaling[i] == "sd"){
-      Xlist[[i]] <- .center(Xlist[[i]], xmeanslist[[i]])
-      Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = xsdslist[[i]])
-    }
+    if(Xscaling[i] == "none"){xscaleslist[[i]] <- rep(1, ncol(Xlist[[i]]))}
+    if(Xscaling[i] == "pareto"){xscaleslist[[i]] <- sqrt(sqrt(.colvars(Xlist[[i]], weights = weights)))}
+    if(Xscaling[i] == "sd"){xscaleslist[[i]] <- sqrt(.colvars(Xlist[[i]], weights = weights))}
   }
-
-  if(Yscaling == "none"){
-    Y <- .center(Y, ymeans)
-  }
-  if(Yscaling == "pareto"){
-    Y <- .center(Y, ymeans)
-    Y <- scale(Y, center = FALSE, scale = sqrt(ysds))
-  }
-  if(Yscaling == "sd"){
-    Y <- .center(Y, ymeans)
-    Y <- scale(Y, center = FALSE, scale = ysds)
-  }
+  Xlist <- lapply(1:length(Xlist), function(X) scale(Xlist[[X]], center = xmeanslist[[X]], scale = xscaleslist[[X]]))
+  
+  if(Yscaling == "none"){yscales <- rep(1, ncol(Y))}
+  if(Yscaling == "pareto"){yscales <- sqrt(sqrt(.colvars(Y, weights = weights)))}
+  if(Yscaling == "sd"){yscales <- sqrt(.colvars(Y, weights = weights))}
+  Y <- scale(Y, center = ymeans, scale = yscales)
   
   D <- diag(weights)
   
@@ -53,7 +36,7 @@
   
   # First block
   if(nlv[1]>0){    
-    fm[[1]] <- plskern(Xlist[[1]], Y, scaling = "none", weights = weights, nlv = nlv[1])
+    fm[[1]] <- plskern(Xlist[[1]], Y, Xscaling = "none", Yscaling = "none",weights = weights, nlv = nlv[1])
     T <- fm[[1]]$T
     ymeanslist[[1]] <- fm[[1]]$ymeans
     pred <- predict(fm[[1]], Xlist[[1]])$pred
@@ -77,7 +60,7 @@
           b[[i]] <- NA
           X <- Xlist[[i]]
         }
-        fm[[i]] <- plskern(X, Y - pred, scaling = "none", weights = weights, nlv = nlv[i])
+        fm[[i]] <- plskern(X, Y - pred, Xscaling = "none", Yscaling = "none", weights = weights, nlv = nlv[i])
         T <- cbind(T, fm[[i]]$T)
         ymeanslist[[i]] <- fm[[i]]$ymeans
         pred <- pred + predict(fm[[i]], X)$pred 
@@ -99,15 +82,10 @@
     }
   }
   
-  if(Yscaling == "pareto"){
-    pred <- pred * matrix(rep(sqrt(ysds), nrow(Y)), nrow=nrow(Y), byrow=TRUE)
-  }
-  if(Yscaling == "sd"){
-    pred <- pred * matrix(rep(ysds, nrow(Y)), nrow=nrow(Y), byrow=TRUE)
-  }
-  pred <- pred + matrix(rep(ymeans, nrow(Y)), nrow=nrow(Y), byrow=TRUE)
+  pred <- pred * matrix(rep(yscales, nrow(Y)), nrow=nrow(Y), byrow=TRUE)+ matrix(rep(ymeans, nrow(Y)), nrow=nrow(Y), byrow=TRUE)
+
   structure(
-    list(fm = fm, T = T, pred = pred, xmeans = xmeanslist, ymeans = ymeans, xsds = xsdslist, ysds = ysds, b = b, weights = weights, Xscaling = Xscaling, Yscaling = Yscaling, nlv = nlv),
+    list(fm = fm, T = T, pred = pred, xmeans = xmeanslist, ymeans = ymeans, xscales = xscaleslist, yscales = yscales, b = b, weights = weights, nlv = nlv),
     class = c("Soplsr"))
 }
 
@@ -124,21 +102,7 @@ soplsr <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling =
 
 transform.Soplsr <- function(object, Xlist){
   
-  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
-  
-  for(i in 1:length(Xlist)){
-    if(object$Xscaling[i] == "none"){
-     Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
-    }
-    if(object$Xscaling[i] == "pareto"){
-      Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
-      Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(object$xsds[[i]]))
-    }
-    if(object$Xscaling[i] == "sd"){
-      Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
-      Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = object$xsds[[i]])
-    }
-  }
+  Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
   
   nbl <- length(object$fm)
   
@@ -166,23 +130,8 @@ transform.Soplsr <- function(object, Xlist){
 
 predict.Soplsr <- function (object, Xlist){
   
-  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
+  Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
   
-  for(i in 1:length(Xlist)){
-    if(object$Xscaling[i] == "none"){
-      Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
-    }
-    if(object$Xscaling[i] == "pareto"){
-      Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
-      Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = sqrt(object$xsds[[i]]))
-    }
-    if(object$Xscaling[i] == "sd"){
-      Xlist[[i]] <- .center(Xlist[[i]], object$xmeans[[i]])
-      Xlist[[i]] <- scale(Xlist[[i]], center = FALSE, scale = object$xsds[[i]])
-    }
-  }
-  
-  # nbl <- length(object$fm)
   nbl <- length(Xlist)
   m <- nrow(Xlist[[1]])
   
@@ -213,22 +162,14 @@ predict.Soplsr <- function (object, Xlist){
         }
       # }else{
         # X <- Xlist[[i]]
-        # pred <- pred # TO CHECK
+        # pred <- pred 
       # }
       }
     }
   }
   
-  if(object$Yscaling == "none"){
-    pred <- pred
-  }
-  if(object$Yscaling == "pareto"){
-    pred <- pred * matrix(rep(sqrt(object$ysds), m), nrow=m, byrow=TRUE) 
-  }
-  if(object$Yscaling == "sd"){
-    pred <- pred * matrix(rep(object$ysds, m), nrow=m, byrow=TRUE) 
-  }
-  pred <- pred + matrix(rep(object$ymeans, m), nrow=m, byrow=TRUE) 
+  pred <- pred * matrix(rep(object$yscales, m), nrow=m, byrow=TRUE) + matrix(rep(object$ymeans, m), nrow=m, byrow=TRUE) 
+
   pred
 }
            
