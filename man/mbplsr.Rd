@@ -80,17 +80,13 @@ A list of outputs, such as
 
 \item{ymeans}{The centering vector of \eqn{Y} (\eqn{q, 1}).}
 
-\item{xsds}{The list of \eqn{Xlist} variable standard deviations.}
+\item{xscales}{The list of \eqn{Xlist} variable standard deviations.}
 
-\item{ysds}{The vector of \eqn{Y} variable standard deviations (\eqn{q, 1}).}
+\item{yscales}{The vector of \eqn{Y} variable standard deviations (\eqn{q, 1}).}
 
 \item{weights}{Weights applied to the training observations.}
 
 \item{TT}{the X-score normalization factor.}
-
-\item{Xscaling}{vector of variable scaling for each X-block.}
-
-\item{Yscaling}{variable scaling for the Y-block.}
 
 \item{blockscaling}{block scaling.}
 

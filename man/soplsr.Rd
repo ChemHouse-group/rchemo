@@ -91,21 +91,17 @@ For \code{soplsr}:
 
 \item{ymeans}{vector of Y-mean values.}
 
-\item{xsds}{list of vectors of X-mean standard deviations.}
+\item{xscales}{list of vectors of X-scaling values.}
 
-\item{ysds}{vector of Y-mean standard deviations.}
+\item{yscales}{vector of Y-scaling values.}
 
 \item{b}{A list of X-loading weights, used in the orthogonalization step.}
 
 \item{weights}{Weights applied to the training observations.}
 
-\item{Xscaling}{vector of variable scaling for each X-block.}
-
-\item{Yscaling}{scaling for the Y-block.}
-
 \item{nlv}{vector of numbers of latent variables from each X-block.}
 
-For \code{transform.Soplsr}:  the LVs Calculated for the new matrices list \eqn{Xlist} from the model.
+For \code{transform.Soplsr}:  the LVs calculated for the new matrices list \eqn{Xlist} from the model.
 
 For \code{predict.Soplsr}: predicted values for each observation
 
@@ -113,15 +109,11 @@ For \code{soplsrcv}:
 
 \item{lvcombi}{matrix or list of matrices, of tested component combinations.}
 
-\item{optimCombiLine}{number of the combination line corresponding to the optimal one. In the case of a sequential optimisation, it is the number of the combination line in the model with all the X-blocks.}
-
 \item{optimcombi}{the number of PLS components of each X-block allowing the optimisation of the mean rmseCV.}
 
 \item{rmseCV_byY}{matrix or list of matrices of mean and sd of cross-validated RMSE in the model for each combination and each response variable.}
 
 \item{ExplVarCV_byY}{matrix or list of matrices of mean and sd of cross-validated explained variances in the model for each combination and each response variable.}
-
-\item{optimExplVarCV}{cross-validated explained variance for the optimal sopls model.}
 
 \item{rmseCV}{matrix or list of matrices of mean and sd of cross-validated RMSE in the model for each combination and response variables.}
 
@@ -173,6 +165,9 @@ vip(fm$fm[[1]], X_list[[1]], Y = NULL, nlv = ncomp)
 vip(fm$fm[[2]], X_list[[2]], Y = NULL, nlv = ncomp)
 vip(fm$fm[[3]], X_list[[3]], Y = NULL, nlv = ncomp)
 
+soplsrcv(X_list, Y, nlv = ncomp)
+
+
 ncomp <- c(2, 0, 3)
 fm <- soplsr(X_list, Y, nlv = ncomp)
 transform(fm, X_list_2)
@@ -187,7 +182,7 @@ predict(fm, X_list_2)
 ncomp <- 2
 weights <- rep(1 / n, n)
 #w <- 1:n
-fm <- soplsr(X_list, Y, scaling = c("sd","pareto","none"), nlv = ncomp, weights = weights)
+fm <- soplsr(X_list, Y, Xscaling = c("sd","pareto","none"), nlv = ncomp, weights = weights)
 transform(fm, X_list_2)
 predict(fm, X_list_2)
 

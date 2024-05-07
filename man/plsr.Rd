@@ -98,8 +98,6 @@ For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such 
 
 \item{TT}{the X-score normalization factor.}
 
-\item{scaling}{scaling.}
-
 \item{U}{intermediate output.}
 
 For \code{transform.Plsr}: X-scores matrix for new X-data.
@@ -155,11 +153,11 @@ Xtest <- Xtrain[1:m, , drop = FALSE]
 Ytest <- Ytrain[1:m, , drop = FALSE] ; ytest <- Ytest[1:m, 1]
 
 nlv <- 3
-plskern(Xtrain, Ytrain, scaling = "sd", nlv = nlv)
-plsnipals(Xtrain, Ytrain, scaling = "sd", nlv = nlv)
-plsrannar(Xtrain, Ytrain, scaling = "sd", nlv = nlv)
+plskern(Xtrain, Ytrain, Xscaling = "sd", nlv = nlv)
+plsnipals(Xtrain, Ytrain, Xscaling = "sd", nlv = nlv)
+plsrannar(Xtrain, Ytrain, Xscaling = "sd", nlv = nlv)
 
-plskern(Xtrain, Ytrain, scaling = "none", nlv = nlv)
+plskern(Xtrain, Ytrain, Xscaling = "none", nlv = nlv)
 plskern(Xtrain, Ytrain, nlv = nlv)$T
 plskern(Xtrain, Ytrain, nlv = nlv, weights = 1:n)$T
 

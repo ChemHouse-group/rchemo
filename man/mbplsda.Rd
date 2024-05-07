@@ -62,7 +62,7 @@ mbplsqda(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "
 
 For \code{mbplsrda}:
 
-\item{fm}{list with the MB-PLS model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){Xscaling}: X variable scaling for each X-block; (\code){Yscaling}: variable scaling for the Y-block; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.}
+\item{fm}{list with the MB-PLS model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.}
 
 \item{lev}{classes}
 
@@ -71,7 +71,7 @@ For \code{mbplsrda}:
 For \code{mbplslda}, \code{mbplsqda}:
 
 \item{fm}{list with 
-[[1]] the MB-PLS model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vectors of X;  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){Xscaling}: X variable scaling for each X-block; (\code){Yscaling}: variable scaling for the Y-block; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.
+[[1]] the MB-PLS model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vectors of X;  (\code{ymeans}): the centering vector of Y (q,1); (\code{xscales}): the scaling vector of X (p,1);  (\code{yscales}): the scaling vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){blockscaling}: block scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.
 [[2]] lda or qda models.}
 
 \item{lev}{classes}

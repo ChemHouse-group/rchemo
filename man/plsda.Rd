@@ -22,11 +22,11 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-plsrda(X, y, scaling = "none", weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
+plsrda(X, y, weights = NULL, nlv, Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
 
-plslda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = "none", Yscaling = "none")
+plslda(X, y, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
 
-plsqda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = "none", Yscaling = "none")
+plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
 
 \method{predict}{Plsrda}(object, X, ..., nlv = NULL) 
 
@@ -60,7 +60,7 @@ plsqda(X, y, scaling = "none", weights = NULL, nlv, prior = c("unif", "prop"), X
 
 For \code{plsrda}, \code{plslda}, \code{plsqda}:
 
-\item{fm}{list with the model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){scaling}: scaling; (\code{U}): intermediate output.}
+\item{fm}{list with the model: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{xscales}): the scaling vector of X (p,1);  (\code{yscales}): the scaling vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output.}
 
 \item{lev}{classes}
 
@@ -77,7 +77,7 @@ For \code{predict.Plsrda}, \code{predict.Plsprobda}:
 \note{
 
 The first example concerns PLSDA, and the second one concerns PLS LDA.
-\code{fm} are PLS1 models, and \code{zfm} are PLS2 models.
+\code{fm} are PLS1 models, and \code{zfm} are PLS2 models to predict the disjunctive matrix.
 
 }
 
@@ -92,7 +92,7 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
 nlv <- 5
-fm <- plsrda(Xtrain, ytrain, scaling = "sd", nlv = nlv)
+fm <- plsrda(Xtrain, ytrain, Xscaling = "sd", nlv = nlv)
 names(fm)
 
 predict(fm, Xtest)
@@ -117,11 +117,11 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
 nlv <- 5
-fm <- plslda(Xtrain, ytrain, scaling = "sd", nlv = nlv)
+fm <- plslda(Xtrain, ytrain, Xscaling = "sd", nlv = nlv)
 predict(fm, Xtest)
 predict(fm, Xtest, nlv = 1:2)$pred
 
-zfm <- fm[[1]][[1]]
+zfm <- fm$fm[[1]]
 class(zfm)
 names(zfm)
 summary(zfm, Xtrain)

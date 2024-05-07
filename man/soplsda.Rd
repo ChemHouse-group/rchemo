@@ -91,7 +91,7 @@ soplsrdacv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none
 
 For \code{soplsrda}, \code{soplslda}, \code{soplsqda}:
 
-\item{fm}{list with the PLS models: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){scaling}: scaling; (\code){Xnorms}: "norm" of each block; (\code{U}): intermediate output.}
+\item{fm}{list with the PLS models: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){Xscales}: X scaling values; (\code){Yscales}: Y scaling values; (\code{U}): intermediate output.}
 
 \item{lev}{classes}
 
@@ -171,11 +171,11 @@ transform(fm,X_list_2)
 ncomp <- 2
 weights <- rep(1 / n, n)
 #w <- 1:n
-soplslda(X_list, y, scaling = "none", nlv = ncomp, weights = weights)
-soplslda(X_list, y, scaling = "pareto", nlv = ncomp, weights = weights)
-soplslda(X_list, y, scaling = "sd", nlv = ncomp, weights = weights)
+soplslda(X_list, y, Xscaling = "none", nlv = ncomp, weights = weights)
+soplslda(X_list, y, Xscaling = "pareto", nlv = ncomp, weights = weights)
+soplslda(X_list, y, Xscaling = "sd", nlv = ncomp, weights = weights)
 
-fm <- soplslda(X_list, y, scaling = c("none","pareto","sd"), nlv = ncomp, weights = weights)
+fm <- soplslda(X_list, y, Xscaling = c("none","pareto","sd"), nlv = ncomp, weights = weights)
 predict(fm,X_list_2)
 transform(fm,X_list_2)
 
