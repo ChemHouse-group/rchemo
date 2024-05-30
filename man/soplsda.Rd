@@ -34,7 +34,7 @@ soplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 
 soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
 
-soplsrdacv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criteria = "err", selection="1std")
+soplsrdacv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = c("err","rmse")[1], selection="1std")
 
 \method{transform}{Soplsrda}(object, Xlist) 
 
@@ -74,7 +74,7 @@ soplsrdacv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none
 
 \item{optimisation}{"global" or "sequential" optimisation of the number of components. If "sequential", the optimal lv number is found for the first X-block, then for the 2nd one, etc...}
 
-\item{criteria}{optimisation criteria among "rmse" and "err" (for classification error rate)}
+\item{criterion}{optimisation criterion among "rmse" and "err" (for classification error rate)}
 
 \item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse or error rate. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse or error rate. If "1std" : it corresponds to the first combination after which the mean cross-validated rmse or error rate does not decrease significantly.}
 

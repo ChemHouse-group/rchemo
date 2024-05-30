@@ -1,5 +1,5 @@
 
-soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criteria = "err", selection="1std"){
+soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = "err", selection="1std"){
   
   Y = y
   # verifications
@@ -13,6 +13,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
   }
   if((nbrep==1)&(selection=="1std")){stop("nbrep must be >1 when selection is '1std'")}
   if((cvmethod=="loo") & (selection=="1std")){stop("selection must not be '1std' when cvmethod is 'loo'")}
+  if((cvmethod=="kfolds") & (nfolds<=1)){stop("nfolds must not be >1 when cvmethod is 'kfolds'")}
   
   # argument computations
   Y <- .mat(Y)
@@ -62,20 +63,20 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
     res_errCV <- matrix(NA, nrow=nrow(lvcombi), ncol=2, dimnames=list(rownames(lvcombi),c("mean","sd")))
     Rep_errCV <- array(0, dim=c(nrow(lvcombi),nbrep, 1), dimnames = list(paste0("lvcombi",1:nrow(lvcombi)), paste0("rep",1:nbrep), "value"))
     
-  	optimYpredCV <- list()
-  	
-    #####################################################################
-    
+  	#optimYpredCV <- list()
+
     for(i in 1:nbrep){
       
       # partition
       set.seed(seed = seed)
       if(cvmethod=="loo"){CVtype=as.list(1:n)}
       if((cvmethod=="kfolds") & (is.null(samplingk)==TRUE)){
-        CVtype <- segmkf(n = n, K = nfolds, type = "interleaved")$rep1
+        #CVtype <- segmkf(n = n, K = nfolds, type = "interleaved")$rep1
+        samplingk <- Y
       }
       if((cvmethod=="kfolds") & (is.null(samplingk)==FALSE)){
         samplingktab <- table(samplingk)
+        partCVtype <- list()
         for(s in 1:length(names(samplingktab))){
           partCVtype[[s]] <- segmkf(n = samplingktab[s], K = nfolds, type = "interleaved")$rep1
           for(ss in 1:length(partCVtype[[s]])){
@@ -121,7 +122,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
     res_errCV[,"mean"] <- apply(Rep_errCV, c(1,3),mean, na.rm=T)
     res_errCV[,"sd"]   <- apply(Rep_errCV, c(1,3),sd, na.rm=T)
     
-    if(criteria == "rmse"){
+    if(criterion == "rmse"){
       # optim combination for each total number of components // res_rmse_Ysel[,"mean"]
 
       nlvsum=apply(lvcombi,1,sum)
@@ -150,10 +151,10 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
           # one standard error rule to select the optim number of components
           minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
           threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-          if(minmean == 1 ){
+          if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
             kchoix <- 1
           }else{
-            kchoix <- res_nlvsum_rmseCV_Ysel[which((res_nlvsum_rmseCV_Ysel$mean>=threshmean) & (res_nlvsum_rmseCV_Ysel$totalnlv<res_nlvsum_rmseCV_Ysel[minmean,"totalnlv"])),"index"]
+            kchoix <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
           }
         }else{
           kchoix <- 1
@@ -161,7 +162,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
       }
       
     }
-    if(criteria == "err"){
+    if(criterion == "err"){
       # optim combination for each total number of components // res_err_Ysel[,"mean"]
 
       nlvsum=apply(lvcombi,1,sum)
@@ -190,10 +191,10 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
           # one standard error rule to select the optim number of components
           minmean    <- which.min(res_nlvsum_errCV_Ysel$mean)[1]
           threshmean <- res_nlvsum_errCV_Ysel$mean[minmean] + res_nlvsum_errCV_Ysel$sd[minmean]
-          if(minmean == 1 ){
+          if((minmean == 1) | (sum(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean)==0)){
             kchoix <- 1
           }else{
-            kchoix <- res_nlvsum_errCV_Ysel[which((res_nlvsum_errCV_Ysel$mean>=threshmean) & (res_nlvsum_errCV_Ysel$totalnlv<res_nlvsum_errCV_Ysel[minmean,"totalnlv"])),"index"]
+            kchoix <- max(res_nlvsum_errCV_Ysel[which(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean),"index"])
           }
         }else{
           kchoix <- 1
@@ -226,10 +227,12 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
       set.seed(seed = seed)
       if(cvmethod=="loo"){CVtype=as.list(1:n)}
       if((cvmethod=="kfolds") & (is.null(samplingk)==TRUE)){
-        CVtype <- segmkf(n = n, K = nfolds, type = "interleaved")$rep1
+        #CVtype <- segmkf(n = n, K = nfolds, type = "interleaved")$rep1
+        samplingk <- Y
       }
       if((cvmethod=="kfolds") & (is.null(samplingk)==FALSE)){
         samplingktab <- table(samplingk)
+        partCVtype <- list()
         for(s in 1:length(names(samplingktab))){
           partCVtype[[s]] <- segmkf(n = samplingktab[s], K = nfolds, type = "interleaved")$rep1
           for(ss in 1:length(partCVtype[[s]])){
@@ -296,7 +299,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
       res_errCV[[m]][,"mean"] <- apply(Rep_errCV[[m]], c(1,3),mean, na.rm=T)
       res_errCV[[m]][,"sd"]   <- apply(Rep_errCV[[m]], c(1,3),sd, na.rm=T)
       
-      if(criteria == "rmse"){
+      if(criterion == "rmse"){
         # optim combination for each total number of components // res_rmse_Ysel[,"mean"]
 
         nlvsum=apply(lvcombi[[m]],1,sum)
@@ -336,10 +339,10 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
             # one standard error rule to select the optim number of components
             minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
             threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-            if(minmean == 1 ){
+            if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
               kchoix <- 1
             }else{
-              kchoix <- res_nlvsum_rmseCV_Ysel[which((res_nlvsum_rmseCV_Ysel$mean>=threshmean) & (res_nlvsum_rmseCV_Ysel$totalnlv<res_nlvsum_rmseCV_Ysel[minmean,"totalnlv"])),"index"]
+              kchoix <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
             }
           }else{
             kchoix <- 1
@@ -347,7 +350,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
         }
       }
       
-      if(criteria == "err"){
+      if(criterion == "err"){
         # optim combination for each total number of components // res_err_Ysel[,"mean"]
         nlvsum=apply(lvcombi[[m]],1,sum)
         if(m==1){
@@ -385,10 +388,10 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
             # one standard error rule to select the optim number of components
             minmean    <- which.min(res_nlvsum_errCV_Ysel$mean)[1]
             threshmean <- res_nlvsum_errCV_Ysel$mean[minmean] + res_nlvsum_errCV_Ysel$sd[minmean]
-            if(minmean == 1 ){
+            if((minmean == 1) | (sum(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean)==0)){
               kchoix <- 1
             }else{
-              kchoix <- res_nlvsum_errCV_Ysel[which((res_nlvsum_errCV_Ysel$mean>=threshmean) & (res_nlvsum_errCV_Ysel$totalnlv<res_nlvsum_errCV_Ysel[minmean,"totalnlv"])),"index"]
+              kchoix <- max(res_nlvsum_errCV_Ysel[which(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean),"index"])
             }
           }else{
             kchoix <- 1
@@ -448,13 +451,13 @@ if(FALSE){
   samplingk=NULL
   nfolds=7
   optimisation=c("global","sequential")[2]
-  criteria="err"
+  criterion="err"
   selection=c("1std","localmin","globalmin")[1]
   majorityvote=c(TRUE,FALSE)[2]
   Xscaling = c("none","pareto","sd")[3]
   Yscaling = c("none","pareto","sd")[3]
   weights = NULL
   
-  test <- soplsrdacv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, criteria = "err", nlvlist=nlvlist, selection=selection) #, majorityvote=FALSE
+  test <- soplsrdacv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, criterion = "err", nlvlist=nlvlist, selection=selection) #, majorityvote=FALSE
     
 }

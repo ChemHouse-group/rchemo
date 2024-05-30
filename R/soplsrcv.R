@@ -12,6 +12,7 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
   }
   if((nbrep==1)&(selection=="1std")){stop("nbrep must be >1 when selection is '1std'")}
   if((cvmethod=="loo") & (selection=="1std")){stop("selection must not be '1std' when cvmethod is 'loo'")}
+  if((cvmethod=="kfolds") & (nfolds<=1)){stop("nfolds must not be >1 when cvmethod is 'kfolds'")}
   
   # argument computations
   n <- nrow(Y)
@@ -64,10 +65,9 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
     
     Rep_rmseCV <- Rep_ExplVarCV <- array(0, dim=c(nrow(lvcombi),nbrep, 1), dimnames = list(paste0("lvcombi",1:nrow(lvcombi)), paste0("rep",1:nbrep), "value"))
     
-  	optimYpredCV <- list()
+  	#optimYpredCV <- list()
   	
-    #####################################################################
-    
+
     for(i in 1:nbrep){
       
       # partition
@@ -113,10 +113,10 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
       }
     }
 
-  	res_rmseCV_byY[,1:ncol(Y)]                <- apply(Rep_rmseCV_byY, c(1,3),mean, na.rm=T)
+  	res_rmseCV_byY[,1:ncol(Y)]               <- apply(Rep_rmseCV_byY, c(1,3),mean, na.rm=T)
     res_rmseCV_byY[,(ncol(Y)+1):(ncol(Y)*2)] <- apply(Rep_rmseCV_byY, c(1,3),sd, na.rm=T)
 
-    res_ExplVarCV_byY[,1:ncol(Y)]                <- apply(Rep_ExplVarCV_byY, c(1,3),mean, na.rm=T)
+    res_ExplVarCV_byY[,1:ncol(Y)]               <- apply(Rep_ExplVarCV_byY, c(1,3),mean, na.rm=T)
     res_ExplVarCV_byY[,(ncol(Y)+1):(ncol(Y)*2)] <- apply(Rep_ExplVarCV_byY, c(1,3),sd, na.rm=T)
 
     res_rmseCV[,"mean"] <- apply(Rep_rmseCV, c(1,3),mean, na.rm=T)
@@ -160,10 +160,10 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
             # one standard error rule to select the optim number of components
             minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
             threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-            if(minmean == 1 ){
+            if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
               choiceYH[yy] <- 1
             }else{
-              choiceYH[yy]    <- res_nlvsum_rmseCV_Ysel[which((res_nlvsum_rmseCV_Ysel$mean>=threshmean) & (res_nlvsum_rmseCV_Ysel$totalnlv<res_nlvsum_rmseCV_Ysel[minmean,"totalnlv"])),"index"]
+              choiceYH[yy] <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
             }
           }else{
             choiceYH[yy] <- 1
@@ -201,10 +201,10 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
           # one standard error rule to select the optim number of components
           minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
           threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-          if(minmean == 1){
+          if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
             kchoix <- 1
           }else{
-            kchoix     <- res_nlvsum_rmseCV_Ysel[which((res_nlvsum_rmseCV_Ysel$mean>=threshmean) & (res_nlvsum_rmseCV_Ysel$totalnlv<res_nlvsum_rmseCV_Ysel[minmean,"totalnlv"])),"index"]
+            kchoix <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
           }
         }else{
           kchoix <- 1
@@ -228,13 +228,11 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
   
   ## SEQUENTIAL optimisation
   if((optimisation=="sequential") & (nXblocks>1)){
-    
-    #####################################################################
-    
+
     ## list initialisations
     lvcombi        <- list()
 
-    optimYpredCV   <- list()
+    #optimYpredCV   <- list()
     res_rmseCV_byY <- res_ExplVarCV_byY <- list()
     res_rmseCV     <- res_ExplVarCV     <- list()
     Rep_rmseCV_byY <- Rep_ExplVarCV_byY <- list()
@@ -274,7 +272,7 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
       }
       if(m>1){
         lvcombi[[m]] <- data.frame(matrix(rep(unlist(optimcombi),length(nlvlist[[m]])),nrow=length(nlvlist[[m]]),byrow=TRUE),as.matrix(expand.grid(nlvlist[[m]])))
-        colnames(lvcombi[[m]]) <- paste0(rep("Xlist",m),1:m)
+        colnames(lvcombi[[m]]) <- paste0("Xlist",1:m)
         rownames(lvcombi[[m]]) <- paste0("lvcombi",1:nrow(lvcombi[[m]]))
       }
       
@@ -356,10 +354,10 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
               # one standard error rule
               minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
               threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-              if(minmean == 1 ){
+              if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
                 choiceYH[yy] <- 1
               }else{
-                choiceYH[yy]    <- res_nlvsum_rmseCV_Ysel[which((res_nlvsum_rmseCV_Ysel$mean>=threshmean) & (res_nlvsum_rmseCV_Ysel$totalnlv<res_nlvsum_rmseCV_Ysel[minmean,"totalnlv"])),"index"]
+                choiceYH[yy] <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
               }
             }else{
               choiceYH[yy] <- 1
@@ -406,10 +404,10 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
             # one standard error rule 
             minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
             threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-            if(minmean == 1){
+            if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
               kchoix <- 1
             }else{
-              kchoix     <- res_nlvsum_rmseCV_Ysel[which((res_nlvsum_rmseCV_Ysel$mean>=threshmean) & (res_nlvsum_rmseCV_Ysel$totalnlv<res_nlvsum_rmseCV_Ysel[minmean,"totalnlv"])),"index"]
+              kchoix <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
             }
           }else{
             kchoix <- 1
@@ -419,11 +417,12 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
       
       # optim combination
       optimcombi <- as.vector(unlist(lvcombi[[m]][kchoix,]))
-      names(optimcombi) <- paste0(rep("Xlist",m),1:m)
+      #names(optimcombi) <- paste0("Xlist",1:m)
       nlvlist[[m]] <- lvcombi[[m]][kchoix,m]
     }# end loop on m
  
     ## output names
+    names(optimcombi) <- paste0("Xlist",1:nXblocks)
     names(lvcombi) <- names(res_rmseCV_byY) <- names(res_ExplVarCV_byY) <- names(res_rmseCV) <- names(res_ExplVarCV) <- paste0("nbBlocks",1:nXblocks)
 
     # outputs
@@ -465,18 +464,18 @@ if(FALSE){
   Y = D
   nlvlist=list(0:2,1:ncol(B),0:3,0:1)
     
-  nbrep=3
-  cvmethod="kfolds"
+  nbrep=c(1,3)[1]
+  cvmethod=c("loo","kfolds")[1]
   seed = 123
   samplingk=NULL
   nfolds=7
-  optimisation=c("global","sequential")[1]
-  selection=c("1std","localmin","globalmin")[1]
-  majorityvote=c(TRUE,FALSE)[1]
+  optimisation=c("global","sequential")[2]
+  selection=c("1std","localmin","globalmin")[2]
+  majorityvote=c(TRUE,FALSE)[2]
   Xscaling = c("none","pareto","sd")[3]
   Yscaling = c("none","pareto","sd")[3]
   weights = NULL
   
   test <- soplsrcv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, nlvlist=nlvlist, selection=selection, majorityvote=FALSE)
-    
+  test
 }
