@@ -141,7 +141,7 @@ coef.Mbplsr <- function(object, ..., nlv = NULL) {
       if(object$blockscaling == TRUE){
         Blist[[i]] <- Blist[[i]]/object$Xnorms[i]
       }
-      Blist[[i]] <- Blist[[i]] * matrix(rep(object$yscales, each = p), ncol = q) / t(matrix(rep(object$xscales[[i]], each = q), ncol = p))
+      Blist[[i]] <- Blist[[i]] * matrix(rep(object$yscales, each = plist[[i]]), ncol = q) / t(matrix(rep(object$xscales[[i]], each = q), ncol = plist[[i]]))
     }
     
     B <- do.call("rbind",Blist)
