@@ -187,6 +187,10 @@
 - ***soplsrda*** Sequential and Orthogonalized PLS-RDA
 - ***soplslda*** Sequential and Orthogonalized PLS-LDA
 - ***soplsqda*** Sequential and Orthogonalized PLS-QDA
+- ***soplscv*** Help to choose optimal Sequential and Orthogonalized PLS model
+- ***soplsrdacv*** Help to choose optimal Sequential and Orthogonalized PLS-RDA model
+- ***soplsldacv*** Help to choose optimal Sequential and Orthogonalized PLS-LDA model
+- ***soplsqdacv*** Help to choose optimal Sequential and Orthogonalized PLS-QDA model
 
 #### Datasets
 
