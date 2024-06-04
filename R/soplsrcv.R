@@ -1,5 +1,5 @@
 
-soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE){
+.soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE){
   
   # verifications
   
@@ -143,6 +143,8 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
           t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV_Ysel[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])))))
         )
         
+        res_nlvsum_rmseCV_Ysel <- res_nlvsum_rmseCV_Ysel[order(res_nlvsum_rmseCV_Ysel[,"totalnlv"], decreasing=FALSE),]
+        
         if(selection=="localmin"){
           if(nrow(res_nlvsum_rmseCV_Ysel)>1){
             # sign of the difference of accuracies to select the optim combination with the lower total number of components
@@ -183,6 +185,8 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
         totalnlv = unique(nlvsum),
         t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_rmseCV[(nlvsum==i),"mean"]),,drop=FALSE])))))
       )
+      
+      res_nlvsum_rmseCV_Ysel <- res_nlvsum_rmseCV_Ysel[order(res_nlvsum_rmseCV_Ysel[,"totalnlv"], decreasing=FALSE),]
       
       if(selection=="localmin"){
         if(nrow(res_nlvsum_rmseCV_Ysel)>1){
@@ -330,13 +334,25 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
           colnames(res_rmseCV_Ysel) <- c("mean","sd")
           rownames(res_rmseCV_Ysel) <- rownames(res_rmseCV_byY[[m]])
           
-          res_nlvsum_rmseCV_Ysel <- data.frame(
-            index = sapply((unique(nlvsum)), function(i) which(rownames(res_rmseCV_Ysel)==rownames(res_rmseCV_Ysel[(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE]))),
-            combnum = sapply((unique(nlvsum)), function(i) rownames(res_rmseCV_Ysel[(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])),
-            t((sapply((unique(nlvsum)), function(i) unlist(data.frame(lvcombi[[m]][(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE]))))),
-            totalnlv = unique(nlvsum),
-            t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV_Ysel[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])))))
-          )
+          if(m==1){
+            res_nlvsum_rmseCV_Ysel <- data.frame(
+              index = sapply((unique(nlvsum)), function(i) which(rownames(res_rmseCV_Ysel)==rownames(res_rmseCV_Ysel[(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE]))),
+              combnum = sapply((unique(nlvsum)), function(i) rownames(res_rmseCV_Ysel[(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])),
+              lvcombi[[m]][,,drop=FALSE],
+              totalnlv = unique(nlvsum),
+              t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV_Ysel[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])))))
+            )
+          }
+          if(m>=1){
+            res_nlvsum_rmseCV_Ysel <- data.frame(
+              index = sapply((unique(nlvsum)), function(i) which(rownames(res_rmseCV_Ysel)==rownames(res_rmseCV_Ysel[(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE]))),
+              combnum = sapply((unique(nlvsum)), function(i) rownames(res_rmseCV_Ysel[(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])),
+              t((sapply((unique(nlvsum)), function(i) unlist(data.frame(lvcombi[[m]][(nlvsum==i),,drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE]))))),
+              totalnlv = unique(nlvsum),
+              t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV_Ysel[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_rmseCV_Ysel[(nlvsum==i),"mean"]),,drop=FALSE])))))
+            )
+          }
+          res_nlvsum_rmseCV_Ysel <- res_nlvsum_rmseCV_Ysel[order(res_nlvsum_rmseCV_Ysel[,"totalnlv"], decreasing=FALSE),]
           
           if(selection=="localmin"){
             if(nrow(res_nlvsum_rmseCV_Ysel)>1){
@@ -375,6 +391,7 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
             index = sapply((unique(nlvsum)), function(i) which(rownames(res_rmseCV[[m]])==rownames(res_rmseCV[[m]][(nlvsum==i),,drop=FALSE][which.max(res_rmseCV[[m]][(nlvsum==i),"mean"]),,drop=FALSE]))),
             combnum = sapply((unique(nlvsum)), function(i) rownames(res_rmseCV[[m]][(nlvsum==i),,drop=FALSE][which.max(res_rmseCV[[m]][(nlvsum==i),"mean"]),,drop=FALSE])),
             lvcombi[[m]][,,drop=FALSE],
+            totalnlv = unique(nlvsum),
             t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV[[m]][(nlvsum==i),c("mean","sd"),drop=FALSE][which.max(res_rmseCV[[m]][(nlvsum==i),"mean"]),,drop=FALSE])))))
           )
         }
@@ -387,6 +404,8 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
             t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV[[m]][(nlvsum==i),c("mean","sd"),drop=FALSE][which.max(res_rmseCV[[m]][(nlvsum==i),"mean"]),,drop=FALSE])))))
           )
         }
+        
+        res_nlvsum_rmseCV_Ysel <- res_nlvsum_rmseCV_Ysel[order(res_nlvsum_rmseCV_Ysel[,"totalnlv"], decreasing=FALSE),]
         
         if(selection=="localmin"){
           if(nrow(res_nlvsum_rmseCV_Ysel)>1){
@@ -440,42 +459,9 @@ soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
   class(rts) <- c("Soplscv")
   rts
 }
-############################################################################################################################
 
-if(FALSE){
-  rm(list=ls())
-  library(FactoMineR)
-  library(rchemo)
-  
-  liste_functions <- list.files("C:/Users/mbrandolini/Documents/DEVELOPPEMENTS/main/rchemo/R", full.names = TRUE)
-  # import des données :
-  lapply(liste_functions, source)
-  
-  data(wine)
-  #n=nrow(wine)
-  
-  A=wine[,3:7]
-  B=wine[,8:10]
-  C=wine[,11:20]
-  D=wine[,21:29]  
-  E=data.frame(Overall.quality = wine[,30], row.names = rownames(wine)) 
-  
-  Xlist = list(A,B,C,E)
-  Y = D
-  nlvlist=list(0:2,1:ncol(B),0:3,0:1)
-    
-  nbrep=c(1,3)[1]
-  cvmethod=c("loo","kfolds")[1]
-  seed = 123
-  samplingk=NULL
-  nfolds=7
-  optimisation=c("global","sequential")[2]
-  selection=c("1std","localmin","globalmin")[2]
-  majorityvote=c(TRUE,FALSE)[2]
-  Xscaling = c("none","pareto","sd")[3]
-  Yscaling = c("none","pareto","sd")[3]
-  weights = NULL
-  
-  test <- soplsrcv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, nlvlist=nlvlist, selection=selection, majorityvote=FALSE)
-  test
+
+soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE){
+  .soplsrcv(Xlist = Xlist, Y = Y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist=nlvlist, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, selection = selection, majorityvote = majorityvote)
 }
+

@@ -7,6 +7,8 @@
 \alias{predict.Soplsrda}
 \alias{predict}.Soplsprobda} 
 \alias{soplsrdacv}
+\alias{soplsldacv}
+\alias{soplsqdacv}
 
 \encoding{UTF-8}
 
@@ -34,7 +36,11 @@ soplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 
 soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
 
-soplsrdacv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = c("err","rmse")[1], selection="1std")
+soplsrdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = c("err","rmse")[1], selection = "1std")
+
+soplsldacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), prior = c("unif", "prop"), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = c("err","rmse")[1], selection = "1std")
+
+soplsqdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), prior = c("unif", "prop"), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = c("err","rmse")[1], selection = "1std")
 
 \method{transform}{Soplsrda}(object, Xlist) 
 
@@ -105,7 +111,7 @@ For \code{predict.Soplsrda}, \code{predict.Soplsprobda}:
 
 \item{posterior}{calculated probability of belonging to a class for each observation}
 
-For \code{soplsrdacv}:
+For \code{soplsrdacv}, \code{soplsldacv}, \code{soplsqdacv}:
 
 \item{lvcombi}{matrix or list of matrices, of tested component combinations.}
 
@@ -152,6 +158,9 @@ X_list <- list(X[,1:4], X[,5:7], X[,9:ncol(X)])
 X_list_2 <- list(X[1:2,1:4], X[1:2,5:7], X[1:2,9:ncol(X)])
 
 # EXEMPLE WITH SO-PLS-RDA
+soplsrdacv(X_list, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL,
+nlvlist=list(0:1, 1:2, 0:1), nbrep=1, cvmethod="loo", seed = 123, samplingk = NULL, nfolds = 3, optimisation = "global", criterion = c("err","rmse")[1], selection = "localmin")
+
 ncomp <- 2
 fm <- soplsrda(X_list, y, nlv = ncomp)
 predict(fm,X_list_2)

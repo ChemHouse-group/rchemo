@@ -153,6 +153,9 @@ n <- nrow(X)
 X_list <- list(X[,1:4], X[,5:7], X[,9:ncol(X)])
 X_list_2 <- list(X[1:2,1:4], X[1:2,5:7], X[1:2,9:ncol(X)])
 
+soplsrcv(X_list, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(0:1, 1:2, 0:1), nbrep=1, cvmethod="loo", seed = 123, samplingk=NULL, optimisation="global", selection="localmin", majorityvote=FALSE)
+
+
 ncomp <- 2
 fm <- soplsr(X_list, Y, nlv = ncomp)
 transform(fm, X_list_2)

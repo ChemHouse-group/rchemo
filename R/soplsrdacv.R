@@ -1,5 +1,5 @@
 
-soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = "err", selection="1std"){
+.soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = "err", selection="1std"){
   
   Y = y
   # verifications
@@ -70,11 +70,12 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
       # partition
       set.seed(seed = seed)
       if(cvmethod=="loo"){CVtype=as.list(1:n)}
-      if((cvmethod=="kfolds") & (is.null(samplingk)==TRUE)){
-        #CVtype <- segmkf(n = n, K = nfolds, type = "interleaved")$rep1
+      if(is.null(samplingk)==FALSE){
+        samplingk <- paste0(Y,samplingk)
+      }else{
         samplingk <- Y
       }
-      if((cvmethod=="kfolds") & (is.null(samplingk)==FALSE)){
+      if(cvmethod=="kfolds"){
         samplingktab <- table(samplingk)
         partCVtype <- list()
         for(s in 1:length(names(samplingktab))){
@@ -134,6 +135,8 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
         t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_rmseCV[(nlvsum==i),"mean"]),,drop=FALSE])))))
       )
       
+      res_nlvsum_rmseCV_Ysel <- res_nlvsum_rmseCV_Ysel[order(res_nlvsum_rmseCV_Ysel[,"totalnlv"], decreasing=FALSE),]
+      
       if(selection=="localmin"){
         if(nrow(res_nlvsum_rmseCV_Ysel)>1){
           # sign of the difference of accuracies to select the optim combination with the lower total number of components
@@ -173,6 +176,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
         totalnlv = unique(nlvsum),
         t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_errCV[(nlvsum==i),c("mean","sd"),drop=FALSE][which.min(res_errCV[(nlvsum==i),"mean"]),,drop=FALSE])))))
       )
+      res_nlvsum_errCV_Ysel <- res_nlvsum_errCV_Ysel[order(res_nlvsum_errCV_Ysel[,"totalnlv"], decreasing=FALSE),]
       
       if(selection=="localmin"){
         if(nrow(res_nlvsum_errCV_Ysel)>1){
@@ -226,11 +230,12 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
       # partition
       set.seed(seed = seed)
       if(cvmethod=="loo"){CVtype=as.list(1:n)}
-      if((cvmethod=="kfolds") & (is.null(samplingk)==TRUE)){
-        #CVtype <- segmkf(n = n, K = nfolds, type = "interleaved")$rep1
+      if(is.null(samplingk)==FALSE){
+        samplingk <- paste0(Y,samplingk)
+      }else{
         samplingk <- Y
       }
-      if((cvmethod=="kfolds") & (is.null(samplingk)==FALSE)){
+      if(cvmethod=="kfolds"){
         samplingktab <- table(samplingk)
         partCVtype <- list()
         for(s in 1:length(names(samplingktab))){
@@ -321,6 +326,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
             t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_rmseCV[[m]][(nlvsum==i),c("mean","sd"),drop=FALSE][which.max(res_rmseCV[[m]][(nlvsum==i),"mean"]),,drop=FALSE])))))
           )
         }
+        res_nlvsum_rmseCV_Ysel <- res_nlvsum_rmseCV_Ysel[order(res_nlvsum_rmseCV_Ysel[,"totalnlv"], decreasing=FALSE),]
         
         if(selection=="localmin"){
           if(nrow(res_nlvsum_rmseCV_Ysel)>1){
@@ -371,6 +377,7 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
             t((sapply((unique(nlvsum)), function(i) unlist(data.frame(res_errCV[[m]][(nlvsum==i),c("mean","sd"),drop=FALSE][which.max(res_errCV[[m]][(nlvsum==i),"mean"]),,drop=FALSE])))))
           )
         }
+        res_nlvsum_errCV_Ysel <- res_nlvsum_errCV_Ysel[order(res_nlvsum_errCV_Ysel[,"totalnlv"], decreasing=FALSE),]
         
         if(selection=="localmin"){
           if(nrow(res_nlvsum_errCV_Ysel)>1){
@@ -421,43 +428,8 @@ soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscali
   class(rts) <- c("Soplscv")
   rts
 }
-############################################################################################################################
 
-if(FALSE){
-  rm(list=ls())
-  library(FactoMineR)
-  library(rchemo)
-  
-  liste_functions <- list.files("C:/Users/mbrandolini/Documents/DEVELOPPEMENTS/main/rchemo/R", full.names = TRUE)
-  # import des données :
-  lapply(liste_functions, source)
-  
-  data(wine)
-  #n=nrow(wine)
-  
-  A=wine[,3:7]
-  B=wine[,8:10]
-  C=wine[,11:20]
-  D=wine[,21:29]  
-  E=data.frame(Overall.quality = wine[,30], row.names = rownames(wine)) 
-  
-  Xlist = list(A,B,C,E)
-  Y = wine[,1]
-  nlvlist=list(0:2,1:ncol(B),0:3,0:1)
-    
-  nbrep=3
-  cvmethod="kfolds"
-  seed = 123
-  samplingk=NULL
-  nfolds=7
-  optimisation=c("global","sequential")[2]
-  criterion="err"
-  selection=c("1std","localmin","globalmin")[1]
-  majorityvote=c(TRUE,FALSE)[2]
-  Xscaling = c("none","pareto","sd")[3]
-  Yscaling = c("none","pareto","sd")[3]
-  weights = NULL
-  
-  test <- soplsrdacv(Xlist, Y, Xscaling = Xscaling, Yscaling=Yscaling, weights = weights, nbrep=nbrep, cvmethod=cvmethod, seed = 123, samplingk=NULL, nfolds=nfolds, optimisation=optimisation, criterion = "err", nlvlist=nlvlist, selection=selection) #, majorityvote=FALSE
-    
+
+soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = "err", selection = "1std"){
+  .soplsrdacv(Xlist = Xlist, y = y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist = nlvlist, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, criterion = criterion, selection = selection)
 }
