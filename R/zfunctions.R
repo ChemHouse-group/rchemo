@@ -1,3 +1,29 @@
+
+.blocksel <- function(X, blocks) {
+  
+  X <- .mat(X)
+  n <- dim(X)[1]
+  
+  nbl <- length(blocks)
+  
+  selcol <- unlist(blocks)
+  
+  colnam <- colnames(X)[selcol]
+  
+  X <- X[, selcol, drop = FALSE]
+  colnames(X) <- colnam
+  
+  z <- lapply(seq_len(nbl), function(i) length(blocks[[i]]))
+  lengthblock <- unlist(z)
+  
+  z <- lapply(seq_len(nbl), function(i) rep(i, lengthblock[i]))
+  newcol <- data.frame(newcol = seq_len(sum(lengthblock)), block = unlist(z))
+  newblocks <- lapply(seq_len(nbl), function(i) newcol$newcol[newcol$block == i])
+  
+  list(X = X, blocks = newblocks)  
+  
+}
+
 .center <- function(X, center = colMeans(X)) 
     t((t(X) - c(center)))
 
@@ -166,7 +192,25 @@
     if(le > 1)
         x <- x[sample(seq_len(le), 1)]
     x
-    }
+}
+
+.ginv <- function (X, tol = sqrt(.Machine$double.eps)){
+  if (length(dim(X)) > 2L || !(is.numeric(X) || is.complex(X))) 
+    stop("'X' must be a numeric or complex matrix")
+  if (!is.matrix(X)) 
+    X <- as.matrix(X)
+  Xsvd <- svd(X)
+  if (is.complex(X)) 
+    Xsvd$u <- Conj(Xsvd$u)
+  Positive <- Xsvd$d > max(tol * Xsvd$d[1L], 0)
+  if (all(Positive)) 
+    Xsvd$v %*% (1/Xsvd$d * t(Xsvd$u))
+  else if (!any(Positive)) 
+    array(0, dim(X)[2L:1L])
+  else Xsvd$v[, Positive, drop = FALSE] %*% ((1/Xsvd$d[Positive]) * t(Xsvd$u[, Positive, drop = FALSE]))
+}
+
+
 
 ## !!!! In rchemo, a vector (n,) is considered as
 ## a column matrix (n, 1)
@@ -195,6 +239,8 @@
 .mweights <- function(weights)
     weights <- c(weights) / sum(weights)
 
+
+
 .replace_bylev <- function(x, lev) {
     ## Replaces the elements of x
     ## by the levels of corresponding rank
@@ -208,4 +254,18 @@
 .scale = function(X, center = rep(0, dim(X)[2]), scale) 
     t((t(X) - c(center)) / c(scale))
 
+
+.xmean <- function(X, weights = NULL, row = FALSE) {
+  
+  X <- .mat(X)
+  n <- dim(X)[1]
+  
+  if(is.null(weights))
+    weights <- rep(1 / n, n)
+  else
+    weights <- weights / sum(weights)
+  
+  colSums(weights * X)   
+  
+}
 

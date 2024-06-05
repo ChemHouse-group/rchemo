@@ -33,7 +33,7 @@ gridcvlb(X, Y, segm, score, fun, lb, pars = NULL, verb = TRUE)
 
 \arguments{
 
-\item{X}{Training X-data (\eqn{n, p}).}
+\item{X}{Training X-data (\eqn{n, p}), or list of training X-data.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 

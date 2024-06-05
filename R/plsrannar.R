@@ -1,4 +1,4 @@
-plsrannar <- function(X, Y, weights = NULL, nlv) {
+plsrannar <- function(X, Y, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     n <- dim(X)[1]
@@ -7,9 +7,18 @@ plsrannar <- function(X, Y, weights = NULL, nlv) {
         weights <- rep(1, n)
     weights <- .mweights(weights)
     xmeans <- .colmeans(X, weights = weights) 
-    X <- .center(X, xmeans)
-    ymeans <- .colmeans(Y, weights = weights) 
-    Y <- .center(Y, ymeans)
+    ymeans <- .colmeans(Y, weights = weights)
+    
+    if(Xscaling == "none") {xscales <- rep(1, ncol(X))}
+    if(Yscaling == "none") {yscales <- rep(1, q)}
+    if(Xscaling == "sd") {xscales <- sqrt(.colvars(X, weights = weights))}
+    if(Yscaling == "sd") {yscales <- sqrt(.colvars(Y, weights = weights))}
+    if(Xscaling == "pareto") {xscales <- sqrt(sqrt(.colvars(X, weights = weights)))}
+    if(Yscaling == "pareto") {yscales <- sqrt(sqrt(.colvars(Y, weights = weights)))}
+    
+    X <- scale(X, center = xmeans, scale = xscales)
+    Y <- scale(Y, center = ymeans, scale = yscales)
+    
     nam <- paste("lv", seq_len(nlv), sep = "")
     U <- T <- Tclass <- matrix(nrow = n, ncol = nlv, 
                                dimnames = list(row.names(X), nam))                     
@@ -35,7 +44,7 @@ plsrannar <- function(X, Y, weights = NULL, nlv) {
         Tclass[, a] <- tclass
         U[, a] <- u
         TT[a] <- tt
-        }
+    }
     W <- crossprod(Xd, U)
     W <- .scale(W, scale = .colnorms(W))
     Z <- solve(crossprod(T))
@@ -45,6 +54,7 @@ plsrannar <- function(X, Y, weights = NULL, nlv) {
     R <- W %*% solve(crossprod(P, W))
     structure(
         list(T = Tclass, P = P, R = R, W = W, C = C, TT = TT,
-            xmeans = xmeans, ymeans = ymeans, weights = weights, U = U),
+            xmeans = xmeans, ymeans = ymeans, xscales = xscales, yscales = yscales, weights = weights, U = U),
         class = c("Plsr", "Pls"))    
-    }
+}
+

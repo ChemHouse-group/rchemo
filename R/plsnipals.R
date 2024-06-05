@@ -1,4 +1,4 @@
-plsnipals <- function(X, Y, weights = NULL, nlv) {
+plsnipals <- function(X, Y, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     zdim <- dim(X)
@@ -8,10 +8,19 @@ plsnipals <- function(X, Y, weights = NULL, nlv) {
     if(is.null(weights))
         weights <- rep(1, n)
     weights <- .mweights(weights)
-    xmeans <- .colmeans(X, weights = weights) 
-    X <- .center(X, xmeans)
-    ymeans <- .colmeans(Y, weights = weights) 
-    Y <- .center(Y, ymeans)
+    xmeans <- .colmeans(X, weights = weights)
+    ymeans <- .colmeans(Y, weights = weights)
+    
+    if(Xscaling == "none") {xscales <- rep(1, p)}
+    if(Yscaling == "none") {yscales <- rep(1, q)}
+    if(Xscaling == "sd") {xscales <- sqrt(.colvars(X, weights = weights))}
+    if(Yscaling == "sd") {yscales <- sqrt(.colvars(Y, weights = weights))}
+    if(Xscaling == "pareto") {xscales <- sqrt(sqrt(.colvars(X, weights = weights)))}
+    if(Yscaling == "pareto") {yscales <- sqrt(sqrt(.colvars(Y, weights = weights)))}
+    
+    X <- scale(X, center = xmeans, scale = xscales)
+    Y <- scale(Y, center = ymeans, scale = yscales)
+    
     nam <- paste("lv", seq_len(nlv), sep = "")
     T <- matrix(nrow = n, ncol = nlv, dimnames = list(row.names(X), nam))                     
     R <- W <- P <- matrix(nrow = p, ncol = nlv, dimnames = list(colnames(X), nam)) 
@@ -42,6 +51,6 @@ plsnipals <- function(X, Y, weights = NULL, nlv) {
     R <- W %*% solve(crossprod(P, W))
     structure(
         list(T = T, P = P, R = R, W = W, C = C, TT = TT,
-             xmeans = xmeans, ymeans = ymeans, weights = weights, U = NULL),
+             xmeans = xmeans, ymeans = ymeans, xscales = xscales, yscales = yscales, weights = weights,  U = NULL),
         class = c("Plsr", "Pls"))
 }

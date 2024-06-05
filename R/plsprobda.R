@@ -1,4 +1,4 @@
-.plsprobda <- function(X, y, weights = NULL, nlv, fun, prior = c("unif", "prop")) {
+.plsprobda <- function(X, y, weights = NULL, nlv, fun, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     prior <- match.arg(prior)
     if(is.factor(y))
         y <- as.character(y)
@@ -12,7 +12,7 @@
     weights <- .mweights(weights)
     zd <- dummy(y)
     fm <- list()
-    fm[[1]] <- plskern(X, zd$Y, weights = weights, nlv = nlv)
+    fm[[1]] <- plskern(X, zd$Y, weights = weights, nlv = nlv, Xscaling = Xscaling, Yscaling = Yscaling)
     ## Should be:
     ## z <- transform(fm[[1]], X)
     ## But same as:
@@ -24,11 +24,11 @@
               class = "Plsprobda")       
 }
 
-plslda <- function(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
-    .plsprobda(X, y, weights, nlv, fun = lda, prior = prior)
+plslda <- function(X, y, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+    .plsprobda(X, y, weights, nlv, fun = rchemo::lda, prior = prior, Xscaling, Yscaling)
 
-plsqda <- function(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
-    .plsprobda(X, y, weights, nlv, fun = qda, prior = prior)
+plsqda <- function(X, y, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+    .plsprobda(X, y, weights, nlv, fun = rchemo::qda, prior = prior, Xscaling, Yscaling)
 
 
 predict.Plsprobda <- function(object, X, ..., nlv = NULL) {
