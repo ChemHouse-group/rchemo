@@ -50,7 +50,7 @@ In function \code{knnda}, the dissimilarities used for computing the neighborhoo
 
 \value{
 
-For \code{knnda}{list with input arguments}
+For \code{knnda}:list with input arguments.
 
 For \code{predict.Knnda}:
 

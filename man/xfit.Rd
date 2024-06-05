@@ -41,9 +41,9 @@ xresid(object, X, ..., nlv = NULL)
 
 \value{
 
-For \code{xfit}{matrix of fitted values}
+For \code{xfit}:matrix of fitted values.
 
-For \code{xresid}{matrix of residuals}
+For \code{xresid}:matrix of residuals.
 
 }
 
