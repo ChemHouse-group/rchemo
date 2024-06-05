@@ -56,7 +56,7 @@ plsqda_agg(X, y, weights = NULL, nlv, prior = c("unif", "prop"))
 For \code{plsrda_agg}, \code{plslda_agg} and \code{plsqda_agg}:
 
 \item{fm}{list contaning: 
-the model((\code{fm})=(\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output),  \code{lev}{classes}, \code{ni}{number of observations in each class}}
+the model((\code{fm})=(\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{U}): intermediate output),  (\code{lev}):classes, (\code{ni}):number of observations in each class}
 
 \item{nlv}{range of the numbers of LVs considered}
 
