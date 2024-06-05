@@ -8,3 +8,5 @@
 
 - New functions :  vip, orthog, mbplsr, mbplsrda, mbplslda, mbplsqda, soplsr, soplsrda, soplslda, soplsqda, soplsrcv, soplsrdacv, soplsldacv, soplsqdacv
 - Function changes : "Xscaling" and "Yscaling" arguments added to plskern, plsrannar, plsnipals, plsrda, plslda, plsqda functions
+- bugfix R/plotjit.R; R/plotscore.R; R/plotxy.R; R/selwold.R.
+
