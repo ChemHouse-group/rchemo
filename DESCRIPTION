@@ -1,7 +1,7 @@
 Package: rchemo
 Type: Package
 Title: Dimension Reduction, Regression and Discrimination for Chemometrics
-Version: 0.1-1
+Version: 0.1-2
 Authors@R: c(
     person("Marion", "Brandolini-Bunlon", email = "marion.brandolini-bunlon@inrae.fr", role = c("aut", "cre")),
     person("Benoit", "Jaillais", email = "benoit.jaillais@inrae.fr", role = c("aut")),

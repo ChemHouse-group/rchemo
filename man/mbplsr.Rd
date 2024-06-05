@@ -1,24 +1,16 @@
-\name{plskern}
-\alias{plskern}
-\alias{plsnipals}
-\alias{plsrannar}
-\alias{transform.Plsr}
-\alias{summary.Plsr}
-\alias{coef.Plsr}
-\alias{predict.Plsr}
+\name{mbplsr}
+\alias{mbplsr}
+\alias{transform.Mbplsr}
+\alias{summary.Mbplsr}
+\alias{coef.Mbplsr}
+\alias{predict.Mbplsr}
 \encoding{UTF-8}
 
-\title{PLSR algorithms}
+\title{multi-block PLSR algorithms}
 
 \description{
 
-Algorithms fitting a PLS1 or PLS2 model between dependent variables \eqn{X} and responses \eqn{Y}.
-
-- \code{plskern}: "Improved kernel algorithm #1" proposed by Dayal and MacGregor (1997). This algorithm is stable and fast (Andersson 2009), and returns the same results as the NIPALS. 
-
-- \code{plsnipals}: NIPALS algorithm (e.g. Tenenhaus 1998, Wold 2002). In the function, the usual PLS2 NIPALS iterative is replaced by a direct calculation of the weights vector \eqn{w} by SVD decomposition of matrix \eqn{X'Y} (Hoskuldsson 1988 p.213).  
-
-- \code{plsrannar}: Kernel algorithm proposed by Rannar et al. (1994) for "wide" matrices, i.e.  with low number of rows and very large number of columns (p >> n; e.g. p = 20000). In such a situation, this algorithm is faster than the others (but it becomes much slower in other situations). If the algorithm converges, it returns the same results as the NIPALS (Note: discrepancies can be observed if too many PLS components are requested compared to the low number of observations).
+Algorithm fitting a multi-block PLS1 or PLS2 model between dependent variables \eqn{Xlist} and responses \eqn{Y}, based on the "Improved kernel algorithm #1" proposed by Dayal and MacGregor (1997). 
 
 For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2006, Kim et al. 2011 and Lesnoff et al. 2020.
 
@@ -28,7 +20,7 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \code{summary} returns summary information for the model.
 
-\code{coef} Calculates b-coefficients from the model.
+\code{coef} Calculates b-coefficients from the model, adjuted for raw data.
 
 \code{predict} Calculates the predictions for any new matrix \eqn{X} from the model.
 
@@ -36,38 +28,36 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-plskern(X, Y, weights = NULL, nlv, 
+mbplsr(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, 
 Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
-plsnipals(X, Y, weights = NULL, nlv, 
-Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+\method{transform}{Mbplsr}(object, X, ..., nlv = NULL)  
 
-plsrannar(X, Y, weights = NULL, nlv, 
-Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+\method{summary}{Mbplsr}(object, X, ...)  
 
-\method{transform}{Plsr}(object, X, ..., nlv = NULL)  
+\method{coef}{Mbplsr}(object, ..., nlv = NULL) 
 
-\method{summary}{Plsr}(object, X, ...)  
-
-\method{coef}{Plsr}(object, ..., nlv = NULL) 
-
-\method{predict}{Plsr}(object, X, ..., nlv = NULL)  
+\method{predict}{Mbplsr}(object, X, ..., nlv = NULL)  
 
 }
 
 \arguments{
 
-\item{X}{For the main functions: Training X-data (\eqn{n, p}). --- For the auxiliary functions: Training X-data (\eqn{n, p}).}
+\item{Xlist}{For the main function: list of training X-data (\eqn{n}rows).}
+
+\item{X}{For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
+
+\item{blockscaling}{logical. If TRUE, the scaling factor (computed on the training) is the "norm" of the block, i.e. the square root of the sum of the variances of each column of the block.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
 
 \item{nlv}{For the main functions: The number(s) of LVs to calculate. --- For the auxiliary functions: The number(s) of LVs to consider.}
 
-\item{Xscaling}{X variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+\item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
-\item{Yscaling}{Y variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
+\item{Yscaling}{character. variable scaling for the Y-block, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
@@ -77,7 +67,7 @@ Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]
 
 \value{
 
-For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such as
+A list of outputs, such as
 
 \item{T}{The X-score matrix (\eqn{n, nlv}).}
 
@@ -89,11 +79,11 @@ For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such 
 
 \item{R}{The PLS projection matrix (\eqn{p, nlv}).}
 
-\item{xmeans}{The centering vector of \eqn{X} (\eqn{p, 1}).}
+\item{xmeans}{The list of centering vectors of \eqn{Xlist}.}
 
 \item{ymeans}{The centering vector of \eqn{Y} (\eqn{q, 1}).}
 
-\item{xscales}{The vector of \eqn{X} variable standard deviations (\eqn{p, 1}).}
+\item{xscales}{The list of \eqn{Xlist} variable standard deviations.}
 
 \item{yscales}{The vector of \eqn{Y} variable standard deviations (\eqn{q, 1}).}
 
@@ -101,23 +91,27 @@ For \code{plskern}, \code{plsnipals}, \code{plsrannar}: A list of outputs, such 
 
 \item{TT}{the X-score normalization factor.}
 
+\item{blockscaling}{block scaling.}
+
+\item{Xnorms}{"norm" of each block, i.e. the square root of the sum of the variances of each column of each block, computed on the training, and used as scaling factor}.
+
 \item{U}{intermediate output.}
 
-For \code{transform.Plsr}: X-scores matrix for new X-data.
+For \code{transform.Mbplsr}: X-scores matrix for new Xlist-data.
 
-For \code{summary.Plsr}:
+For \code{summary.Mbplsr}:
 
 \item{explvarx}{matrix of explained variances.}
 
-For \code{coef.Plsr}: 
+For \code{coef.Mbplsr}: 
 
 \item{int}{matrix (1,nlv) with the intercepts}
 
 \item{B}{matrix (n,nlv) with the coefficients}
 
-For \code{predict.Plsr}: 
+For \code{predict.Mbplsr}: 
 
-\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new X-data}
+\item{pred}{A list of matrices (\eqn{m, q}) with the Y predicted values for the new Xlist-data}
 
 }
 
@@ -147,39 +141,30 @@ Wold, S., Sjostrom, M., Eriksson, l., 2001. PLS-regression: a basic tool for che
 
 \examples{
 
-n <- 6 ; p <- 4
+n <- 10 ; p <- 10
 Xtrain <- matrix(rnorm(n * p), ncol = p)
 ytrain <- rnorm(n)
-Ytrain <- cbind(y1 = ytrain, y2 = 100 * ytrain)
-m <- 3
-Xtest <- Xtrain[1:m, , drop = FALSE] 
-Ytest <- Ytrain[1:m, , drop = FALSE] ; ytest <- Ytest[1:m, 1]
+
+m <- 2
+Xtest <- matrix(rnorm(m * p), ncol = p)
+
+colnames(Xtrain) <- colnames(Xtest) <- paste("v", 1:p, sep = "")
+
+Xtrain
+Xtest
+
+blocks <- list(1:2, 4, 6:8)
+X1 <- mblocks(Xtrain, blocks = blocks)
+X2 <- mblocks(Xtest, blocks = blocks)
 
 nlv <- 3
-plskern(Xtrain, Ytrain, Xscaling = "sd", nlv = nlv)
-plsnipals(Xtrain, Ytrain, Xscaling = "sd", nlv = nlv)
-plsrannar(Xtrain, Ytrain, Xscaling = "sd", nlv = nlv)
+fm <- mbplsr(Xlist = X1, Y = ytrain, Xscaling = c("sd","none","none"), 
+blockscaling = TRUE, weights = NULL, nlv = nlv)
 
-plskern(Xtrain, Ytrain, Xscaling = "none", nlv = nlv)
-plskern(Xtrain, Ytrain, nlv = nlv)$T
-plskern(Xtrain, Ytrain, nlv = nlv, weights = 1:n)$T
-
-fm <- plskern(Xtrain, Ytrain, nlv = nlv)
+summary(fm, X1)
 coef(fm)
-coef(fm, nlv = 0)
-coef(fm, nlv = 1)
-
-fm$T
-transform(fm, Xtest)
-transform(fm, Xtest, nlv = 1)
-
-summary(fm, Xtrain)
-
-predict(fm, Xtest)
-predict(fm, Xtest, nlv = 0:3)
-
-pred <- predict(fm, Xtest)$pred
-msep(pred, Ytest)
+transform(fm, X2)
+predict(fm, X2)
 
 }
 

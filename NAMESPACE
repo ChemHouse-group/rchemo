@@ -84,6 +84,21 @@ S3method(predict, Knnda)
 S3method(predict, Svm)
 S3method(summary, Svm)
 
+S3method(coef, Mbplsr)
+S3method(predict, Mbplsr)
+S3method(transform, Mbplsr)
+S3method(summary, Mbplsr)
+
+S3method(predict, Mbplsprobda)
+S3method(predict, Mbplsrda)
+
+S3method(predict, Soplsr)
+S3method(transform, Soplsr)
+S3method(predict, Soplsrda)
+S3method(transform, Soplsrda)
+S3method(predict, Soplsprobda) 
+S3method(transform, Soplsprobda)
+
 #exportMethods("transform", "coef", "predict")
 #exportClasses("PcaOrtho", "PlsOrtho", 
 #              "Dmnorm", "Lda", "Qda", "Plsda", "PlsDaProb",

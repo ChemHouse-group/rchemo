@@ -1,24 +1,24 @@
-plsrda <- function(X, y, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
+mbplsrda <- function(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     if(is.factor(y))
         y <- as.character(y)
-    X <- .mat(X)
-    zdim <- dim(X)
-    n <- zdim[1]
-    p <- zdim[2]
+    Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
+    #zdim <- dim(X)
+    n <- nrow(Xlist[[1]])#zdim[1]
+    p <- sum(sapply(1:length(Xlist), function(x) ncol(Xlist[[x]])))#zdim[2]
     nlv <- min(nlv, n, p)
     if(is.null(weights))
         weights <- rep(1, n)
     weights <- .mweights(weights)
     z <- dummy(y)
-    fm <- plskern(X, z$Y, weights = weights, nlv = nlv, Xscaling = Xscaling, Yscaling = Yscaling)
+    fm <- mbplsr(Xlist, z$Y, blockscaling = blockscaling, weights = weights, nlv = nlv, Xscaling = Xscaling, Yscaling = Yscaling)
     structure(
         list(fm = fm, lev = z$lev, ni = z$ni),
-        class = c("Plsrda"))       
+        class = c("Mbplsrda"))       
 }
 
-predict.Plsrda <- function(object, X, ..., nlv = NULL) {
-    X <- .mat(X)
-    rownam <- row.names(X)
+predict.Mbplsrda <- function(object, X, ..., nlv = NULL) {
+    X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+    rownam <- row.names(X[[1]])
     colnam <- "y1"
     A <- dim(object$fm$P)[2]
     if(is.null(nlv))
@@ -42,4 +42,3 @@ predict.Plsrda <- function(object, X, ..., nlv = NULL) {
     }
     list(pred = pred, posterior = posterior)
 }
-

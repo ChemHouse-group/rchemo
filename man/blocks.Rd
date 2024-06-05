@@ -97,14 +97,12 @@ Xtest
 
 blocks <- list(1:2, 4, 6:8)
 X1 <- mblocks(Xtrain, blocks = blocks)
-X2 <- mblocks(Xtest, blocks = blocks)
-res <- blockscal(X1, X2)
+X1 <- lapply(1:length(X1), function(x) scale(X1[[x]]))
+res <- blockscal(X1)
 zXtrain <- hconcat(res$Xtrain)
-zXtest <- hconcat(res$X)
 
 nlv <- 3
 fm <- plskern(zXtrain, ytrain, nlv = nlv)
-predict(fm, zXtest)
 
 }
 

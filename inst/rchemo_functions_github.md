@@ -10,7 +10,7 @@
 - ***pcanipals*** Nipals
 - ***pcanipalsna*** Nipals allowing missing data
 - ***kpca*** Non Linear Kernel PCA  (KPCA) (Scholkopf et al. 2002)
-- ***pcasph*** Specrical PCA
+- ***pcasph*** Spherical PCA
 
 ##### Auxiliary (works also for PLS)
 
@@ -35,8 +35,9 @@
 
 *Auxiliary*
 
-- ***dfplsr_cg***, ***dfplsr_cov***, ***dfplsr_div***: Model complexity estiamtion for PLSR
+- ***dfplsr_cg***, ***dfplsr_cov***, ***dfplsr_div***: Model complexity estimation for PLSR
 - ***aicplsr***: Cp and AIC for PLSR models
+- ***vip*** Variable Importance in Projection (works also for PLSDA models)
 
 #### Ridge
 
@@ -150,8 +151,8 @@
 - ***savgol*** Savitsky-Golay filtering (derivation)
 - ***dderiv*** Derivation by finite difference
 - ***xinterp*** Resampling of spectra by interpolation methods
-- ***rmgap** Remove vertical gaps in spectra (e.g. for ASD)
-- **eposvd** Pre-processing data by external parameter orthogonalization (EPO; Roger et al 2003) 
+- ***rmgap*** Remove vertical gaps in spectra (e.g. for ASD)
+- ***eposvd*** Pre-processing data by external parameter orthogonalization (EPO; Roger et al 2003) 
 
 #### Sampling
 
@@ -177,6 +178,19 @@
 - ***mblocks*** Makes a list of blocks
 - ***hconcat*** Horizontal block concatenation 
 - ***blockscal*** Block autoscaling
+- ***orthog*** Orthogonalization of two blocks
+- ***mbplsr***, ***mbplskern***, ***mbplsnipals***, ***mbplsrannar***: Multi-Block PLS
+- ***mbplsrda*** Multi-Block PLS-RDA
+- ***mbplslda*** Multi-Block PLS-LDA
+- ***mbplsqda*** Multi-Block PLS-QDA
+- ***sopls*** Sequential and Orthogonalized PLS
+- ***soplsrda*** Sequential and Orthogonalized PLS-RDA
+- ***soplslda*** Sequential and Orthogonalized PLS-LDA
+- ***soplsqda*** Sequential and Orthogonalized PLS-QDA
+- ***soplscv*** Help to choose optimal Sequential and Orthogonalized PLS model
+- ***soplsrdacv*** Help to choose optimal Sequential and Orthogonalized PLS-RDA model
+- ***soplsldacv*** Help to choose optimal Sequential and Orthogonalized PLS-LDA model
+- ***soplsqdacv*** Help to choose optimal Sequential and Orthogonalized PLS-QDA model
 
 #### Datasets
 
