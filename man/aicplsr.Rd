@@ -32,7 +32,7 @@ aicplsr(
 
 \item{meth}{Method used for estimating \eqn{df}. Possible values are \code{"cg"} (\code{\link{dfplsr_cg}}), \code{"cov"} (\code{\link{dfplsr_cov}})or \code{"div"} (\code{\link{dfplsr_div}}).}
 
-\item{correct}{Logical. If code{TRUE} (default), the AICc corection is applied to the criteria.}
+\item{correct}{Logical. If \code{TRUE} (default), the AICc corection is applied to the criteria.}
 
 \item{B}{For \code{meth = "div"}: the number of observations in the data receiving perturbation (maximum is \eqn{n}; see \code{\link{dfplsr_cov}}). For \code{meth = "cov"}: the number of bootstrap replications (see \code{\link{dfplsr_cov}}).}
 

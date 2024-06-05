@@ -50,7 +50,7 @@ In function \code{knnr}, the dissimilarities used for computing the neighborhood
 
 \value{
 
-For \code{knnr}{list with input arguments}
+For \code{knnr}:list with input arguments.
 
 For \code{predict.Knnr}:
 
