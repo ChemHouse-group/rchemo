@@ -13,6 +13,7 @@
   }
   if((nbrep==1)&(selection=="1std")){stop("nbrep must be >1 when selection is '1std'")}
   if((cvmethod=="loo") & (selection=="1std")){stop("selection must not be '1std' when cvmethod is 'loo'")}
+  if((cvmethod=="loo") & (nbrep>1)){stop("nbrep must not be set to 1 when cvmethod is 'loo'")}
   if((cvmethod=="kfolds") & (nfolds<=1)){stop("nfolds must not be >1 when cvmethod is 'kfolds'")}
   
   # argument computations

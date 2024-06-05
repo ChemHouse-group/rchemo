@@ -17,12 +17,12 @@ soplsrda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
     class = c("Soplsrda"))       
 }
 
-transform.Soplsrda <- function(object, Xlist, ...){
+transform.Soplsrda <- function(object, X, ...){
   
-  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
+  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
   nbl <- length(object$fm$fm)
   if(object$fm$nlv[1]>0){
-    T <- transform(object$fm$fm[[1]], Xlist[[1]])
+    T <- transform(object$fm$fm[[1]], X[[1]])
   }else{
     T <- NULL
   }
@@ -30,20 +30,20 @@ transform.Soplsrda <- function(object, Xlist, ...){
   if (nbl > 1){
     for (i in 2:nbl){
       if(object$fm$nlv[i]>0){
-        X = Xlist[[i]] - T %*% object$fm$b[[i]]
-        T = cbind(T, transform(object$fm$fm[[i]], X))
+        Xo = X[[i]] - T %*% object$fm$b[[i]]
+        T = cbind(T, transform(object$fm$fm[[i]], Xo))
       }
     }
   }
   T
 }
 
-predict.Soplsrda <- function(object, Xlist, ...) {
-  Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
-  rownam <- row.names(Xlist[[1]])
+predict.Soplsrda <- function(object, X, ...) {
+  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+  rownam <- row.names(X[[1]])
   colnam <- "y1"
 
-  posterior <- predict(object$fm, Xlist)
+  posterior <- predict(object$fm, X)
   dimnames(posterior) <- list(rownam, object$lev)
   
   z <- apply(posterior, FUN = .findmax, MARGIN = 1)

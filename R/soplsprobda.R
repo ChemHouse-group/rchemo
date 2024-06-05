@@ -42,30 +42,30 @@ soplsqda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
     .soplsprobda(Xlist, y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv = nlv, fun = rchemo::qda, prior = prior)
 
 
-transform.Soplsprobda <- function(object, Xlist, ...){
+transform.Soplsprobda <- function(object, X, ...){
   
-  Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
-  transform(object$fm[[1]], Xlist)
+  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+  transform(object$fm[[1]], X)
   
 }
 
-predict.Soplsprobda <- function(object, Xlist, ...) {
-  Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
-  rownam <- row.names(Xlist[[1]])
+predict.Soplsprobda <- function(object, X, ...) {
+  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+  rownam <- row.names(X[[1]])
   colnam <- "y1"
   
   if(sum(object$fm[[1]]$nlv)>0){
-    z <- transform(object$fm[[1]], Xlist)
+    z <- transform(object$fm[[1]], X)
     
     zres <- predict(object$fm[[2]], z)
     pred <- zres$pred
     posterior <- zres$posterior
   }else{
-    posterior <- matrix(rep(object$fm[[2]]$wprior, each = nrow(Xlist[[1]])), 
+    posterior <- matrix(rep(object$fm[[2]]$wprior, each = nrow(X[[1]])), 
                         ncol = length(object$fm[[2]]$lev),
                         dimnames = list(rownam, object$fm[[2]]$lev))
     pred <- matrix(object$fm[[2]]$lev[which.max(object$fm[[2]]$wprior)[1]], 
-                   nrow = nrow(Xlist[[1]]),
+                   nrow = nrow(X[[1]]),
                    dimnames = list(rownam, colnam))
   }
 

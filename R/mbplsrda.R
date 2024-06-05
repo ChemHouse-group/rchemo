@@ -16,9 +16,9 @@ mbplsrda <- function(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, Xscalin
         class = c("Mbplsrda"))       
 }
 
-predict.Mbplsrda <- function(object, Xlist, ..., nlv = NULL) {
-    Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
-    rownam <- row.names(Xlist[[1]])
+predict.Mbplsrda <- function(object, X, ..., nlv = NULL) {
+    X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+    rownam <- row.names(X[[1]])
     colnam <- "y1"
     A <- dim(object$fm$P)[2]
     if(is.null(nlv))
@@ -28,7 +28,7 @@ predict.Mbplsrda <- function(object, Xlist, ..., nlv = NULL) {
     le_nlv <- length(nlv)
     posterior <- pred <- vector(mode = "list", length = le_nlv)
     for(i in seq_len(le_nlv)) {
-        zposterior <- predict(object$fm, Xlist, nlv = nlv[i])$pred
+        zposterior <- predict(object$fm, X, nlv = nlv[i])$pred
         z <- apply(zposterior, FUN = .findmax, MARGIN = 1)
         zpred <- matrix(.replace_bylev(z, object$lev), ncol = 1)
         dimnames(zpred) <- list(rownam, colnam)

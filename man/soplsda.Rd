@@ -59,19 +59,21 @@ prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, sampling
 nfolds = 7, optimisation = c("global","sequential")[1], 
 criterion = c("err","rmse")[1], selection = c("localmin","globalmin","1std")[1])
 
-\method{transform}{Soplsrda}(object, Xlist, ...) 
+\method{transform}{Soplsrda}(object, X, ...) 
 
-\method{transform}{Soplsprobda}(object, Xlist, ...) 
+\method{transform}{Soplsprobda}(object, X, ...) 
 
-\method{predict}{Soplsrda}(object, Xlist, ...) 
+\method{predict}{Soplsrda}(object, X, ...) 
 
-\method{predict}{Soplsprobda}(object, Xlist, ...) 
+\method{predict}{Soplsprobda}(object, X, ...) 
 
 }
 
 \arguments{
 
-\item{Xlist}{A list of matrices or data frames of reference (= training) observations.}
+\item{Xlist}{For the main functions: A list of matrices or data frames of reference (= training) observations.}
+
+\item{X}{For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 

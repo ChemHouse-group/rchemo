@@ -31,15 +31,17 @@ Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]
 mbplsqda(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, prior = c("unif", "prop"),
 Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
-\method{predict}{Mbplsrda}(object, Xlist, ..., nlv = NULL) 
+\method{predict}{Mbplsrda}(object, X, ..., nlv = NULL) 
 
-\method{predict}{Mbplsprobda}(object, Xlist, ..., nlv = NULL) 
+\method{predict}{Mbplsprobda}(object, X, ..., nlv = NULL) 
 
 }
 
 \arguments{
 
-\item{Xlist}{For the main functions: list of training X-data (\eqn{n}rows). --- For the auxiliary functions: list of new X-data (\eqn{n} rows), with the same variables than the training X-data.}
+\item{Xlist}{For the main functions: list of training X-data (\eqn{n}rows).}
+
+\item{X}{For the auxiliary functions: list of new X-data (\eqn{n} rows), with the same variables than the training X-data.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 

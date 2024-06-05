@@ -1,12 +1,12 @@
 mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
-    Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
+    Xlist <- lapply(1:length(Xlist), function(i) .mat(Xlist[[i]]))
     Y <- .mat(Y, "y")
     
     if(is.null(weights))
         weights <- rep(1, nrow(Y))
     weights <- .mweights(weights)
     
-    xmeanslist <- lapply(1:length(Xlist), function(X) .colmeans(Xlist[[X]], weights = weights))
+    xmeanslist <- lapply(1:length(Xlist), function(i) .colmeans(Xlist[[i]], weights = weights))
     ymeans     <- .colmeans(Y, weights = weights) 
     
     if((length(Xscaling)=1) & (length(Xlist)>1)){Xscaling = rep(Xscaling, length(Xlist))}
@@ -17,7 +17,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
       if(Xscaling[i] == "pareto"){xscaleslist[[i]] <- sqrt(sqrt(.colvars(Xlist[[i]], weights = weights)))}
       if(Xscaling[i] == "sd"){xscaleslist[[i]] <- sqrt(.colvars(Xlist[[i]], weights = weights))}
     }
-    Xlist <- lapply(1:length(Xlist), function(X) scale(Xlist[[X]], center = xmeanslist[[X]], scale = xscaleslist[[X]]))
+    Xlist <- lapply(1:length(Xlist), function(i) scale(Xlist[[i]], center = xmeanslist[[i]], scale = xscaleslist[[i]]))
     
     if(blockscaling==TRUE){
       Xblockscaled <- blockscal(Xtrain = Xlist, weights = weights)
@@ -32,20 +32,20 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     if(Yscaling == "sd"){yscales <- sqrt(.colvars(Y, weights = weights))}
     Y <- scale(Y, center = ymeans, scale = yscales)
     
-    X <- do.call("cbind",Xlist)
-    zdim <- dim(X)
+    Xconc <- do.call("cbind",Xlist)
+    zdim <- dim(Xconc)
     n <- zdim[1]
     p <- zdim[2]
     q <- dim(Y)[2]
     nam <- paste("lv", seq_len(nlv), sep = "")
-    T <- matrix(nrow = n, ncol = nlv, dimnames = list(row.names(X), nam))                     
-    R <- W <- P <- matrix(nrow = p, ncol = nlv, dimnames = list(colnames(X), nam)) 
+    T <- matrix(nrow = n, ncol = nlv, dimnames = list(row.names(Xconc), nam))                     
+    R <- W <- P <- matrix(nrow = p, ncol = nlv, dimnames = list(colnames(Xconc), nam)) 
     C <- matrix(nrow = q, ncol = nlv, dimnames = list(colnames(Y), nam))                     
     TT <- vector(length = nlv)
-    Xd <- weights * X
-    # = D %*% X = d * X = X * d
+    Xd <- weights * Xconc
+    # = D %*% Xconc = d * Xconc = Xconc * d
     tXY <- crossprod(Xd, Y)
-    # = t(D %*% X) %*% Y = t(X) %*% D %*% Y
+    # = t(D %*% Xconc) %*% Y = t(Xconc) %*% D %*% Y
     for(a in seq_len(nlv)) {
         if(q == 1) w <- tXY
             else {
@@ -60,7 +60,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
         if(a > 1)
             for(j in seq_len(a - 1)) 
                     r <- r - sum(P[, j] * w) * R[, j]
-        t <- X %*% r 
+        t <- Xconc %*% r 
         tt <- sum(weights * t * t)         
         c <- crossprod(tXY, r) / tt
         zp <- crossprod(Xd, t) / tt 
@@ -78,18 +78,18 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
         class = c("Mbplsr"))
 }
 
-summary.Mbplsr <- function(object, Xlist, ...) {
+summary.Mbplsr <- function(object, X, ...) {
     zdim <- dim(object$T)
     n <- zdim[1]
     nlv <- zdim[2]
     
-    Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
+    X <- lapply(1:length(X), function(i) scale(.mat(X[[i]]), center = object$xmeans[[i]], scale = object$xscales[[i]]))
     
-    if(object$blockscaling==TRUE){Xlist <- blockscal(Xtrain = Xlist, weights = object$weights)$Xtrain}
+    if(object$blockscaling==TRUE){X <- blockscal(Xtrain = X, weights = object$weights)$Xtrain}
 
-    X <- do.call("cbind",Xlist)
+    Xconc <- do.call("cbind",X)
     
-    sstot <- sum(object$weights * X * X, na.rm = TRUE)
+    sstot <- sum(object$weights * Xconc * Xconc, na.rm = TRUE)
     tt <- object$TT
     ## Only valid if scores T are orthogonal (or approximate)
     tt.adj <- colSums(object$P * object$P) * tt
@@ -101,7 +101,7 @@ summary.Mbplsr <- function(object, Xlist, ...) {
     list(explvarx = explvar)
 }
 
-transform.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
+transform.Mbplsr <- function(object, X, ..., nlv = NULL) {
     a <- dim(object$T)[2]
     if(is.null(nlv)){
       nlv <- a
@@ -109,11 +109,11 @@ transform.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
       nlv <- min(a, nlv)
     }
 
-    Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
+    X <- lapply(1:length(X), function(i) scale(.mat(X[[i]]), center = object$xmeans[[i]], scale = object$xscales[[i]]))
     
-    if(object$blockscaling==TRUE){Xlist <- lapply(1:length(Xlist), function(X) Xlist[[X]]/object$Xnorms[X])}
+    if(object$blockscaling==TRUE){X <- lapply(1:length(X), function(i) X[[i]]/object$Xnorms[i])}
     
-    T <- do.call("cbind",Xlist) %*% object$R[, seq_len(nlv), drop = FALSE]
+    T <- do.call("cbind",X) %*% object$R[, seq_len(nlv), drop = FALSE]
     colnames(T) <- paste("lv", seq_len(dim(T)[2]), sep = "")
     T
 }
@@ -149,11 +149,11 @@ coef.Mbplsr <- function(object, ..., nlv = NULL) {
     list(int = int, B = B) 
 }
 
-predict.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
-    Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
-    X <- do.call("cbind",Xlist)
+predict.Mbplsr <- function(object, X, ..., nlv = NULL) {
+    X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+    Xconc <- do.call("cbind",X)
     q <- length(object$ymeans)
-    rownam <- row.names(X)
+    rownam <- row.names(Xconc)
     colnam <- paste("y", seq_len(q), sep = "")
     a <- dim(object$T)[2]
     if(is.null(nlv))
@@ -164,9 +164,9 @@ predict.Mbplsr <- function(object, Xlist, ..., nlv = NULL) {
     pred <- vector(mode = "list", length = le_nlv)
     for(i in seq_len(le_nlv)) {
         z <- coef(object, nlv = nlv[i])
-        zpred <- t(c(z$int) + t(X %*% z$B))
+        zpred <- t(c(z$int) + t(Xconc %*% z$B))
         ## Same but faster than:
-        ## zpred <- cbind(rep(1, m), X) %*% rbind(z$int, z$B)
+        ## zpred <- cbind(rep(1, m), Xconc) %*% rbind(z$int, z$B)
         dimnames(zpred) <- list(rownam, colnam)
         pred[[i]] <- zpred
         }

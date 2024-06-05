@@ -31,19 +31,21 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 mbplsr(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, 
 Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
-\method{transform}{Mbplsr}(object, Xlist, ..., nlv = NULL)  
+\method{transform}{Mbplsr}(object, X, ..., nlv = NULL)  
 
-\method{summary}{Mbplsr}(object, Xlist, ...)  
+\method{summary}{Mbplsr}(object, X, ...)  
 
 \method{coef}{Mbplsr}(object, ..., nlv = NULL) 
 
-\method{predict}{Mbplsr}(object, Xlist, ..., nlv = NULL)  
+\method{predict}{Mbplsr}(object, X, ..., nlv = NULL)  
 
 }
 
 \arguments{
 
-\item{Xlist}{For the main functions: list of training X-data (\eqn{n}rows). --- For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
+\item{Xlist}{For the main function: list of training X-data (\eqn{n}rows).}
+
+\item{X}{For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
 
 \item{Y}{Training Y-data (\eqn{n, q}).}
 

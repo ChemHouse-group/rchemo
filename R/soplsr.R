@@ -100,26 +100,26 @@ soplsr <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling =
 
 
 
-transform.Soplsr <- function(object, Xlist, ...){
+transform.Soplsr <- function(object, X, ...){
   
-  Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
+  X <- lapply(1:length(X), function(i) scale(.mat(X[[i]]), center = object$xmeans[[i]], scale = object$xscales[[i]]))
   
   nbl <- length(object$fm)
   
   if(sum(object$nlv)==0){T <- NULL}
   
   if(object$nlv[1]>0){
-    T <- transform(object$fm[[1]], Xlist[[1]])
+    T <- transform(object$fm[[1]], X[[1]])
   }
   
   if (nbl > 1){
     for (i in 2:nbl){
       if(object$nlv[i]>0){
         if(sum(object$nlv[1:(i-1)])>0){
-          X = Xlist[[i]] - T %*% object$b[[i]]
-          T = cbind(T, transform(object$fm[[i]], X))
+          Xo = X[[i]] - T %*% object$b[[i]]
+          T = cbind(T, transform(object$fm[[i]], Xo))
         }else{
-          T <- transform(object$fm[[i]], Xlist[[i]])
+          T <- transform(object$fm[[i]], X[[i]])
         }
       }
     }
@@ -128,21 +128,21 @@ transform.Soplsr <- function(object, Xlist, ...){
 }
 
 
-predict.Soplsr <- function (object, Xlist, ...){
+predict.Soplsr <- function (object, X, ...){
   
-  Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
+  X <- lapply(1:length(X), function(i) scale(.mat(X[[i]]), center = object$xmeans[[i]], scale = object$xscales[[i]]))
   
-  nbl <- length(Xlist)
-  m <- nrow(Xlist[[1]])
+  nbl <- length(X)
+  m <- nrow(X[[1]])
   
   if(object$nlv[1]>0){
-    T <- transform(object$fm[[1]], Xlist[[1]])
-    pred <- predict(object$fm[[1]], Xlist[[1]])$pred
+    T <- transform(object$fm[[1]], X[[1]])
+    pred <- predict(object$fm[[1]], X[[1]])$pred
     # pred <- matrix(rep(object$fm[[1]]$ymeans, m), nrow=m, byrow=TRUE) + T %*% t(object$fm[[1]]$C)
   }else{
     T <- NULL
     pred <- matrix(rep(object$ymeans, m), nrow=m, byrow=TRUE)*0
-    rownames(pred) <- rownames(Xlist[[1]])
+    rownames(pred) <- rownames(X[[1]])
     colnames(pred) <- colnames(object$pred)
   }
 
@@ -150,18 +150,18 @@ predict.Soplsr <- function (object, Xlist, ...){
     for (i in 2:nbl){
       if(object$nlv[i]>0){
         if(sum(object$nlv[1:(i-1)])>0){
-          X <- Xlist[[i]] - T %*% object$b[[i]]
-          # zT <- transform(object$fm[[i]], X)
-          pred <- pred + predict(object$fm[[i]], X)$pred
+          Xo <- X[[i]] - T %*% object$b[[i]]
+          # zT <- transform(object$fm[[i]], Xo)
+          pred <- pred + predict(object$fm[[i]], Xo)$pred
           # pred <- pred + matrix(rep(object$fm[[i]]$ymeans, m), nrow=m, byrow=TRUE) + zT %*% t(object$fm[[i]]$C)
-          T = cbind(T, transform(object$fm[[i]], X))
+          T = cbind(T, transform(object$fm[[i]], Xo))
         }else{
-          X <- Xlist[[i]]
-          pred <- predict(object$fm[[i]], X)$pred
-          T <- transform(object$fm[[i]], X)
+          Xo <- X[[i]]
+          pred <- predict(object$fm[[i]], Xo)$pred
+          T <- transform(object$fm[[i]], Xo)
         }
       # }else{
-        # X <- Xlist[[i]]
+        # Xo <- X[[i]]
         # pred <- pred 
       # }
       }

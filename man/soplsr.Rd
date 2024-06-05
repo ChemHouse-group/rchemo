@@ -40,15 +40,17 @@ optimisation = c("global","sequential")[1],
 selection = c("localmin","globalmin","1std")[1], majorityvote = FALSE)
 
 
-\method{transform}{Soplsr}(object, Xlist, ...)  
+\method{transform}{Soplsr}(object, X, ...)  
 
-\method{predict}{Soplsr}(object, Xlist, ...)  
+\method{predict}{Soplsr}(object, X, ...)  
 
 }
 
 \arguments{
 
-\item{Xlist}{A list of matrices or data frames of reference (= training) observations.--- For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
+\item{Xlist}{A list of matrices or data frames of reference (= training) observations.}
+
+\item{X}{For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
 
 \item{Y}{A \eqn{n x q} matrix or data frame, or a vector of length \eqn{n}, of reference (= training) responses.}
 

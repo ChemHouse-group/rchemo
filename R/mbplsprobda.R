@@ -31,8 +31,8 @@ mbplsqda <- function(Xlist, y, blockscaling = TRUE, weights = NULL, nlv, prior =
     .mbplsprobda(Xlist, y, blockscaling, weights, nlv, fun = rchemo::qda, prior = prior, Xscaling, Yscaling)
 
 
-predict.Mbplsprobda <- function(object, Xlist, ..., nlv = NULL) {
-    Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
+predict.Mbplsprobda <- function(object, X, ..., nlv = NULL) {
+    X <- lapply(1:length(X), function(i) .mat(X[[i]]))
     A <- length(object$fm[[2]])
     if(is.null(nlv))
         nlv <- A
@@ -42,7 +42,7 @@ predict.Mbplsprobda <- function(object, Xlist, ..., nlv = NULL) {
     posterior <- pred <- vector(mode = "list", length = le_nlv)
     for(i in seq_len(le_nlv)) {
         znlv <- nlv[i]
-        z <- transform(object$fm[[1]], Xlist, nlv = znlv)
+        z <- transform(object$fm[[1]], X, nlv = znlv)
         zres <- predict(object$fm[[2]][[znlv]], z)
         pred[[i]] <- zres$pred
         posterior[[i]] <- zres$posterior
