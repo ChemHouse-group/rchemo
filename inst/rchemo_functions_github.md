@@ -151,8 +151,8 @@
 - ***savgol*** Savitsky-Golay filtering (derivation)
 - ***dderiv*** Derivation by finite difference
 - ***xinterp*** Resampling of spectra by interpolation methods
-- ***rmgap** Remove vertical gaps in spectra (e.g. for ASD)
-- **eposvd** Pre-processing data by external parameter orthogonalization (EPO; Roger et al 2003) 
+- ***rmgap*** Remove vertical gaps in spectra (e.g. for ASD)
+- ***eposvd*** Pre-processing data by external parameter orthogonalization (EPO; Roger et al 2003) 
 
 #### Sampling
 

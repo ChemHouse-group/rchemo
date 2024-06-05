@@ -1,4 +1,4 @@
-plsrda <- function(X, y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none") {
+plsrda <- function(X, y, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     if(is.factor(y))
         y <- as.character(y)
     X <- .mat(X)

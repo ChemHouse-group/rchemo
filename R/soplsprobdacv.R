@@ -1,5 +1,5 @@
 
-.soplsprobdacv <- function(funda, Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), prior = c("unif", "prop"), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = "err", selection="1std"){
+.soplsprobdacv <- function(funda, Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], criterion = c("err", "rmse")[1], selection = c("localmin","globalmin","1std")[1]){
   
   Y <- y
 
@@ -429,12 +429,12 @@
 }
 
 
-soplsldacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = "err", selection = "1std"){
+soplsldacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], criterion = c("err", "rmse")[1], selection = c("localmin","globalmin","1std")[1]){
   .soplsprobdacv(funda = soplslda, Xlist = Xlist, y = y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist = nlvlist, prior = prior, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, criterion = criterion, selection = selection)
 }
 
 
-soplsqdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = "err", selection = "1std"){
+soplsqdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], criterion = c("err", "rmse")[1], selection = c("localmin","globalmin","1std")[1]){
   .soplsprobdacv(funda = soplsqda, Xlist = Xlist, y = y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist = nlvlist, prior = prior, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, criterion = criterion, selection = selection)
 }
   

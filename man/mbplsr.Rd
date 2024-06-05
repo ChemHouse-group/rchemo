@@ -28,7 +28,8 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-mbplsr(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
+mbplsr(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, 
+Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
 \method{transform}{Mbplsr}(object, Xlist, ..., nlv = NULL)  
 
@@ -155,7 +156,8 @@ X1 <- mblocks(Xtrain, blocks = blocks)
 X2 <- mblocks(Xtest, blocks = blocks)
 
 nlv <- 3
-fm <- mbplsr(Xlist = X1, Y = ytrain, Xscaling = c("sd","none"), blockscaling = TRUE, weights = NULL, nlv = nlv)
+fm <- mbplsr(Xlist = X1, Y = ytrain, Xscaling = c("sd","none","none"), 
+blockscaling = TRUE, weights = NULL, nlv = nlv)
 
 summary(fm, X1)
 coef(fm)

@@ -22,11 +22,14 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-plsrda(X, y, weights = NULL, nlv, Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
+plsrda(X, y, weights = NULL, nlv, 
+Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
 
-plslda(X, y, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
+plslda(X, y, weights = NULL, nlv, prior = c("unif", "prop"), 
+Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
 
-plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"), Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
+plsqda(X, y, weights = NULL, nlv, prior = c("unif", "prop"), 
+Xscaling = c("none","pareto","sd")[1], Yscaling = c("none","pareto","sd")[1])
 
 \method{predict}{Plsrda}(object, X, ..., nlv = NULL) 
 

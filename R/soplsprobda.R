@@ -42,14 +42,14 @@ soplsqda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
     .soplsprobda(Xlist, y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv = nlv, fun = rchemo::qda, prior = prior)
 
 
-transform.Soplsprobda <- function(object, Xlist){
+transform.Soplsprobda <- function(object, Xlist, ...){
   
   Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
   transform(object$fm[[1]], Xlist)
   
 }
 
-predict.Soplsprobda <- function(object, Xlist) {
+predict.Soplsprobda <- function(object, Xlist, ...) {
   Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
   rownam <- row.names(Xlist[[1]])
   colnam <- "y1"

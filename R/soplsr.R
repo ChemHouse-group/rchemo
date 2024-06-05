@@ -100,7 +100,7 @@ soplsr <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling =
 
 
 
-transform.Soplsr <- function(object, Xlist){
+transform.Soplsr <- function(object, Xlist, ...){
   
   Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
   
@@ -128,7 +128,7 @@ transform.Soplsr <- function(object, Xlist){
 }
 
 
-predict.Soplsr <- function (object, Xlist){
+predict.Soplsr <- function (object, Xlist, ...){
   
   Xlist <- lapply(1:length(Xlist), function(X) scale(.mat(Xlist[[X]]), center = object$xmeans[[X]], scale = object$xscales[[X]]))
   

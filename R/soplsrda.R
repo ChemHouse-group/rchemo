@@ -17,7 +17,7 @@ soplsrda <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling
     class = c("Soplsrda"))       
 }
 
-transform.Soplsrda <- function(object, Xlist){
+transform.Soplsrda <- function(object, Xlist, ...){
   
   Xlist <- lapply(1:length(Xlist), function(X) .mat(Xlist[[X]]))
   nbl <- length(object$fm$fm)
@@ -38,7 +38,7 @@ transform.Soplsrda <- function(object, Xlist){
   T
 }
 
-predict.Soplsrda <- function(object, Xlist) {
+predict.Soplsrda <- function(object, Xlist, ...) {
   Xlist <- lapply(1:length(Xlist), function(x) .mat(Xlist[[x]]))
   rownam <- row.names(Xlist[[1]])
   colnam <- "y1"

@@ -1,5 +1,7 @@
 \name{sopls}
 \alias{soplsr}
+\alias{transform.Soplsr} 
+\alias{predict.Soplsr} 
 \alias{soplsrcv}
 
 \encoding{UTF-8}
@@ -28,9 +30,14 @@ The function allows giving a priori weights to the rows of the reference matrix 
 
 \usage{
 
-soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplsr(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv)
 
-soplsrcv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE)
+soplsrcv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), 
+nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, 
+optimisation = c("global","sequential")[1], 
+selection = c("localmin","globalmin","1std")[1], majorityvote = FALSE)
 
 
 \method{transform}{Soplsr}(object, Xlist, ...)  
@@ -41,7 +48,7 @@ soplsrcv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 
 \arguments{
 
-\item{X_list}{A list of matrices or data frames of reference (= training) observations.--- For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
+\item{Xlist}{A list of matrices or data frames of reference (= training) observations.--- For the auxiliary functions: list of new X-data, with the same variables than the training X-data.}
 
 \item{Y}{A \eqn{n x q} matrix or data frame, or a vector of length \eqn{n}, of reference (= training) responses.}
 
@@ -67,7 +74,7 @@ soplsrcv(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none",
 
 \item{optimisation}{"global" or "sequential" optimisation of the number of components. If "sequential", the optimal lv number is found for the first X-block, then for the 2nd one, etc...}
 
-\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse. If "1std" : it corresponds to the first combination after which the mean cross-validated rmse does not decrease significantly.}
+\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse. If "1std" (one standard errror rule): it corresponds to the first combination after which the mean cross-validated rmse does not decrease significantly.}
 
 \item{majorityvote}{only if optimisation is "global" or one X-block. If majorityvote is TRUE, the optimal combination is chosen for each Y variable, with the chosen selection, before a majority vote. If majorityvote is "FALSE, the optimal combination is simply chosen with the chosen selection.}
 
@@ -153,7 +160,10 @@ n <- nrow(X)
 X_list <- list(X[,1:4], X[,5:7], X[,9:ncol(X)])
 X_list_2 <- list(X[1:2,1:4], X[1:2,5:7], X[1:2,9:ncol(X)])
 
-soplsrcv(X_list, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(0:1, 1:2, 0:1), nbrep=1, cvmethod="loo", seed = 123, samplingk=NULL, optimisation="global", selection="localmin", majorityvote=FALSE)
+soplsrcv(X_list, Y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, 
+nlvlist=list(0:1, 1:2, 0:1), nbrep=1, cvmethod="loo", seed = 123, samplingk=NULL,
+optimisation="global", selection="localmin", majorityvote=FALSE)
 
 
 ncomp <- 2
@@ -167,9 +177,6 @@ mse(predict(fm, X_list), Y)
 vip(fm$fm[[1]], X_list[[1]], Y = NULL, nlv = ncomp)
 vip(fm$fm[[2]], X_list[[2]], Y = NULL, nlv = ncomp)
 vip(fm$fm[[3]], X_list[[3]], Y = NULL, nlv = ncomp)
-
-soplsrcv(X_list, Y, nlv = ncomp)
-
 
 ncomp <- c(2, 0, 3)
 fm <- soplsr(X_list, Y, nlv = ncomp)

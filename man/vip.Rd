@@ -23,8 +23,8 @@ vip(object, X, Y = NULL, nlv = NULL)
 \item{X}{X-data involved in the fitted model}
 
 \item{Y}{Y-data involved in the fitted model.
-If \eq{Y} is NULL (default value), the VIP calculation is based on the proportion of Y-variance explained by the components, as proposed by Mehmood et al (2012, 2020).
-If \eq{Y} is not NULL, the VIP calculation is based on the redundancy, as proposed by Tenenhaus (1998).}
+If \code{Y} is NULL (default value), the VIP calculation is based on the proportion of Y-variance explained by the components, as proposed by Mehmood et al (2012, 2020).
+If \code{Y} is not NULL, the VIP calculation is based on the redundancy, as proposed by Tenenhaus (1998).}
 
 \item{nlv}{Number of components (LVs) to consider.}
 
@@ -32,7 +32,7 @@ If \eq{Y} is not NULL, the VIP calculation is based on the redundancy, as propos
 
 \value{
 
-matrix \eq{(q,nlv)} with VIP values, for models with 1 to nlv latent variables.}
+matrix (\eqn{(q,nlv)}) with VIP values, for models with 1 to nlv latent variables.
 
 }
 

@@ -5,7 +5,7 @@
 \alias{transform.Soplsrda} 
 \alias{transform.Soplsprobda}
 \alias{predict.Soplsrda}
-\alias{predict}.Soplsprobda} 
+\alias{predict.Soplsprobda} 
 \alias{soplsrdacv}
 \alias{soplsldacv}
 \alias{soplsqdacv}
@@ -30,31 +30,48 @@ In\code{soplslda} and \code{soplsqda}, probabilistic LDA and QDA are run over th
 
 \usage{
 
-soplsrda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, ...)
+soplsrda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv)
 
-soplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
+soplslda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, 
+prior = c("unif", "prop"))
 
-soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, prior = c("unif", "prop"), ...)
+soplsqda(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlv, 
+prior = c("unif", "prop"))
 
-soplsrdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = c("err","rmse")[1], selection = "1std")
+soplsrdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), 
+nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, 
+optimisation = c("global","sequential")[1], 
+criterion = c("err","rmse")[1], selection = c("localmin","globalmin","1std")[1])
 
-soplsldacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), prior = c("unif", "prop"), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = c("err","rmse")[1], selection = "1std")
+soplsldacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), 
+prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, 
+nfolds = 7, optimisation = c("global","sequential")[1], 
+criterion = c("err","rmse")[1], selection = c("localmin","globalmin","1std")[1])
 
-soplsqdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), prior = c("unif", "prop"), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = c("err","rmse")[1], selection = "1std")
+soplsqdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), 
+prior = c("unif", "prop"), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, 
+nfolds = 7, optimisation = c("global","sequential")[1], 
+criterion = c("err","rmse")[1], selection = c("localmin","globalmin","1std")[1])
 
-\method{transform}{Soplsrda}(object, Xlist) 
+\method{transform}{Soplsrda}(object, Xlist, ...) 
 
-\method{transform}{Soplsprobda}(object, Xlist) 
+\method{transform}{Soplsprobda}(object, Xlist, ...) 
 
-\method{predict}{Soplsrda}(object, Xlist) 
+\method{predict}{Soplsrda}(object, Xlist, ...) 
 
-\method{predict}{Soplsprobda}(object, Xlist) 
+\method{predict}{Soplsprobda}(object, Xlist, ...) 
 
 }
 
 \arguments{
 
-\item{X_list}{A list of matrices or data frames of reference (= training) observations.}
+\item{Xlist}{A list of matrices or data frames of reference (= training) observations.}
 
 \item{y}{Training class membership (\eqn{n}). \bold{Note:} If \code{y} is a factor, it is replaced by a character vector.}
 
@@ -82,14 +99,14 @@ soplsqdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none
 
 \item{criterion}{optimisation criterion among "rmse" and "err" (for classification error rate)}
 
-\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse or error rate. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse or error rate. If "1std" : it corresponds to the first combination after which the mean cross-validated rmse or error rate does not decrease significantly.}
+\item{selection}{a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse or error rate. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse or error rate. If "1std" (one standard error rule) : it corresponds to the first combination after which the mean cross-validated rmse or error rate does not decrease significantly.}
 
 
 \item{prior}{The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
-\item{...}{Other arguments to pass in functions \code{\link{pls}}.}
+\item{...}{For the auxiliary functions: Optional arguments. Not used.}
 
 }
 
@@ -97,7 +114,7 @@ soplsqdacv(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none
 
 For \code{soplsrda}, \code{soplslda}, \code{soplsqda}:
 
-\item{fm}{list with the PLS models: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code){Xscales}: X scaling values; (\code){Yscales}: Y scaling values; (\code{U}): intermediate output.}
+\item{fm}{list with the PLS models: (\code{T}): X-scores matrix; (\code{P}): X-loading matrix;(\code{R}): The PLS projection matrix (p,nlv); (\code{W}): X-loading weights matrix ;(\code{C}): The Y-loading weights matrix; (\code{TT}): the X-score normalization factor; (\code{xmeans}): the centering vector of X (p,1);  (\code{ymeans}): the centering vector of Y (q,1); (\code{weights}): vector of observation weights; (\code{Xscales}): X scaling values; (\code{Yscales}): Y scaling values; (\code{U}): intermediate output.}
 
 \item{lev}{classes}
 
@@ -158,8 +175,11 @@ X_list <- list(X[,1:4], X[,5:7], X[,9:ncol(X)])
 X_list_2 <- list(X[1:2,1:4], X[1:2,5:7], X[1:2,9:ncol(X)])
 
 # EXEMPLE WITH SO-PLS-RDA
-soplsrdacv(X_list, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL,
-nlvlist=list(0:1, 1:2, 0:1), nbrep=1, cvmethod="loo", seed = 123, samplingk = NULL, nfolds = 3, optimisation = "global", criterion = c("err","rmse")[1], selection = "localmin")
+soplsrdacv(X_list, y, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL,
+nlvlist=list(0:1, 1:2, 0:1), nbrep=1, cvmethod="loo", seed = 123, 
+samplingk = NULL, nfolds = 3, optimisation = "global", 
+criterion = c("err","rmse")[1], selection = "localmin")
 
 ncomp <- 2
 fm <- soplsrda(X_list, y, nlv = ncomp)

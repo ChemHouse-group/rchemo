@@ -36,11 +36,14 @@ For weighted versions, see for instance Schaal et al. 2002, Siccard & Sabatier 2
 
 \usage{
 
-plskern(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
+plskern(X, Y, weights = NULL, nlv, 
+Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
-plsnipals(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
+plsnipals(X, Y, weights = NULL, nlv, 
+Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
-plsrannar(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none")
+plsrannar(X, Y, weights = NULL, nlv, 
+Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1])
 
 \method{transform}{Plsr}(object, X, ..., nlv = NULL)  
 

@@ -1,4 +1,4 @@
-plsrannar <- function(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none") {
+plsrannar <- function(X, Y, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     n <- dim(X)[1]
@@ -9,7 +9,7 @@ plsrannar <- function(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "
     xmeans <- .colmeans(X, weights = weights) 
     ymeans <- .colmeans(Y, weights = weights)
     
-    if(Xscaling == "none") {xscales <- rep(1, p)}
+    if(Xscaling == "none") {xscales <- rep(1, ncol(X))}
     if(Yscaling == "none") {yscales <- rep(1, q)}
     if(Xscaling == "sd") {xscales <- sqrt(.colvars(X, weights = weights))}
     if(Yscaling == "sd") {yscales <- sqrt(.colvars(Y, weights = weights))}

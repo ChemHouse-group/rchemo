@@ -1,4 +1,4 @@
-plsnipals <- function(X, Y, weights = NULL, nlv, Xscaling = "none", Yscaling = "none") {
+plsnipals <- function(X, Y, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1]) {
     X <- .mat(X)
     Y <- .mat(Y, "y")     
     zdim <- dim(X)

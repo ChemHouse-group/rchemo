@@ -1,5 +1,5 @@
 
-.soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", criterion = "err", selection="1std"){
+.soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], criterion = c("err", "rmse")[1], selection = c("localmin","globalmin","1std")[1]){
   
   Y = y
   # verifications
@@ -430,6 +430,6 @@
 }
 
 
-soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = "global", criterion = "err", selection = "1std"){
+soplsrdacv <- function(Xlist, y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], criterion = c("err", "rmse")[1], selection = c("localmin","globalmin","1std")[1]){
   .soplsrdacv(Xlist = Xlist, y = y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist = nlvlist, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, criterion = criterion, selection = selection)
 }

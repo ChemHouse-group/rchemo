@@ -1,5 +1,5 @@
 
-.soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE){
+.soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], selection = c("localmin","globalmin","1std")[1], majorityvote = FALSE){
   
   # verifications
   
@@ -461,7 +461,7 @@
 }
 
 
-soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist=list(), nbrep=30, cvmethod="kfolds", seed = 123, samplingk=NULL, nfolds=7, optimisation="global", selection="1std", majorityvote=FALSE){
-  .soplsrcv(Xlist = Xlist, Y = Y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist=nlvlist, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, selection = selection, majorityvote = majorityvote)
+soplsrcv <- function(Xlist, Y, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL, nlvlist = list(), nbrep = 30, cvmethod = "kfolds", seed = 123, samplingk = NULL, nfolds = 7, optimisation = c("global","sequential")[1], selection = c("localmin","globalmin","1std")[1], majorityvote = FALSE){
+  .soplsrcv(Xlist = Xlist, Y = Y, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlvlist = nlvlist, nbrep = nbrep, cvmethod = cvmethod, seed = seed, samplingk = samplingk, nfolds = nfolds, optimisation = optimisation, selection = selection, majorityvote = majorityvote)
 }
 

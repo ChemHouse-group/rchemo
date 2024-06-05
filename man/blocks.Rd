@@ -103,7 +103,6 @@ zXtrain <- hconcat(res$Xtrain)
 
 nlv <- 3
 fm <- plskern(zXtrain, ytrain, nlv = nlv)
-predict(fm, zXtest)
 
 }
 
