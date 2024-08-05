@@ -1,12 +1,12 @@
 gridscore <- function(Xtrain, Ytrain, X, Y, score, fun, pars, verb = FALSE) {
     ## pars = List of named vectors (arguments) involved in the calculation of the score
-  if(is.list(Xtrain)){
+  if((is.list(Xtrain)==TRUE)&(is.matrix(Xtrain)==FALSE)&(is.data.frame(Xtrain)==FALSE)){
     Xtrain <- lapply(1:length(Xtrain), function(i) .mat(Xtrain[[i]]))
   }else{
     Xtrain <- .mat(Xtrain)
   }
   Ytrain <- .mat(Ytrain, "y") 
-  if(is.list(X)){
+  if((is.list(X)==TRUE)&(is.matrix(X)==FALSE)&(is.data.frame(X)==FALSE)){
     X <- lapply(1:length(X), function(i) .mat(X[[i]]))
   }else{
     X <- .mat(X)
@@ -38,13 +38,13 @@ gridscore <- function(Xtrain, Ytrain, X, Y, score, fun, pars, verb = FALSE) {
 gridscorelv <- function(Xtrain, Ytrain, X, Y, score, fun, nlv, pars = NULL, verb = FALSE) {
     ## pars = List of named vectors (arguments) involved in the calculation of the score
     ## Must not contains nlv
-    if(is.list(Xtrain)){
+    if((is.list(Xtrain)==TRUE)&(is.matrix(Xtrain)==FALSE)&(is.data.frame(Xtrain)==FALSE)){
       Xtrain <- lapply(1:length(Xtrain), function(i) .mat(Xtrain[[i]]))
     }else{
       Xtrain <- .mat(Xtrain)
     }
     Ytrain <- .mat(Ytrain, "y")     
-    if(is.list(X)){
+    if((is.list(X)==TRUE)&(is.matrix(X)==FALSE)&(is.data.frame(X)==FALSE)){
       X <- lapply(1:length(X), function(i) .mat(X[[i]]))
     }else{
       X <- .mat(X)
@@ -102,13 +102,13 @@ gridscorelv <- function(Xtrain, Ytrain, X, Y, score, fun, nlv, pars = NULL, verb
 gridscorelb <- function(Xtrain, Ytrain, X, Y, score, fun, lb, pars = NULL, verb = FALSE) {
     ## pars = List of named vectors (arguments) involved in the calculation of the score
     ## Must not contains lb
-    if(is.list(Xtrain)){
+    if((is.list(Xtrain)==TRUE)&(is.matrix(Xtrain)==FALSE)&(is.data.frame(Xtrain)==FALSE)){
       Xtrain <- lapply(1:length(Xtrain), function(i) .mat(Xtrain[[i]]))
     }else{
       Xtrain <- .mat(Xtrain)
     }
     Ytrain <- .mat(Ytrain, "y")     
-    if(is.list(X)){
+    if((is.list(X)==TRUE)&(is.matrix(X)==FALSE)&(is.data.frame(X)==FALSE)){
       X <- lapply(1:length(X), function(i) .mat(X[[i]]))
     }else{
       X <- .mat(X)
