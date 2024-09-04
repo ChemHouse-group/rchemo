@@ -93,7 +93,7 @@ criterion = c("err","rmse")[1], selection = c("localmin","globalmin","1std")[1])
 
 \item{seed}{a numeric. Seed used for the repeated resampling, and if cvmethod is "kfolds" and samplingk is not NULL.}
 
-\item{samplingk}{A vector of length n. The elements are the values of a qualitative variable used for stratified partition creation. If NULL, the first observation is set in the first fold, the second observation in the second fold, etc...}
+\item{samplingk}{Optional. A vector of length n. The elements are the values of a qualitative variable used for stratified partition creation.}
 
 \item{nfolds}{An integer, setting the number of partitions to create. Default value is 7.}
 
@@ -161,6 +161,11 @@ multi-block classification. Chemometrics and Intelligent Laboratory Systems, 141
 
 }
 
+\seealso{
+
+\code{\link{soplsr_soplsda_allsteps}} function to help determine the optimal number of latent variables, perform a permutation test, calculate model parameters and predict new observations.
+
+}
 
 \examples{
 
