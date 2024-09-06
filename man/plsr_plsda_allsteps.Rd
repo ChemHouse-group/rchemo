@@ -1,4 +1,5 @@
 \name{plsr_plsda_allsteps}
+\alias{plsr_plsda_allsteps}
 \encoding{latin1}
 
 \title{PLSR or PLSDA analysis steps}

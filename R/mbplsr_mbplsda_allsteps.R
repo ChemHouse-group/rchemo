@@ -24,10 +24,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
                                   outputfilename = NULL
 ){
   
-  # IMPORTATION DES DONNEES -------------------------------------------------------------------------------------------
-  
-  ### librairies
-  library(rchemo)
+  # IMPORT -------------------------------------------------------------------------------------------
   
   if(is.null(Xnames)==TRUE){Xnames <- paste0(rep("X",length(Xlist)),1:length(Xlist))}
   if((is.null(newXlist)==FALSE)&(is.null(newXnames)==TRUE)){newXnames <- paste0(rep("Xnew",length(newXlist)),1:length(newXlist))}

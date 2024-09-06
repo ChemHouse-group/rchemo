@@ -1,4 +1,5 @@
 \name{mbplsr_mbplsda_allsteps}
+\alias{mbplsr_mbplsda_allsteps}
 \encoding{latin1}
 
 \title{MBPLSR or MBPLSDA analysis steps}

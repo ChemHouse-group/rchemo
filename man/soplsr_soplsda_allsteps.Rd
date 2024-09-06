@@ -1,4 +1,5 @@
 \name{soplsr_soplsda_allsteps}
+\alias{soplsr_soplsda_allsteps}
 \encoding{latin1}
 
 \title{SOPLSR or SOPLSDA analysis steps}

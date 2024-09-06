@@ -28,10 +28,8 @@ soplsr_soplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
                                   outputfilename = NULL
 ){
   
-  # IMPORTATION DES DONNEES -------------------------------------------------------------------------------------------
-  
-  ### librairies
-  library(rchemo)
+  # IMPORT -------------------------------------------------------------------------------------------
+
   majorityvote = FALSE
   
   if(is.null(Xnames)==TRUE){Xnames <- paste0(rep("X",length(Xlist)),1:length(Xlist))}
@@ -181,7 +179,7 @@ soplsr_soplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
                              optimisation = optimisation, 
                              selection = selection, 
                              majorityvote = majorityvote)
-      if("optimisation" == "sequential"){
+      if(optimisation == "sequential"){
         bcombi <- sapply(1:length(resnlvtest$lvcombi), function(nr) nrow(resnlvtest$lvcombi[[nr]]))
         ncombi <- sum(bcombi)
         allcombi <- matrix(0, ncol = length(Xlist), nrow = ncombi,
@@ -232,7 +230,7 @@ soplsr_soplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
                              optimisation = optimisation, 
                              criterion = criterion,
                              selection = selection)
-      if("optimisation" == "sequential"){
+      if(optimisation == "sequential"){
         bcombi <- sapply(1:length(resnlvtest$lvcombi), function(nr) nrow(resnlvtest$lvcombi[[nr]]))
         ncombi <- sum(bcombi)
         allcombi <- matrix(0, ncol = length(Xlist), nrow = ncombi,
@@ -292,7 +290,7 @@ soplsr_soplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
                                optimisation = optimisation, 
                                criterion = criterion,
                                selection = selection)
-      if("optimisation" == "sequential"){
+      if(optimisation == "sequential"){
         bcombi <- sapply(1:length(resnlvtest$lvcombi), function(nr) nrow(resnlvtest$lvcombi[[nr]]))
         ncombi <- sum(bcombi)
         allcombi <- matrix(0, ncol = length(Xlist), nrow = ncombi,
@@ -351,7 +349,7 @@ soplsr_soplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
                                optimisation = optimisation, 
                                criterion = criterion,
                                selection = selection)
-      if("optimisation" == "sequential"){
+      if(optimisation == "sequential"){
         bcombi <- sapply(1:length(resnlvtest$lvcombi), function(nr) nrow(resnlvtest$lvcombi[[nr]]))
         ncombi <- sum(bcombi)
         allcombi <- matrix(0, ncol = length(Xlist), nrow = ncombi,
