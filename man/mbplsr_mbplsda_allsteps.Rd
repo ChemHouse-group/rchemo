@@ -12,8 +12,8 @@ Help determine the optimal number of latent variables by cross-validation, perfo
 
 \usage{
 
-mbplsr_mbplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
-                   Y, Yscaling = "none", weights = NULL,
+mbplsr_mbplsda_allsteps(Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+                   Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
                    newXlist = NULL, newXnames = NULL,
                    
                    method = c("mbplsr", "mbplsrda","mbplslda","mbplsqda")[1],
@@ -40,9 +40,9 @@ mbplsr_mbplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[
 
 \arguments{
 
-\item{Xlist}{list of training X-data (\eqn{n, p}). 
+\item{Xlist}{list of training X-data (\eqn{n, p}).}
 
-\item{Xnames}{name of the X-matrices}
+\item{Xnames}{names of the X-matrices}
 
 \item{Xscaling}{vector of Xlist length. X variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
@@ -84,7 +84,7 @@ mbplsr_mbplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[
     
 \item{import}{If "R", X and Y are in the global environment, and the observation names are in rownames. If "ChemFlow", X and Y are tabulated tables (.txt), and the observation names are in the first column. If "W4M", X and Y are tabulated tables (.txt), and the observation names are in the headers of X, and in the first column of Y.}
 
-\item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)
+\item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)}
 
 }
 
@@ -116,7 +116,8 @@ Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
 
-resnlvtestmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+resnlvtestmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
@@ -139,7 +140,8 @@ resnlvtestmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL,
                    
                    outputfilename = NULL)
                    
-respermutationmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+respermutationmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
@@ -165,7 +167,8 @@ respermutationmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, Xnames = N
 plotxy(respermutationmbplsrda, pch=16)
 abline (h = respermutationmbplsrda[respermutationmbplsrda[,"permut_dyssimilarity"]==0,"res_permut"])
 
-resmodelmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+resmodelmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
@@ -194,7 +197,8 @@ resmodelmbplsrda$loadings
 resmodelmbplsrda$coef
 resmodelmbplsrda$vip
 
-respredictionmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+respredictionmbplsrda <- mbplsr_mbplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    

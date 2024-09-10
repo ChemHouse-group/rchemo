@@ -13,7 +13,7 @@ Help determine the optimal number of latent variables by cross-validation, perfo
 \usage{
 
 plsr_plsda_allsteps(X, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
-                   Y, Yscaling = "none", weights = NULL,
+                   Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
                    newX = NULL, newXname = NULL,
                    
                    method = c("plsr", "plsrda","plslda","plsqda")[1],
@@ -40,7 +40,7 @@ plsr_plsda_allsteps(X, Xname = NULL, Xscaling = c("none","pareto","sd")[1],
 
 \arguments{
 
-\item{X}{Training X-data (\eqn{n, p}). 
+\item{X}{Training X-data (\eqn{n, p}).}
 
 \item{Xname}{name of the X-matrix}
 
@@ -84,7 +84,7 @@ plsr_plsda_allsteps(X, Xname = NULL, Xscaling = c("none","pareto","sd")[1],
 
 \item{import}{If "R", X and Y are in the global environment, and the observation names are in rownames. If "ChemFlow", X and Y are tabulated tables (.txt), and the observation names are in the first column. If "W4M", X and Y are tabulated tables (.txt), and the observation names are in the headers of X, and in the first column of Y.}
                    
-\item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)
+\item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)}
 
 }
 
@@ -109,7 +109,8 @@ ytrain <- sample(c(1, 4, 10), size = n, replace = TRUE)
 
 Xtest <- Xtrain[1:5, ] ; ytest <- ytrain[1:5]
 
-resnlvtestplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
+resnlvtestplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, 
+                   Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newX = Xtest, newXname = NULL,
                    
@@ -132,7 +133,8 @@ resnlvtestplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, Xscaling = c("
                    
                    outputfilename = NULL)
                    
-respermutationplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
+respermutationplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, 
+                   Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newX = Xtest, newXname = NULL,
                    
@@ -158,7 +160,8 @@ respermutationplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, Xscaling =
 plotxy(respermutationplsrda, pch=16)
 abline (h = respermutationplsrda[respermutationplsrda[,"permut_dyssimilarity"]==0,"res_permut"])
 
-resmodelplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
+resmodelplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, 
+                   Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newX = Xtest, newXname = NULL,
                    
@@ -187,7 +190,8 @@ resmodelplsrda$loadings
 resmodelplsrda$coef
 resmodelplsrda$vip
 
-respredictionplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
+respredictionplsrda <- plsr_plsda_allsteps(X = Xtrain, Xname = NULL, 
+                   Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newX = Xtest, newXname = NULL,
                    

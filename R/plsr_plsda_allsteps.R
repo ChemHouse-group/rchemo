@@ -1,6 +1,6 @@
 
 plsr_plsda_allsteps <- function(X, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
-                                Y, Yscaling = "none", weights = NULL,
+                                Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
                                 newX = NULL, newXname = NULL,
                                 
                                 method = c("plsr", "plsrda","plslda","plsqda")[1],
@@ -108,15 +108,15 @@ plsr_plsda_allsteps <- function(X, Xname = NULL, Xscaling = c("none","pareto","s
     newXname <- Xname
   }
   if((step=="prediction")&(is.null(newX)==FALSE)){
-    if(import == "R"){# X matrice n x p, avec identifiants en rownames, au format Rdata
+    if(import == "R"){# X matrix n x p; Y matrix n x q, in the Global Environment, with observation names in rownames
       # newX       <- newX
     }
-    if(import == "ChemFlow"){# X matrice n x p, avec identifiants en première colonne, au format .txt
+    if(import == "ChemFlow"){# X matrix n x p; Y matrix n x q, tabulated tables (.txt), with observation names in the first column
       newX       <- read.table(newX,sep="\t",dec=".",header=TRUE, na.strings=c("","NA"), check.names=FALSE)
       rownames(newX) <- newX[,1]
       newX[,1]       <- NULL
     }
-    if(import == "W4M"){# X matrice n x p, avec identifiants en première colonne, au format .txt
+    if(import == "W4M"){# X matrix p x n; Y matrix n x q, tabulated tables (.txt), with observation names in the header of X and the first column of Y
       newX       <- read.table(newX,sep="\t",dec=".",header=TRUE, na.strings=c("","NA"), check.names=FALSE)
       newX       <- t(newX)
       rownames(newX) <- newX[,1]

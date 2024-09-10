@@ -1,7 +1,7 @@
 
 
-soplsr_soplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = "none", 
-                                    Y, Yscaling = "none", weights = NULL,
+soplsr_soplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+                                    Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
                                     newXlist = NULL, newXnames = NULL,
                                     
                                     method = c("soplsr", "soplsrda","soplslda","soplsqda")[1],

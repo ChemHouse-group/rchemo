@@ -12,8 +12,8 @@ Help determine the optimal number of latent variables by cross-validation, perfo
 
 \usage{
 
-soplsr_soplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
-                   Y, Yscaling = "none", weights = NULL,
+soplsr_soplsda_allsteps(Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+                   Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
                    newXlist = NULL, newXnames = NULL,
                    
                    method = c("soplsr", "soplsrda","soplslda","soplsqda")[1],
@@ -21,7 +21,7 @@ soplsr_soplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[
                    
                    step = c("nlvtest","permutation","model","prediction")[1],
                    nlv = c(), 
-                   nlvlist = list()
+                   nlvlist = list(),
                    modeloutput = c("scores","loadings","coef","vip"), 
                    
                    cvmethod = c("kfolds","loo")[1], 
@@ -41,7 +41,7 @@ soplsr_soplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[
 
 \arguments{
 
-\item{Xlist}{list of training X-data (\eqn{n, p}). 
+\item{Xlist}{list of training X-data (\eqn{n, p}).}
 
 \item{Xnames}{name of the X-matrices}
 
@@ -89,7 +89,7 @@ soplsr_soplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[
   
 \item{import}{If "R", X and Y are in the global environment, and the observation names are in rownames. If "ChemFlow", X and Y are tabulated tables (.txt), and the observation names are in the first column. If "W4M", X and Y are tabulated tables (.txt), and the observation names are in the headers of X, and in the first column of Y.}
 
-\item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)
+\item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)}
 
 }
 
@@ -121,7 +121,8 @@ Xtestlist <- list(Xtest[,1:3], Xtest[,4:8])
 
 nlv <- 5
 
-resnlvtestsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+resnlvtestsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
@@ -145,7 +146,8 @@ resnlvtestsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL,
                    
                    outputfilename = NULL)
                    
-respermutationsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+respermutationsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
@@ -171,7 +173,8 @@ respermutationsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, Xnames = N
 plotxy(respermutationsoplsrda, pch=16)
 abline (h = respermutationsoplsrda[respermutationsoplsrda[,"permut_dyssimilarity"]==0,"res_permut"])
 
-resmodelsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+resmodelsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
@@ -200,7 +203,8 @@ resmodelsoplsrda$loadings
 resmodelsoplsrda$coef
 resmodelsoplsrda$vip
 
-respredictionsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+respredictionsoplsrda <- soplsr_soplsda_allsteps(Xlist = Xtrainlist, 
+                   Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y = ytrain, Yscaling = "none", weights = NULL,
                    newXlist = Xtestlist, newXnames = NULL,
                    
