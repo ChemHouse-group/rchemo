@@ -1,31 +1,32 @@
 
 
-soplsr_soplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
-                                  Xlist, Xnames = NULL, Xscaling = "none", 
-                                  Y, Yscaling = "none", weights = NULL,
-                                  newXlist = NULL, newXnames = NULL,
-                            
-                                  method = c("soplsr", "soplsrda","soplslda","soplsqda")[1],
-                                  prior = c("unif", "prop")[1], # if method %in% c("soplslda","soplsqda")
+soplsr_soplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = "none", 
+                                    Y, Yscaling = "none", weights = NULL,
+                                    newXlist = NULL, newXnames = NULL,
+                                    
+                                    method = c("soplsr", "soplsrda","soplslda","soplsqda")[1],
+                                    prior = c("unif", "prop")[1], 
+                                    
+                                    step = c("nlvtest","permutation","model","prediction")[1],
+                                    nlv = c(),
+                                    nlvlist=list(), 
+                                    modeloutput = c("scores","loadings","coef","vip"), 
+                                    
+                                    cvmethod = c("kfolds","loo")[1], 
+                                    nbrep = 30, 
+                                    seed = 123, 
+                                    samplingk = NULL, 
+                                    nfolds = 10, 
+                                    npermut = 30, 
+                                    
+                                    optimisation = c("global","sequential")[1], 
+                                    # majorityvote = FALSE, 
+                                    criterion = c("err","rmse")[1], 
+                                    selection = c("localmin","globalmin","1std")[1],
+                                    
+                                    import = c("R","ChemFlow","W4M")[1],
+                                    outputfilename = NULL
                                   
-                                  step = c("nlvtest","permutation","model","prediction")[1],
-                                  nlv = c(),# if step != "nlvtest"
-                                  nlvlist=list(), # if step == "nlvtest"
-                                  modeloutput = c("scores","loadings","coef","vip"), # if step == "model"
-                                  
-                                  cvmethod = c("kfolds","loo")[1], #if (step == "nlvtest" | step == "permutation")
-                                  nbrep = 30, # if step == "nlvtest" & cvmethod == "kfolds"
-                                  seed = 123, # if (step == "nlvtest" & cvmethod == "kfolds") or step == "permutation"
-                                  samplingk = NULL, # if cvmethod == "kfolds"
-                                  nfolds = 10, # if cvmethod == "kfolds"
-                                  npermut = 30, # if step == "permutation"
-                                  
-                                  optimisation = c("global","sequential")[1], # if step == "nlvtest"
-                                  # majorityvote = FALSE, # if step == "nlvtest" & method =="soplsr"
-                                  criterion = c("err","rmse")[1], # if (step == "nlvtest" | step == "permutation") & (method %in% c("soplsrda","soplslda","soplsqda"))
-                                  selection = c("localmin","globalmin","1std")[1],# if step == "nlvtest"
-                                  
-                                  outputfilename = NULL
 ){
   
   # IMPORT -------------------------------------------------------------------------------------------

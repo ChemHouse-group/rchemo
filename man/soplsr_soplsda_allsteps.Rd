@@ -12,8 +12,7 @@ Help determine the optimal number of latent variables by cross-validation, perfo
 
 \usage{
 
-soplsr_soplsda_allsteps(import = c("R","ChemFlow","W4M")[1],
-                   Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
+soplsr_soplsda_allsteps(Xlist, Xname = NULL, Xscaling = c("none","pareto","sd")[1], 
                    Y, Yscaling = "none", weights = NULL,
                    newXlist = NULL, newXnames = NULL,
                    
@@ -36,12 +35,11 @@ soplsr_soplsda_allsteps(import = c("R","ChemFlow","W4M")[1],
                    criterion = c("err","rmse")[1], 
                    selection = c("localmin","globalmin","1std")[1],
                    
+                   import = c("R","ChemFlow","W4M")[1],
                    outputfilename = NULL)
 }
 
 \arguments{
-
-\item{import}{If "R", X and Y are in the global environment, and the observation names are in rownames. If "ChemFlow", X and Y are tabulated tables (.txt), and the observation names are in the first column. If "W4M", X and Y are tabulated tables (.txt), and the observation names are in the headers of X, and in the first column of Y.}
 
 \item{Xlist}{list of training X-data (\eqn{n, p}). 
 
@@ -88,7 +86,9 @@ soplsr_soplsda_allsteps(import = c("R","ChemFlow","W4M")[1],
 \item{criterion}{if step is "nlvtest" or "permutation" and method is "plsrda", "plslda" or "plsqda": optimisation criterion among "rmse" and "err" (for classification error rate)))}
                    
 \item{selection}{if step is "nlvtest": a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse or error rate. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse or error rate. If "1std" (one standard error rule) : it corresponds to the first combination after which the mean cross-validated rmse or error rate does not decrease significantly.}
-                   
+  
+\item{import}{If "R", X and Y are in the global environment, and the observation names are in rownames. If "ChemFlow", X and Y are tabulated tables (.txt), and the observation names are in the first column. If "W4M", X and Y are tabulated tables (.txt), and the observation names are in the headers of X, and in the first column of Y.}
+
 \item{outputfilename}{character: If not NULL, name of the tabular file, in which the function outputs have to be written.)
 
 }

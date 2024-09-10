@@ -136,7 +136,7 @@
         if(selection=="localmin"){
           if(nrow(res_nlvsum_rmseCV_Ysel)>1){
             # sign of the difference of accuracies to select the optim combination with the lower total number of components
-            rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<=0)))
+            rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<0)))
             choiceYH[yy] <- min(res_nlvsum_rmseCV_Ysel[(which(rtsdiff==FALSE)-1)[1],"index"],res_nlvsum_rmseCV_Ysel[nrow(res_nlvsum_rmseCV_Ysel),"index"],na.rm=TRUE)
           }else{
             choiceYH[yy]<- 1
@@ -179,7 +179,7 @@
       if(selection=="localmin"){
         if(nrow(res_nlvsum_rmseCV_Ysel)>1){
           # sign of the difference of accuracies to select the optim combination with the lower total number of components
-          rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<=0)))
+          rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<0)))
           kchoix <- min(res_nlvsum_rmseCV_Ysel[(which(rtsdiff==FALSE)-1)[1],"index"],res_nlvsum_rmseCV_Ysel[nrow(res_nlvsum_rmseCV_Ysel),"index"],na.rm=TRUE)
         }else{
           kchoix <- 1
@@ -317,7 +317,7 @@
           
           if(selection=="localmin"){
             if(nrow(res_nlvsum_rmseCV_Ysel)>1){
-              rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<=0)))
+              rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<0)))
               choiceYH[yy] <- min(res_nlvsum_rmseCV_Ysel[(which(rtsdiff==FALSE)-1)[1],"index"],res_nlvsum_rmseCV_Ysel[nrow(res_nlvsum_rmseCV_Ysel),"index"],na.rm=TRUE)
             }else{
               choiceYH[yy]<- 1
@@ -370,7 +370,7 @@
         
         if(selection=="localmin"){
           if(nrow(res_nlvsum_rmseCV_Ysel)>1){
-            rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<=0)))
+            rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_rmseCV_Ysel), function(i)((res_nlvsum_rmseCV_Ysel$mean[i]-res_nlvsum_rmseCV_Ysel$mean[i-1])<0)))
             kchoix <- min(res_nlvsum_rmseCV_Ysel[(which(rtsdiff==FALSE)-1)[1],"index"],res_nlvsum_rmseCV_Ysel[nrow(res_nlvsum_rmseCV_Ysel),"index"],na.rm=TRUE)
           }else{
             kchoix <- 1

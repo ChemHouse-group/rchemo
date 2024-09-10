@@ -1,27 +1,28 @@
 
-mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
-                                  Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
-                                  Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
-                                  newXlist = NULL, newXnames = NULL,
+mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")[1], 
+                                    Y, Yscaling = c("none","pareto","sd")[1], weights = NULL,
+                                    newXlist = NULL, newXnames = NULL,
+                                    
+                                    method = c("mbplsr", "mbplsrda","mbplslda","mbplsqda")[1],
+                                    prior = c("unif", "prop")[1], 
+                                    
+                                    step = c("nlvtest","permutation","model","prediction")[1],
+                                    nlv, 
+                                    modeloutput = c("scores","loadings","coef","vip"), 
+                                    
+                                    cvmethod = c("kfolds","loo")[1], 
+                                    nbrep = 30, 
+                                    seed = 123, 
+                                    samplingk = NULL, 
+                                    nfolds = 10, 
+                                    npermut = 30, 
+                                    
+                                    criterion = c("err","rmse")[1], 
+                                    selection = c("localmin","globalmin","1std")[1],
+                                    
+                                    import = c("R","ChemFlow","W4M")[1],
+                                    outputfilename = NULL
                                   
-                                  method = c("mbplsr", "mbplsrda","mbplslda","mbplsqda")[1],
-                                  prior = c("unif", "prop")[1], 
-                                  
-                                  step = c("nlvtest","permutation","model","prediction")[1],
-                                  nlv, 
-                                  modeloutput = c("scores","loadings","coef","vip"), 
-                                  
-                                  cvmethod = c("kfolds","loo")[1], 
-                                  nbrep = 30, 
-                                  seed = 123, 
-                                  samplingk = NULL, 
-                                  nfolds = 10, 
-                                  npermut = 30, 
-                                  
-                                  criterion = c("err","rmse")[1], 
-                                  selection = c("localmin","globalmin","1std")[1],
-                                  
-                                  outputfilename = NULL
 ){
   
   # IMPORT -------------------------------------------------------------------------------------------
@@ -228,7 +229,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
         optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
       }
       if(selection == "localmin"){
-        diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
+        diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
         optimum[which(diff==TRUE)[1]] <- 1
       }
       if(selection == "1std"){
@@ -292,7 +293,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
           optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -321,7 +322,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
           optimum[which.min(resnlvtesttable$err_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<=resnlvtesttable$err_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<resnlvtesttable$err_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -392,7 +393,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
           optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -421,7 +422,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
           optimum[which.min(resnlvtesttable$err_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<=resnlvtesttable$err_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<resnlvtesttable$err_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -491,7 +492,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
           optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -520,7 +521,7 @@ mbplsr_mbplsda_allsteps <- function(import = c("R","ChemFlow","W4M")[1],
           optimum[which.min(resnlvtesttable$err_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<=resnlvtesttable$err_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<resnlvtesttable$err_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
