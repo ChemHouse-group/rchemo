@@ -229,7 +229,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
         optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
       }
       if(selection == "localmin"){
-        diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
+        diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
         optimum[which(diff==TRUE)[1]] <- 1
       }
       if(selection == "1std"){
@@ -293,7 +293,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
           optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -322,7 +322,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
           optimum[which.min(resnlvtesttable$err_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<resnlvtesttable$err_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<=resnlvtesttable$err_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -393,7 +393,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
           optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -422,7 +422,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
           optimum[which.min(resnlvtesttable$err_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<resnlvtesttable$err_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<=resnlvtesttable$err_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -492,7 +492,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
           optimum[which.min(resnlvtesttable$rmse_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<resnlvtesttable$rmse_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$rmse_mean[i]<=resnlvtesttable$rmse_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
@@ -521,7 +521,7 @@ mbplsr_mbplsda_allsteps <- function(Xlist, Xnames = NULL, Xscaling = c("none","p
           optimum[which.min(resnlvtesttable$err_mean)[1]] <- 1
         }
         if(selection == "localmin"){
-          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<resnlvtesttable$err_mean[i+1])
+          diff<- sapply(1:nlv, function(i) resnlvtesttable$err_mean[i]<=resnlvtesttable$err_mean[i+1])
           optimum[which(diff==TRUE)[1]] <- 1
         }
         if(selection == "1std"){
