@@ -37,7 +37,8 @@
 
 - ***dfplsr_cg***, ***dfplsr_cov***, ***dfplsr_div***: Model complexity estimation for PLSR
 - ***aicplsr***: Cp and AIC for PLSR models
-- ***vip*** Variable Importance in Projection (works also for PLSDA models)
+- ***vip***: Variable Importance in Projection (works also for PLSDA models)
+- ***plsr_plsda_allsteps***: help to determine the optimal number of latent variables, permutation test, model, predictions for PLSR (works also for PLSDA models)
 
 #### Ridge
 
@@ -191,6 +192,9 @@
 - ***soplsrdacv*** Help to choose optimal Sequential and Orthogonalized PLS-RDA model
 - ***soplsldacv*** Help to choose optimal Sequential and Orthogonalized PLS-LDA model
 - ***soplsqdacv*** Help to choose optimal Sequential and Orthogonalized PLS-QDA model
+- ***mbplsr_mbplsda_allsteps***: help to determine the optimal number of latent variables, permutation test, model, predictions for MBPLSR (works also for MBPLSDA models)
+- ***soplsr_soplsda_allsteps***: help to determine the optimal number of latent variables, permutation test, model, predictions for SOPLSR (works also for SOPLSDA models)
+
 
 #### Datasets
 

@@ -6,9 +6,9 @@
 
 \description{
 
-Smoothing by derivation, with a Savitzky-Golay filter, of the row observations (e.g. spectra) of a data set .
+Smoothing by derivation, with a Savitzky-Golay filter, of the row observations (e.g. spectra) of a data set.
 
-The function uses function \code{\link{sgolayfilt}} of package \code{signal} available on the CRAN.
+The function uses function \code{\link[signal]{sgolayfilt}} of package \code{signal} available on the CRAN.
 
 }
 
@@ -24,11 +24,14 @@ The function uses function \code{\link{sgolayfilt}} of package \code{signal} ava
 
 \item{p}{Polynomial order.}
 
-\item{ts}{Scaling factor (e.g. the absolute step between two columns in matrix \eqn{X}), see argument \code{ts} in function \code{\link{sgolayfilt}}. This has not impact on the form of the transformed output.}
+\item{ts}{Scaling factor (e.g. the absolute step between two columns in matrix \eqn{X}), see argument \code{ts} in function \code{\link[signal]{sgolayfilt}}. This has not impact on the form of the transformed output.}
 
 }
 
-\value{A matrix of the transformed data.}
+\value{
+A matrix of the transformed data.
+
+}
 
 \examples{
 
