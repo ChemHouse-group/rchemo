@@ -22,30 +22,41 @@
   nXblocks <- length(Xlist)
   
   Yvariables    <- colnames(Y)
-  #nYvariables   <- length(Yvariables)
-  
+
   inertieY <- sum(diag(t(as.matrix(scale(dummy(Y)$Y, scale=FALSE)))%*%(as.matrix(scale(dummy(Y)$Y, scale=FALSE)))))
 
-  # datasets
+  # partition
   set.seed(seed = seed)
-  
-  obsList     <- list()
-  initialYrep <- list()
-  Yrep        <- list()
-  Xlistrep    <- list()
-  
-  initialY     <- Y
-  
-  if(nbrep==1){
-    initialYrep[[1]] <- initialY
-    Yrep[[1]]        <- Y
-    Xlistrep[[1]]    <- Xlist
-  }else{
-    for(i in 1:nbrep){
-      obsList[[i]]      <- sample(x=n, size=n, replace = FALSE, prob = NULL)
-      initialYrep[[i]]  <- initialY[obsList[[i]],, drop=FALSE]
-      Yrep[[i]]         <- Y[obsList[[i]],, drop=FALSE]
-      Xlistrep[[i]]     <- lapply(1:length(Xlist), function (j) Xlist[[j]][obsList[[i]],,drop=FALSE])
+  if(cvmethod=="loo"){CVtype<- segmkf(n = nrow(Xlist[[1]]), K = nrow(Xlist[[1]]), type = "random", nrep = 1)}#=as.list(1:n)}
+  if((cvmethod=="kfolds") & (is.null(samplingk)==TRUE)){
+    CVtype <- segmkf(n = nrow(Xlist[[1]]), K = nfolds, type = "random", nrep = nbrep)
+    for(r in 1:nbrep){
+      for(ss in 1:nfolds){
+        CVtype[[r]][[ss]] <- sort(CVtype[[r]][[ss]])
+      }
+    }
+  }
+  if((cvmethod=="kfolds") & (is.null(samplingk)==FALSE)){
+    samplingktab <- table(samplingk)
+    partCVtype <- list()
+    for(s in 1:length(names(samplingktab))){
+      partCVtype[[s]] <- segmkf(n = samplingktab[s], K = nfolds, type = "random", nrep = nbrep)
+      for(r in 1:nbrep){
+        for(ss in 1:length(partCVtype[[s]][[r]])){
+          partCVtype[[s]][[r]][[ss]] <- which(samplingk==names(samplingktab)[s])[partCVtype[[s]][[r]][[ss]]]
+        }
+      }
+    }
+    CVtype <- list()
+    for(r in 1:nbrep){
+      CVtype[[r]] <- list()
+      for(ss in 1:nfolds){
+        CVtype[[r]][[ss]] <- c(0)
+        for(s in 1:length(names(samplingktab))){
+          CVtype[[r]][[ss]] <- c(CVtype[[r]][[ss]], partCVtype[[s]][[r]][[ss]])
+        }
+        CVtype[[r]][[ss]] <- sort(CVtype[[r]][[ss]][-1])
+      }
     }
   }
 
@@ -67,50 +78,24 @@
   	#optimYpredCV <- list()
 
     for(i in 1:nbrep){
-      
-      # partition
-      set.seed(seed = seed)
-      if(cvmethod=="loo"){CVtype=as.list(1:n)}
-      if(is.null(samplingk)==FALSE){
-        samplingk <- paste0(Y,samplingk)
-      }else{
-        samplingk <- Y
-      }
-      if(cvmethod=="kfolds"){
-        samplingktab <- table(samplingk)
-        partCVtype <- list()
-        for(s in 1:length(names(samplingktab))){
-          partCVtype[[s]] <- segmkf(n = samplingktab[s], K = nfolds, type = "interleaved")$rep1
-          for(ss in 1:length(partCVtype[[s]])){
-            partCVtype[[s]][[ss]] <- which(samplingk==names(samplingktab)[s])[partCVtype[[s]][[ss]]]
-          }
-        }
-        CVtype <- list()
-        for(sss in 1:nfolds){
-          CVtype[[sss]] <- partCVtype[[1]][[sss]]
-          for(s in 2:length(names(samplingktab))){
-            CVtype[[sss]] <- c(CVtype[[sss]],partCVtype[[s]][[sss]])
-          }
-        }
-      }
-      
+ 
       for(j in 1:nrow(lvcombi)){
-        reppredCV <- matrix(NA, nrow=n, ncol = length(unique(Y)), dimnames=list(rownames(Xlistrep[[1]]),sort(unique(Y))))
-        reppredYCV <- matrix(NA, nrow=n, ncol = length(Yvariables), dimnames=list(rownames(Xlistrep[[1]]),Yvariables))
-        for(k in 1:length(CVtype)){
-          Xlisttrain <-lapply(1:length(Xlistrep[[i]]),function(x) Xlistrep[[i]][[x]][-CVtype[[k]],,drop=FALSE])
-          Ytrain <- Yrep[[i]][-CVtype[[k]],,drop=FALSE]
-          Xlisttest <- lapply(1:length(Xlistrep[[i]]),function(x) Xlistrep[[i]][[x]][CVtype[[k]],,drop=FALSE])
-          Ytest <- Yrep[[i]][CVtype[[k]],,drop=FALSE]
-          repmodel <- soplsrda(Xlist=Xlisttrain, y=Ytrain, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv=lvcombi[j,])
-          reppredCV[CVtype[[k]],] <- predict(repmodel, Xlisttest)$posterior
-          reppredYCV[CVtype[[k]],] <- predict(repmodel, Xlisttest)$pred
+        reppredCV <- matrix(NA, nrow=n, ncol = length(unique(Y)), dimnames=list(rownames(Xlist),sort(unique(Y))))
+        reppredYCV <- matrix(NA, nrow=n, ncol = length(Yvariables), dimnames=list(rownames(Xlist),Yvariables))
+        for(k in 1:length(CVtype[[i]])){
+          Xlisttrain <-lapply(1:length(Xlist),function(x) Xlist[[x]][-CVtype[[i]][[k]],,drop=FALSE])
+          Ytrain <- Y[-CVtype[[i]][[k]],,drop=FALSE]
+          Xlisttest <- lapply(1:length(Xlist),function(x) Xlist[[x]][CVtype[[i]][[k]],,drop=FALSE])
+          Ytest <- Y[CVtype[[i]][[k]],,drop=FALSE]
+          repmodel <- soplsrda(Xlist=Xlisttrain, y=Ytrain, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights[-CVtype[[i]][[k]]], nlv=lvcombi[j,])
+          reppredCV[CVtype[[i]][[k]],] <- predict(repmodel, Xlisttest)$posterior[order(CVtype[[i]][[k]]),]
+          reppredYCV[CVtype[[i]][[k]],] <- predict(repmodel, Xlisttest)$pred[order(CVtype[[i]][[k]]),]
         }
-        SqErrCV <- (dummy(Yrep[[i]])$Y-reppredCV)^2
+        SqErrCV <- (dummy(Y)$Y-reppredCV)^2
 
         Rep_rmseCV[j,i,]    <- sqrt(mean(SqErrCV))
-        Rep_ExplVarCV[j,i,] <- mean(1-(apply(SqErrCV,2,mean)/(apply(dummy(Yrep[[i]])$Y,2,var)*(n-1)/n)))
-        Rep_errCV[j,i,] <- mean(reppredYCV != Yrep[[i]])*100
+        Rep_ExplVarCV[j,i,] <- mean(1-(apply(SqErrCV,2,mean)/(apply(dummy(Y)$Y,2,var)*(n-1)/n)))
+        Rep_errCV[j,i,] <- mean(reppredYCV != Y)*100
         
       }
     }
@@ -155,10 +140,10 @@
           # one standard error rule to select the optim number of components
           minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
           threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-          if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
+          if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]<=threshmean)==0)){
             kchoix <- 1
           }else{
-            kchoix <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
+            kchoix <- min(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]<=threshmean),"index"])
           }
         }else{
           kchoix <- 1
@@ -182,7 +167,7 @@
       if(selection=="localmin"){
         if(nrow(res_nlvsum_errCV_Ysel)>1){
           # sign of the difference of accuracies to select the optim combination with the lower total number of components
-          rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_errCV_Ysel), function(i)((res_nlvsum_errCV_Ysel$mean[i]-res_nlvsum_errCV_Ysel$mean[i-1])<=0)))
+          rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_errCV_Ysel), function(i)((res_nlvsum_errCV_Ysel$mean[i]-res_nlvsum_errCV_Ysel$mean[i-1])<0)))
           kchoix <- min(res_nlvsum_errCV_Ysel[(which(rtsdiff==FALSE)-1)[1],"index"],res_nlvsum_errCV_Ysel[nrow(res_nlvsum_errCV_Ysel),"index"],na.rm=TRUE)
         }else{
           kchoix <- 1
@@ -196,10 +181,10 @@
           # one standard error rule to select the optim number of components
           minmean    <- which.min(res_nlvsum_errCV_Ysel$mean)[1]
           threshmean <- res_nlvsum_errCV_Ysel$mean[minmean] + res_nlvsum_errCV_Ysel$sd[minmean]
-          if((minmean == 1) | (sum(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean)==0)){
+          if((minmean == 1) | (sum(res_nlvsum_errCV_Ysel$mean[1:minmean]<=threshmean)==0)){
             kchoix <- 1
           }else{
-            kchoix <- max(res_nlvsum_errCV_Ysel[which(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean),"index"])
+            kchoix <- min(res_nlvsum_errCV_Ysel[which(res_nlvsum_errCV_Ysel$mean[1:minmean]<=threshmean),"index"])
           }
         }else{
           kchoix <- 1
@@ -227,34 +212,6 @@
     res_errCV <- res_rmseCV <- res_ExplVarCV <- list()
     Rep_errCV <- Rep_rmseCV <- Rep_ExplVarCV <- list()
 
-    for(i in 1:nbrep){
-      # partition
-      set.seed(seed = seed)
-      if(cvmethod=="loo"){CVtype=as.list(1:n)}
-      if(is.null(samplingk)==FALSE){
-        samplingk <- paste0(Y,samplingk)
-      }else{
-        samplingk <- Y
-      }
-      if(cvmethod=="kfolds"){
-        samplingktab <- table(samplingk)
-        partCVtype <- list()
-        for(s in 1:length(names(samplingktab))){
-          partCVtype[[s]] <- segmkf(n = samplingktab[s], K = nfolds, type = "interleaved")$rep1
-          for(ss in 1:length(partCVtype[[s]])){
-            partCVtype[[s]][[ss]] <- which(samplingk==names(samplingktab)[s])[partCVtype[[s]][[ss]]]
-          }
-        }
-        CVtype <- list()
-        for(sss in 1:nfolds){
-          CVtype[[sss]] <- partCVtype[[1]][[sss]]
-          for(s in 2:length(names(samplingktab))){
-            CVtype[[sss]] <- c(CVtype[[sss]],partCVtype[[s]][[sss]])
-          }
-        }
-      }
-    }
-    
     for (m in 1:nXblocks) {
       # combinations
       if(m==1){
@@ -276,23 +233,23 @@
       
       for(i in 1:nbrep){
         for(j in 1:nrow(lvcombi[[m]])){
-          reppredCV <- matrix(NA, nrow=n, ncol = length(unique(Y)), dimnames=list(rownames(Xlistrep[[1]]),sort(unique(Y))))
-          reppredYCV <- matrix(NA, nrow=n, ncol = length(Yvariables), dimnames=list(rownames(Xlistrep[[1]]),Yvariables))
+          reppredCV <- matrix(NA, nrow=n, ncol = length(unique(Y)), dimnames=list(rownames(Xlist),sort(unique(Y))))
+          reppredYCV <- matrix(NA, nrow=n, ncol = length(Yvariables), dimnames=list(rownames(Xlist),Yvariables))
           
-          for(k in 1:length(CVtype)){
-            Xlisttrain <-lapply(1:m,function(x) Xlistrep[[i]][[x]][-CVtype[[k]],,drop=FALSE])
-            Ytrain <- Yrep[[i]][-CVtype[[k]],,drop=FALSE]
-            Xlisttest <- lapply(1:m,function(x) Xlistrep[[i]][[x]][CVtype[[k]],,drop=FALSE])
-            Ytest <- Yrep[[i]][CVtype[[k]],,drop=FALSE]
-            repmodel <- soplsrda(Xlist=Xlisttrain, y=Ytrain, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights, nlv=unlist(lvcombi[[m]][j,]))
-            reppredCV[CVtype[[k]],] <- predict(repmodel, Xlisttest)$posterior
-            reppredYCV[CVtype[[k]],] <- predict(repmodel, Xlisttest)$pred
+          for(k in 1:length(CVtype[[i]])){
+            Xlisttrain <-lapply(1:m,function(x) Xlist[[x]][-CVtype[[i]][[k]],,drop=FALSE])
+            Ytrain <- Y[-CVtype[[i]][[k]],,drop=FALSE]
+            Xlisttest <- lapply(1:m,function(x) Xlist[[x]][CVtype[[i]][[k]],,drop=FALSE])
+            Ytest <- Y[CVtype[[i]][[k]],,drop=FALSE]
+            repmodel <- soplsrda(Xlist=Xlisttrain, y=Ytrain, Xscaling = Xscaling, Yscaling = Yscaling, weights = weights[-CVtype[[i]][[k]]], nlv=unlist(lvcombi[[m]][j,]))
+            reppredCV[CVtype[[i]][[k]],] <- predict(repmodel, Xlisttest)$posterior[order(CVtype[[i]][[k]]),]
+            reppredYCV[CVtype[[i]][[k]],] <- predict(repmodel, Xlisttest)$pred[order(CVtype[[i]][[k]]),]
           }
-          SqErrCV <- (dummy(Yrep[[i]])$Y-reppredCV)^2
+          SqErrCV <- (dummy(Y)$Y-reppredCV)^2
 
           Rep_rmseCV[[m]][j,i,]    <- sqrt(mean(SqErrCV))
-          Rep_ExplVarCV[[m]][j,i,] <- mean(1-(apply(SqErrCV,2,mean)/(apply(dummy(Yrep[[i]])$Y,2,var)*(n-1)/n)))
-          Rep_errCV[[m]][j,i,]    <- mean(reppredYCV != Yrep[[i]])*100
+          Rep_ExplVarCV[[m]][j,i,] <- mean(1-(apply(SqErrCV,2,mean)/(apply(dummy(Y)$Y,2,var)*(n-1)/n)))
+          Rep_errCV[[m]][j,i,]    <- mean(reppredYCV != Y)*100
          }
       }
       
@@ -346,10 +303,10 @@
             # one standard error rule to select the optim number of components
             minmean    <- which.min(res_nlvsum_rmseCV_Ysel$mean)[1]
             threshmean <- res_nlvsum_rmseCV_Ysel$mean[minmean] + res_nlvsum_rmseCV_Ysel$sd[minmean]
-            if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean)==0)){
+            if((minmean == 1) | (sum(res_nlvsum_rmseCV_Ysel$mean[1:minmean]<=threshmean)==0)){
               kchoix <- 1
             }else{
-              kchoix <- max(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]>=threshmean),"index"])
+              kchoix <- min(res_nlvsum_rmseCV_Ysel[which(res_nlvsum_rmseCV_Ysel$mean[1:minmean]<=threshmean),"index"])
             }
           }else{
             kchoix <- 1
@@ -382,7 +339,7 @@
         
         if(selection=="localmin"){
           if(nrow(res_nlvsum_errCV_Ysel)>1){
-            rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_errCV_Ysel), function(i)((res_nlvsum_errCV_Ysel$mean[i]-res_nlvsum_errCV_Ysel$mean[i-1])<=0)))
+            rtsdiff <- c(NA,sapply(2:nrow(res_nlvsum_errCV_Ysel), function(i)((res_nlvsum_errCV_Ysel$mean[i]-res_nlvsum_errCV_Ysel$mean[i-1])<0)))
             kchoix <- min(res_nlvsum_errCV_Ysel[(which(rtsdiff==FALSE)-1)[1],"index"],res_nlvsum_errCV_Ysel[nrow(res_nlvsum_errCV_Ysel),"index"],na.rm=TRUE)
           }else{
             kchoix <- 1
@@ -396,10 +353,10 @@
             # one standard error rule to select the optim number of components
             minmean    <- which.min(res_nlvsum_errCV_Ysel$mean)[1]
             threshmean <- res_nlvsum_errCV_Ysel$mean[minmean] + res_nlvsum_errCV_Ysel$sd[minmean]
-            if((minmean == 1) | (sum(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean)==0)){
+            if((minmean == 1) | (sum(res_nlvsum_errCV_Ysel$mean[1:minmean]<=threshmean)==0)){
               kchoix <- 1
             }else{
-              kchoix <- max(res_nlvsum_errCV_Ysel[which(res_nlvsum_errCV_Ysel$mean[1:minmean]>=threshmean),"index"])
+              kchoix <- min(res_nlvsum_errCV_Ysel[which(res_nlvsum_errCV_Ysel$mean[1:minmean]<=threshmean),"index"])
             }
           }else{
             kchoix <- 1

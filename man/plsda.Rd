@@ -77,6 +77,12 @@ For \code{predict.Plsrda}, \code{predict.Plsprobda}:
 
 }
 
+\seealso{
+
+\code{\link{plsr_plsda_allsteps}} function to help determine the optimal number of latent variables, perform a permutation test, calculate model parameters and predict new observations.
+
+}
+
 \note{
 
 The first example concerns PLSDA, and the second one concerns PLS LDA.
