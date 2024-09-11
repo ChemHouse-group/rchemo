@@ -9,13 +9,11 @@
 
 \description{
 
-SVM models with Gaussian (RBF) kernel
+SVM models with Gaussian (RBF) kernel.
 
 \code{svmr}: SVM regression (SVMR).
 
 \code{svmda}: SVM discrimination (SVMC).
-
-The functions uses function \code{\link{svm}} of package \code{e1071} (Meyer et al. 2021) available on CRAN (e1071 uses the tool box LIVSIM; Chang & Lin, http://www.csie.ntu.edu.tw/~cjlin/libsvm). 
 
 The SVM models are fitted with parameterization \eqn{'C'}, not the \eqn{'nu'} parameterization. 
 
@@ -28,6 +26,8 @@ For tuning the model, usual preliminary ranges are for instance:
 - epsilon = seq(.1, .3, by = .1)
 
 - gamma = 10^(-6:3)
+
+The functions uses function \code{\link[e1071]{svm}} of package \code{e1071} (Meyer et al. 2021) available on CRAN (e1071 uses the tool box LIVSIM; Chang & Lin, http://www.csie.ntu.edu.tw/~cjlin/libsvm). 
 
 }
 
@@ -49,9 +49,9 @@ svmda(X, y, cost = 1, epsilon = .1, gamma = 1, scale = FALSE)
 
 \item{y}{Training Y-data (\eqn{n}).}
 
-\item{cost}{The cost of constraints violation \eqn{cost} parameter. See \code{\link{svm}}.}
+\item{cost}{The cost of constraints violation \eqn{cost} parameter. See \code{\link[e1071]{svm}}.}
 
-\item{epsilon}{The \eqn{epsilon} parameter in the insensitive-loss function. See \code{\link{svm}}.}
+\item{epsilon}{The \eqn{epsilon} parameter in the insensitive-loss function. See \code{\link[e1071]{svm}}.}
 
 \item{gamma}{The \eqn{gamma} parameter in the RBF kernel.}
 
@@ -74,7 +74,7 @@ For \code{predict.Svm}:
 
 \item{pred}{predictions for each observation.}
 
-For \code{summary.Svm}:display of call, parameters, and number of support vectors
+For \code{summary.Svm}:display of call, parameters, and number of support vectors.
 
 }
 

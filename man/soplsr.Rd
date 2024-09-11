@@ -143,6 +143,11 @@ multi-block classification. Chemometrics and Intelligent Laboratory Systems, 141
 
 }
 
+\seealso{
+
+\code{\link{soplsr_soplsda_allsteps}} function to help determine the optimal number of latent variables, perform a permutation test, calculate model parameters and predict new observations.
+
+}
 
 \examples{
 
