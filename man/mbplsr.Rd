@@ -139,6 +139,12 @@ Wold, S., Sjostrom, M., Eriksson, l., 2001. PLS-regression: a basic tool for che
 
 }
 
+\seealso{
+
+\code{\link{mbplsr_mbplsda_allsteps}} function to help determine the optimal number of latent variables, perform a permutation test, calculate model parameters and predict new observations.
+
+}
+
 \examples{
 
 n <- 10 ; p <- 10

@@ -6,7 +6,9 @@
 
 \description{
 
-Resampling of signals by interpolation methods, including linear, spline, and cubic interpolation. The function uses \code{\link{interp1}} of package \code{signal} available on the CRAN.
+Resampling of signals by interpolation methods, including linear, spline, and cubic interpolation.
+
+The function uses function \code{\link[signal]{interp1}} of package \code{signal} available on the CRAN.
 
 }
 
@@ -22,7 +24,7 @@ interpl(X, w, meth = "cubic", ...)
 
 \item{w}{A vector of the values where to interpolate (typically within the range of \eqn{w0}).}
 
-\item{meth}{The method of interpolation. See \code{\link{interp1}}.}
+\item{meth}{The method of interpolation. See \code{\link[signal]{interp1}}.}
 
 \item{...}{Optional arguments to pass in function \code{\link{splinefun}} if \code{meth = "spline"}.}
 

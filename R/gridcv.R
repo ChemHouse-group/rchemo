@@ -14,7 +14,7 @@ gridcv <- function(X, Y, segm, score, fun, pars, verb = TRUE) {
             if(verb)
                 cat("segm=", j, " ", sep = "")
             s <- sort(listsegm[[j]])
-            if(is.list(X)){
+            if((is.list(X)==TRUE)&(is.matrix(X)==FALSE)&(is.data.frame(X)==FALSE)){
               zres[[j]] <- gridscore(
                 lapply(1:length(X), function(k) X[[k]][-s, , drop = FALSE]), 
                 Y[-s, , drop = FALSE],
@@ -59,7 +59,7 @@ gridcvlv <- function(X, Y, segm, score, fun, nlv, pars = NULL, verb = TRUE) {
             if(verb)
                 cat("segm=", j, " ", sep = "")
             s <- sort(listsegm[[j]])
-            if(is.list(X)){
+            if((is.list(X)==TRUE)&(is.matrix(X)==FALSE)&(is.data.frame(X)==FALSE)){
               zres[[j]] <- gridscorelv(
                 lapply(1:length(X), function(k) X[[k]][-s, , drop = FALSE]), 
                 Y[-s, , drop = FALSE],
@@ -114,7 +114,7 @@ gridcvlb <- function(X, Y, segm, score, fun, lb, pars = NULL, verb = TRUE) {
             if(verb)
                 cat("segm=", j, " ", sep = "")
             s <- sort(listsegm[[j]])
-            if(is.list(X)){
+            if((is.list(X)==TRUE)&(is.matrix(X)==FALSE)&(is.data.frame(X)==FALSE)){
               zres[[j]] <- gridscorelb(
                 lapply(1:length(X), function(k) X[[k]][-s, , drop = FALSE]), 
                 Y[-s, , drop = FALSE],

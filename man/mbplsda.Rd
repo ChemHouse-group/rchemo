@@ -91,6 +91,12 @@ For \code{predict.Mbplsrda}, \code{predict.Mbplsprobda}:
 
 }
 
+\seealso{
+
+\code{\link{mbplsr_mbplsda_allsteps}} function to help determine the optimal number of latent variables, perform a permutation test, calculate model parameters and predict new observations.
+
+}
+
 \note{
 
 The first example concerns MB-PLSDA, and the second one concerns MB-PLS LDA.

@@ -12,6 +12,7 @@ importFrom("data.table", "data.table", "rbindlist", "setDF")
 importFrom("FNN", "knn")
 importFrom("signal", "sgolayfilt")
 importFrom("e1071", "svm")
+importFrom("utils", "read.table", "write.table")
 
 #importFrom("stats", "coef", "predict")
 #importFrom("base", "transform")      ### ==> create error

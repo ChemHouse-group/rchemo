@@ -6,8 +6,8 @@
 
 \description{
 
-Faster alternative to \code{\link{aggregate}} to calculate a summary statistic over data subsets.  \code{dtagg} uses function \code{\link{data.table}} of package \code{data.table}. 
-
+Faster alternative to \code{\link{aggregate}} to calculate a summary statistic over data subsets.  
+\code{dtagg} uses function \code{\link[data.table:data.table]{data.table::data.table}} of package \code{data.table}.
 }
 
 \usage{
