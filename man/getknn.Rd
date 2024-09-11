@@ -6,9 +6,9 @@
 
 \description{
 
-Function \code{getknn} selects the \eqn{k} nearest neighbours of each row observation of a new data set (= query) within a training data set, based on a dissimilarity measure. 
+Function \code{getknn} selects the \eqn{k} nearest neighbours of each row observation of a new data set (= query) within a training data set, based on a dissimilarity measure.
 
-\code{getknn} uses function \code{\link{get.knnx}} of package \code{FNN} (Beygelzimer et al.) available on CRAN.  
+\code{getknn} uses function \code{\link[FNN]{get.knnx}} of package \code{FNN} (Beygelzimer et al.) available on CRAN.
 
 }
 
@@ -29,7 +29,7 @@ getknn(Xtrain, X, k = NULL, diss = c("eucl", "mahal"),
 
 \item{diss}{The type of dissimilarity used. Possible values are "eucl" (default; Euclidean distance) or "mahal" (Mahalanobis distance).}
 
-\item{algorithm}{Search algorithm used for Euclidean and Mahalanobis distances. Default to \code{"brute"}. See \code{\link{get.knnx}}.}
+\item{algorithm}{Search algorithm used for Euclidean and Mahalanobis distances. Default to \code{"brute"}. See \code{\link[FNN]{get.knnx}}.}
 
 \item{list}{If \code{TRUE} (default), a list format is also returned for the outputs.}
 
