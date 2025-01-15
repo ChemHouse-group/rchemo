@@ -8,7 +8,7 @@ consensuspca <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscali
   
   xmeanslist <- lapply(1:length(Xlist), function(i) .colmeans(Xlist[[i]], weights = weights))
 
-  if((length(Xscaling)=1) & (length(Xlist)>1)){Xscaling = rep(Xscaling, length(Xlist))}
+  if((length(Xscaling)==1) & (length(Xlist)>1)){Xscaling = rep(Xscaling, length(Xlist))}
   
   xscaleslist <- list()
   for(i in 1:length(Xlist)){
@@ -30,24 +30,34 @@ consensuspca <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscali
   # zdim <- dim(Xconc)
   # n <- zdim[1]
   # p <- zdim[2]
+  
+  niter <- NULL
+  conv <- NULL
 
   if(algo=="svd"){respca <- pcasvd(Xconc, weights = NULL, nlv)} 
   if(algo=="eigen"){respca <- pcaeigen(Xconc, weights = NULL, nlv)} 
   if(algo=="eigenk"){respca <- pcaeigenk(Xconc, weights = NULL, nlv)} 
-  if(algo=="nipals"){respca <- pcanipals(Xconc, weights = NULL, nlv, gs = gs, tol = tol)} 
-  if(algo=="nipalsna"){respca <- pcanipalsna(Xconc, nlv, gs = gs, tol = tol)} 
+  if(algo=="nipals"){
+    respca <- pcanipals(Xconc, weights = NULL, nlv, gs = gs, tol = tol),
+    niter <- respca$niter,
+    conv <- respca$conv
+  }
+  if(algo=="nipalsna"){
+    respca <- pcanipalsna(Xconc, nlv, gs = gs, tol = tol),
+    niter <- respca$niter,
+    conv <- respca$conv
+  }
   if(algo=="sph"){respca <- pcasph(Xconc, weights = NULL, nlv)} 
-  
-  Tk <- lapply(1:length(Xlist), function(i) Xlist[[i]]%*%t(Xlist[[i]])%*%respca$T)
 
   structure(
-    list(T = respca$T, Tk = Tk, P = respca$P, sv = respca$sv, eig = respca$eig,
-         xmeans = xmeanslist, xscales = xscaleslist, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, niter = NULL, conv = NULL),
+    list(T = respca$T, P = respca$P, sv = respca$sv, eig = respca$eig,
+         xmeans = xmeanslist, xscales = xscaleslist, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, niter = niter, conv = conv),
     class = c("Consensuspca"))
 }
 
 
 summary.Consensuspca <- function(object, X, ...) {
+  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
   
   Xinit <- X
   p <- dim(object$P)[1]
@@ -65,18 +75,6 @@ summary.Consensuspca <- function(object, X, ...) {
   explvar <- data.frame(pc = seq(nlv), var = tt, pvar = pvar, cumpvar = cumpvar)
   row.names(explvar) <- seq(nlv)
   
-  Tknorm <- object$Tk
-  for(j in 1:length(X)){
-    for(i in 1:nlv){Tknorm[[j]][,i] <- Tknorm[[j]][,i,drop=FALSE]/norm(Tknorm[[j]][,i,drop=FALSE], type = "e")}
-  }
-  Tnorm <- object$T
-  for(i in 1:nlv){Tnorm[,i] <- object$T[,i,drop=FALSE]/norm(object$T[,i,drop=FALSE], type = "e")}
-  contr.block <- matrix(NA, ncol = nlv, nrow = length(X), dimnames = list(paste0("X",1:length(X)),paste0("pc",1:nlv)))
-  for(i in 1:nlv){
-    contr.block[,i] <- sapply(1:length(X), function(j) nrow(X[[1]])*cov(Tknorm[[j]][,i],Tnorm[,i]))
-    contr.block[,i] <- contr.block[,i]/sum(contr.block[,i])*100
-  }
-  
   contr.ind <- data.frame(.scale(TT, center = rep(0, nlv), scale = tt))
   
   cor.circle <- contr.var <- coord.var <- NULL
@@ -84,12 +82,13 @@ summary.Consensuspca <- function(object, X, ...) {
   # zX <- .scale(X, center = rep(0, p), scale = sqrt(xvars)) equivalent to Xconc
   zT <- .scale(object$T, center = rep(0, nlv), scale = sqrt(tt))
   cor.circle <- data.frame(t(object$weights * Xconc) %*% zT)#data.frame(t(object$weights * zX) %*% zT)
-  coord.var <- data.frame(crossprod(do.call("cbind", Xinit), object$weights * zT))#data.frame(crossprod(X, object$weights * zT))
+  Xinitconc <- as.matrix(do.call("cbind", Xinit))
+  coord.var <- data.frame(crossprod(Xinitconc, object$weights * zT))#data.frame(crossprod(X, object$weights * zT))
   z <- coord.var^2
   contr.var <- data.frame(.scale(z, rep(0, nlv), colSums(z)))
   row.names(cor.circle) <- row.names(contr.var) <- row.names(coord.var) <- row.names(object$P)
   
-  list(explvar = explvar, contr.block = contr.block, contr.ind = contr.ind, 
+  list(explvar = explvar, contr.ind = contr.ind, 
        contr.var = contr.var, coord.var = coord.var, cor.circle = cor.circle)    
 }
 
