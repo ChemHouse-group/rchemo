@@ -12,7 +12,7 @@ nipals <- function(X, tol = 1e-6, maxit = 100) {
   while (cont) {
     v0 <- v  # Sauvegarde de la dernière valeur de v
     v <- crossprod(X, u)  # v = X' * u
-    v <- v / norm(v, type = "2")  # Normalisation de v
+    v <- v / sqrt(sum(v^2))  # Normalisation de v
     u <- X %*% v  # u = X * v
     dif <- sum((v - v0)^2)  # Calcul de la différence entre v et v0
     
@@ -22,7 +22,7 @@ nipals <- function(X, tol = 1e-6, maxit = 100) {
     }
   }
   
-  sv <- norm(u, type = "2")  # Valeur singulière
+  sv <- sqrt(sum(u^2)) # Valeur singulière
   u <- u / sv  # Normalisation de u
   list(u = u, v = v, sv = sv, niter = iter - 1)
 }

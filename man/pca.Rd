@@ -149,15 +149,11 @@ Wu, W., Massart, D.L., de Jong, S., 1997. The kernel PCA algorithms for wide dat
 
 For Spherical PCA: 
 
-Daszykowski, M., Kaczmarek, K., Vander Heyden, Y., Walczak, B., 2007. 
-Robust statistics in data analysis - A review. Chemometrics and Intelligent 
-Laboratory Systems 85, 203-219. https://doi.org/10.1016/j.chemolab.2006.06.016
+Daszykowski, M., Kaczmarek, K., Vander Heyden, Y., Walczak, B., 2007. Robust statistics in data analysis - A review. Chemometrics and Intelligent Laboratory Systems 85, 203-219. https://doi.org/10.1016/j.chemolab.2006.06.016
 
-Locantore N., Marron J.S., Simpson D.G., Tripoli N., Zhang J.T., Cohen K.L.
-Robust principal component analysis for functional data, Test 8 (1999) 1-7
+Locantore N., Marron J.S., Simpson D.G., Tripoli N., Zhang J.T., Cohen K.L. Robust principal component analysis for functional data, Test 8 (1999) 1-7
 
-Maronna, R., 2005. Principal components and orthogonal regression based on 
-robust scales, Technometrics, 47:3, 264-273, DOI: 10.1198/004017005000000166
+Maronna, R., 2005. Principal components and orthogonal regression based on robust scales, Technometrics, 47:3, 264-273, DOI: 10.1198/004017005000000166
 
 }
 

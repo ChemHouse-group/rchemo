@@ -1,7 +1,10 @@
 \name{consensuspca}
 \alias{consensuspca}
+\alias{consensuspcanipals}
 \alias{transform.Consensuspca}
+\alias{transform.Consensuspcanipals}
 \alias{summary.Consensuspca}
+\alias{summary.Consensuspcanipals}
 
 \encoding{UTF-8}
 
@@ -9,9 +12,9 @@
 
 \description{
 
-Algorithms fitting a consensus PCA of a list of matrices \eqn{Xlist}. 
+Algorithms fitting a consensus PCA of a list of matrices \eqn{Xlist}. A chosen PCA algorithm is applied on the X-matrix obtained after variable scaling, blockscaling, block concatenation.
 
-A chosen PCA algorithm is applied on the X-matrix obtained after variable scaling, blockscaling, block concatenation.
+In \code{consensuspcanipals} the PCA is performed using NIPALS, allowing the block contribution calculation.
 
 \bold{Auxiliary functions}
 
@@ -24,13 +27,21 @@ A chosen PCA algorithm is applied on the X-matrix obtained after variable scalin
 \usage{
 
 consensuspca(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
-Xscaling = c("none", "pareto", "sd")[1], 
-algo = c("svd","eigen","eigenk","nipals","nipalsna","sph")[1], 
-gs = TRUE, tol = .Machine$double.eps^0.5, maxit = 200)
+      Xscaling = c("none", "pareto", "sd")[1], 
+      algo = c("svd","eigen","eigenk","nipals","nipalsna","sph")[1], 
+      gs = TRUE, tol = .Machine$double.eps^0.5, maxit = 200)
+      
+consensuspcanipals(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
+      Xscaling = c("none", "pareto", "sd")[1],
+      tol = .Machine$double.eps^0.5, maxit = 200)
 
-\method{transform}{Consensuspca}(object, X, ..., nlv = NULL)  
+\method{transform}{Consensuspca}(object, X, ..., nlv = NULL) 
 
-\method{summary}{Consensuspca}(object, X, ...)  
+\method{transform}{Consensuspcanipals}(object, X, ..., nlv = NULL)  
+
+\method{summary}{Consensuspca}(object, X, ...) 
+
+\method{summary}{Consensuspcanipals}(object, X, ...)  
 
 }
 
@@ -48,7 +59,7 @@ gs = TRUE, tol = .Machine$double.eps^0.5, maxit = 200)
 
 \item{Xscaling}{vector (of length Xlist) of variable scaling for each datablock, among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
-\item{algo}{algorithm for the PCA among : "svd" (SVD factorization of \eqn{D^(1/2) * X}, using function \code{\link{svd}}), "eigen" (Eigen factorization of \eqn{X' * D * X}, using function \code{\link{eigen}}), "eigenk" (Eigen factorization of \eqn{D^(1/2) * X * X' D^(1/2)}, using function \code{\link{eigen}}), "nipals" (Eigen factorization of \eqn{X' * D * X} using NIPALS), "nipalsna" (Eigen factorization of \eqn{X' * D * X} using NIPALS allowing missing data in \eqn{X}), "sph" (Robust spherical PCA)}
+\item{algo}{For \code{consensuspca}, the algorithm for the PCA among : "svd" (SVD factorization of \eqn{D^(1/2) * X}, using function \code{\link{svd}}), "eigen" (Eigen factorization of \eqn{X' * D * X}, using function \code{\link{eigen}}), "eigenk" (Eigen factorization of \eqn{D^(1/2) * X * X' D^(1/2)}, using function \code{\link{eigen}}), "nipals" (Eigen factorization of \eqn{X' * D * X} using NIPALS), "nipalsna" (Eigen factorization of \eqn{X' * D * X} using NIPALS allowing missing data in \eqn{X}), "sph" (Robust spherical PCA)}
 
 \item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
@@ -67,11 +78,9 @@ gs = TRUE, tol = .Machine$double.eps^0.5, maxit = 200)
 
 \value{
 
-A list of outputs, such as
+For \code{consensuspca}: 
 
 \item{T}{The X-score matrix (\eqn{n, nlv}).}
-
-\item{Tk}{The partial X-score matrix from each Xlist matrix (\eqn{n, nlv}).}
 
 \item{P}{The X-loadings matrix (\eqn{p, nlv}).}
 
@@ -93,50 +102,83 @@ A list of outputs, such as
 
 \item{conv}{Logical indicating if the NIPALS converged before reaching the maximal number of iterations.}
 
+For \code{consensuspcanipals}: 
+
+\item{T}{The non normed global scores matrix (\eqn{n, nlv}).}
+
+\item{U}{The normed global scores matrix (\eqn{n, nlv}).}
+
+\item{W}{The global loadings matrix (\eqn{p, nlv}).}
+
+\item{Tbl}{The list of block scores matrices (\eqn{n, nlv}) (grouped by blocks, in original scale).}
+
+\item{Tb}{The list of block scores matrices (\eqn{n, nlv}) (grouped by LV, in the metric scale).}
+
+\item{Wbl}{The list of block loadings matrices (\eqn{p, nlv}).}
+
+\item{lb}{The block specific weights "lambda" matrix.}
+
+\item{mu}{The sum of the specific weights (= eigen value of the global PCA)}
+
+\item{sv}{The singular values (\eqn{min(n, p), 1}) except for NIPALS = (\eqn{nlv, 1}).}###
+
+\item{eig}{The eigenvalues (\code{= sv^2}) (\eqn{min(n, p), 1}) except for NIPALS = (\eqn{nlv, 1}).}###
+
+\item{xmeans}{The list of centering vectors of \eqn{Xlist}.}
+
+\item{xscales}{The list of \eqn{Xlist} variable standard deviations.}
+
+\item{weights}{Weights applied to the training observations.}
+
+\item{blockscaling}{block scaling.}
+
+\item{Xnorms}{"norm" of each block, i.e. the square root of the sum of the variances of each column of each block, computed on the training, and used as scaling factor}.
+
+\item{niter}{Numbers of iterations of the NIPALS.}
+
 For \code{transform.Consensuspca}: X-scores matrix for new Xlist-data.
+
+For \code{transform.Consensuspcanipals}: X-scores matrix for new Xlist-data.
+
+\item{T}{X-scores matrix for new Xlist-data.}
+
+\item{Tbl}{X-scores matrix for new Xlist-data.}
 
 For \code{summary.Consensuspca}:
 
 \item{explvarx}{matrix of explained variances.}
 
-\item{contr.block}{block contributions.}
+\item{contr_ind}{observation contributions.}
 
-\item{contr.ind}{observation contributions.}
+\item{contr_var}{variable contributions.}
 
-\item{contr.var}{variable contributions.}
+\item{coord_var}{variable coordinates.}
 
-\item{coord.var}{variable coordinates.}
+\item{cor_circle}{variable coordinates on the correlation circle.}
 
-\item{cor.circle}{variable coordinates on the correlation circle.}
+For \code{summary.Consensuspcanipals}:
+
+\item{explvarx}{matrix of explained variances.}
+
+\item{contr_block}{block contributions.}
+
+\item{contr_ind}{observation contributions.}
+
+\item{contr_var}{variable contributions.}
+
+\item{coord_var}{variable coordinates.}
+
+\item{cor_circle}{variable coordinates on the correlation circle.}
 
 }
 
 \references{
 
-Andrecut, M., 2009. Parallel GPU Implementation of Iterative PCA Algorithms. Journal of Computational Biology 16, 1593-1599. https://doi.org/10.1089/cmb.2008.0221
+Mangamana, E.T., Cariou, V., Vigneau, E., Glèlè Kakaï, R.L., Qannari, E.M., 2019. Unsupervised multiblock data analysis: A unified approach and extensions. Chemometrics and 
+Intelligent Laboratory Systems 194, 103856. https://doi.org/10.1016/j.chemolab.2019.103856
 
-Gabriel, R. K., 2002. Le biplot - Outil d\'exploration de données multidimensionnelles. Journal de la Société Française de la Statistique, 143, 5-55.
-
-Lingen, F.J., 2000. Efficient Gram-Schmidt orthonormalisation on parallel computers. Communications in Numerical Methods in Engineering 16, 57-66. https://doi.org/10.1002/(SICI)1099-0887(200001)16:1<57::AID-CNM320>3.0.CO;2-I
-
-Tenenhaus, M., 1998. La régression PLS: théorie et pratique. Editions Technip, Paris, France.
-
-Wright, K., 2018. Package nipals: Principal Components Analysis using NIPALS with Gram-Schmidt Orthogonalization. https://cran.r-project.org/
-
-Wu, W., Massart, D.L., de Jong, S., 1997. The kernel PCA algorithms for wide data. Part I: Theory and algorithms. Chemometrics and Intelligent Laboratory Systems 36, 165-172. https://doi.org/10.1016/S0169-7439(97)00010-5
-
-
-For Spherical PCA: 
-
-Daszykowski, M., Kaczmarek, K., Vander Heyden, Y., Walczak, B., 2007. 
-Robust statistics in data analysis - A review. Chemometrics and Intelligent 
-Laboratory Systems 85, 203-219. https://doi.org/10.1016/j.chemolab.2006.06.016
-
-Locantore N., Marron J.S., Simpson D.G., Tripoli N., Zhang J.T., Cohen K.L.
-Robust principal component analysis for functional data, Test 8 (1999) 1-7
-
-Maronna, R., 2005. Principal components and orthogonal regression based on 
-robust scales, Technometrics, 47:3, 264-273, DOI: 10.1198/004017005000000166
+Westerhuis, J.A., Kourti, T., MacGregor, J.F., 1998. Analysis of multiblock and hierarchical PCA and PLS models. Journal of Chemometrics 12, 301–321. 
+https://doi.org/10.1002/(SICI)1099-128X(199809/10)12:5<301::AID-CEM515>3.0.CO;2-S
 
 }
 
@@ -162,6 +204,12 @@ X2 <- mblocks(Xtest, blocks = blocks)
 nlv <- 3
 fm <- consensuspca(Xlist = X1, Xscaling = c("sd","none","none"), 
 blockscaling = TRUE, weights = NULL, nlv = nlv)
+
+summary(fm, X1)
+transform(fm, X2)
+
+fm <- consensuspcanipals(Xlist = X1, Xscaling = c("sd","none","none"), 
+blockscaling = TRUE, weights = NULL, nlv = nlv, tol=1e-15)
 
 summary(fm, X1)
 transform(fm, X2)

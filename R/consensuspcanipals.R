@@ -9,7 +9,7 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
   
   # Initialiser les poids si non fournis
   if (is.null(weights)) {
-    weights <- rep(1, ncol(Xlist[[1]])) # Poids égaux pour chaque observation
+    weights <- rep(1, nrow(Xlist[[1]])) # Poids égaux pour chaque observation
   }
   
   xmeanslist <- lapply(1:length(Xlist), function(i) .colmeans(Xlist[[i]], weights = weights))
@@ -52,7 +52,7 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
   # Tb <- vector("list", nlv)
   Tb <- lapply(1:nlv, function(k) matrix(0, n, nbl))
   # Wbl <- vector("list", nbl)
-  Wbl <- lapply(1:nbl, function(k) matrix(0, n, nlv))
+  Wbl <- lapply(1:nbl, function(k) matrix(0, ncol(Xlist[[k]]), nlv))
   lb <- matrix(0, nbl, nlv)
   mu <- numeric(nlv)
   niter <- numeric(nlv)
@@ -91,23 +91,25 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
     W[, a] <- w 
     mu[a] <- sum(lb[, a])  # Calcul des valeurs propres
     for (k in 1:nbl) {
-      Xlist[[k]] <- Xlist[[k]] - u %*% t(u) %*% Xlist[[k]]
+      Xlist[[k]] <- Xlist[[k]] - u %*% (t(u) %*% Xlist[[k]])
     }
   }
   
   # Résultat final pour les scores globaux
-  T <- (diag(1 / sqrt(weights))) %*% (sqrt(mu) * U)###### A VERIFIER
+  # T <- (diag(1 / sqrt(weights))) %*% (sqrt(mu) * U)###### A VERIFIER
+  T <- (diag(1 / sqrt(weights))) %*% (matrix(rep(sqrt(mu),n),nrow=n, byrow=T) * U)###### A VERIFIER
   
   # Retourner le modèle final
-  result <- list(T = T, U = U, W = W, Tbl = Tbl, Tb = Tb, Wbl = Wbl, lb = lb, mu = mu, 
-                 xmeans = xmeanslist, xscales = xscaleslist, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, #fitmbl = fitmbl, 
-                 niter = niter, params = par)
-  return(result)
+  structure(
+    list(T = T, U = U, W = W, Tbl = Tbl, Tb = Tb, Wbl = Wbl, lb = lb, mu = mu, 
+         xmeans = xmeanslist, xscales = xscaleslist, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, #fitmbl = fitmbl, 
+         niter = niter), #params = par),
+    class = c("Consensuspcanipals"))
 }
 
 # Exécution de la PCA multibloc
-Xbl <- list(matrix(rnorm(100), 10, 10), matrix(rnorm(100), 10, 10))  # Exemple de blocs
-result <- consensuspcanipals(Xbl, nlv = 3)
+# Xbl <- list(matrix(rnorm(110), 10, 11), matrix(rnorm(90), 10, 9))  # Exemple de blocs
+# result <- consensuspcanipals(Xbl, nlv = 3, tol = 1e-15)
 
 
 transform.Consensuspcanipals <- function(object, X, nlv = NULL) {
@@ -150,17 +152,14 @@ transform.Consensuspcanipals <- function(object, X, nlv = NULL) {
 
 summary.Consensuspcanipals <- function(object, X) {
 
-  # Q <- typeof(X[[1]][1, 1])
+  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
+  Xinit <- X
+  
   nbl <- length(X)
   nlv <- ncol(object$T)
   sqrtw <- sqrt(object$weights)
-  
-  X <- lapply(1:length(X), function(i) .mat(X[[i]]))
-  
   p <- dim(object$P)[1]
   n <- dim(object$T)[1]
-  # TT <- object$weights * object$T * object$T
-  # tt <- colSums(TT)
   
   X <- lapply(1:length(X), function(i) scale(.mat(X[[i]]), center = object$xmeans[[i]], scale = object$xscales[[i]]))
   if(object$blockscaling==TRUE){X <- blockscal(Xtrain = X, weights = object$weights)$Xtrain}
@@ -214,6 +213,20 @@ summary.Consensuspcanipals <- function(object, X) {
   cortb2t <- data.frame(do.call(cbind, z))
   colnames(cortb2t) <- paste0("lv", 1:nlv)
   
+  # contr.ind
+  TT <- object$weights * object$T * object$T
+  # tt <- colSums(TT)
+  contr_ind <- data.frame(.scale(TT, center = rep(0, nlv), scale = colSums(TT)))#tt))
   
-  return(list(explvarx = explvarx, contr_block = contr_block, explX = explX, corx2t = corx2t, cortb2t = cortb2t))#, rv = zrv, lg = zlg))
+  # contr_var, coord_var, cor_circle
+  zT <- .scale(object$T, center = rep(0, nlv), scale = sqrt(colSums(TT)))#tt))
+  cor_circle <- data.frame(t(object$weights * Xconc) %*% zT)#data.frame(t(object$weights * zX) %*% zT)
+  Xinitconc <- as.matrix(do.call("cbind", Xinit))
+  coord_var <- data.frame(crossprod(Xinitconc, object$weights * zT))#data.frame(crossprod(X, object$weights * zT))
+  z <- coord_var^2
+  contr_var <- data.frame(.scale(z, rep(0, nlv), colSums(z)))
+  row.names(cor_circle) <- row.names(contr_var) <- row.names(coord_var) <- row.names(object$P)
+  
+  return(list(explvarx = explvarx, contr_block = contr_block, explX = explX, corx2t = corx2t, cortb2t = cortb2t, 
+              contr_ind = contr_ind, contr_var = contr_var, coord_var = coord_var, cor_circle = cor_circle))#, rv = zrv, lg = zlg))
 }
