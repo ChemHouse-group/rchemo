@@ -38,12 +38,12 @@ consensuspca <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscali
   if(algo=="eigen"){respca <- pcaeigen(Xconc, weights = NULL, nlv)} 
   if(algo=="eigenk"){respca <- pcaeigenk(Xconc, weights = NULL, nlv)} 
   if(algo=="nipals"){
-    respca <- pcanipals(Xconc, weights = NULL, nlv, gs = gs, tol = tol)
+    respca <- pcanipals(Xconc, weights = NULL, nlv, gs = gs, tol = tol, maxit = maxit)
     niter <- respca$niter
     conv <- respca$conv
   }
   if(algo=="nipalsna"){
-    respca <- pcanipalsna(Xconc, nlv, gs = gs, tol = tol)
+    respca <- pcanipalsna(Xconc, nlv, gs = gs, tol = tol, maxit = maxit)
     niter <- respca$niter
     conv <- respca$conv
   }

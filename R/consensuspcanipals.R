@@ -1,15 +1,8 @@
-#consensuspcanipals <- function(Xbl, nlv = NULL, bscal = "frob", scal = FALSE, weights = NULL) {
 consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1],
                                tol = .Machine$double.eps^0.5, maxit = 200) {
-  # Xlist : Liste de matrices (ou blocs)
-  # nlv : Nombre de variables latentes à calculer
-  # bscal : Type de mise à l'échelle des blocs
-  # scal : Booléen indiquant si on veut scaler les blocs
-  # weights : Vecteur de poids des observations
-  
-  # Initialiser les poids si non fournis
+
   if (is.null(weights)) {
-    weights <- rep(1, nrow(Xlist[[1]])) # Poids égaux pour chaque observation
+    weights <- rep(1, nrow(Xlist[[1]])) 
   }
   
   xmeanslist <- lapply(1:length(Xlist), function(i) .colmeans(Xlist[[i]], weights = weights))
@@ -31,41 +24,32 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
   }else{
     Xnorms <- NA
   }
-  
-  
-  # Initialiser les paramètres (éventuellement similaires à "recovkw")
-  par <- list(nlv = nlv, blockscaling = blockscaling, Xscaling = Xscaling, tol = tol, maxit = maxit)
-  
-  # Calculs de base sur les blocs de données (similaire à "blockscal")
-  # fitmbl <- blockscal(Xtrain = Xlist, weights = weights)
-  
-  # Initialisation des matrices et vecteurs nécessaires
+
+  # Initialisation 
   nbl <- length(Xlist)
   n <- nrow(Xlist[[1]])
   sqrtw <- sqrt(weights)
   
-  # Créer les matrices vides pour stocker les résultats
   U <- matrix(0, n, nlv)
-  W <- matrix(0, nbl, nlv)
-  # Tbl <- vector("list", nbl)
+  WB <- matrix(0, nbl, nlv)
   Tbl <- lapply(1:nbl, function(k) matrix(0, n, nlv))
-  # Tb <- vector("list", nlv)
   Tb <- lapply(1:nlv, function(k) matrix(0, n, nbl))
-  # Wbl <- vector("list", nbl)
   Wbl <- lapply(1:nbl, function(k) matrix(0, ncol(Xlist[[k]]), nlv))
   lb <- matrix(0, nbl, nlv)
   mu <- numeric(nlv)
   niter <- numeric(nlv)
   
-  # Iterations Nipals (comme la méthode utilisée en PCA)
+  Xinit <- do.call(cbind, Xlist)
+    
+  # Iterations Nipals
   for (a in 1:nlv) {
-    X <- do.call(cbind, Xlist)  # Concatenation horizontale des blocs
-    u <- nipals(X)$u           # Appliquer NIPALS pour calculer les scores
+    X <- do.call(cbind, Xlist)  
+    u <- nipals(X, tol = tol, maxit = maxit)$u 
     iter <- 1
     cont <- TRUE
     
     while (cont) {
-      u0 <- u  # Sauvegarde des scores pour vérifier la convergence
+      u0 <- u  
       for (k in 1:nbl) {
         wk <- t(Xlist[[k]]) %*% u
         dk <- sqrt(sum(wk^2))
@@ -76,44 +60,45 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
         Wbl[[k]][, a] <- wk
         lb[k, a] <- dk^2
       }
-      res <- nipals(Tb[[a]])
+      res <- nipals(Tb[[a]], tol = tol, maxit = maxit)
       u <- res$u
       w <- res$v
       dif <- sum((u - u0)^2)
       iter <- iter + 1
-      if (dif < par$tol || iter > par$maxit) {
+      if (dif < tol || iter > maxit) {
         cont <- FALSE
       }
     }
     
     niter[a] <- iter - 1
     U[, a] <- u
-    W[, a] <- w 
-    mu[a] <- sum(lb[, a])  # Calcul des valeurs propres
+    WB[, a] <- w 
+    mu[a] <- res$sv^2# =sum(lb[, a])  # eigen values
     for (k in 1:nbl) {
       Xlist[[k]] <- Xlist[[k]] - u %*% (t(u) %*% Xlist[[k]])
     }
   }
   
-  # Résultat final pour les scores globaux
-  # T <- (diag(1 / sqrt(weights))) %*% (sqrt(mu) * U)###### A VERIFIER
-  T <- (diag(1 / sqrt(weights))) %*% (matrix(rep(sqrt(mu),n),nrow=n, byrow=T) * U)###### A VERIFIER
+  W <- crossprod(weights * Xinit, U) / sum(weights * U * U)
+  W <- W / sqrt(sum(W * W))
   
-  # Retourner le modèle final
+  # global scores
+  T <- (diag(1 / sqrt(weights))) %*% (matrix(rep(sqrt(mu),n),nrow=n, byrow=T) * U)
+  
+  P <- crossprod(weights * Xinit, T) / sum(weights * T * T)
+  P <- P / sqrt(sum(P * P))
+  
   structure(
-    list(T = T, U = U, W = W, Tbl = Tbl, Tb = Tb, Wbl = Wbl, lb = lb, mu = mu, 
-         xmeans = xmeanslist, xscales = xscaleslist, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, #fitmbl = fitmbl, 
-         niter = niter), #params = par),
+    list(T = T, U = U, 
+         P = P, W = W, 
+         WB = WB, Tbl = Tbl, Tb = Tb, Wbl = Wbl, lb = lb, mu = mu, 
+         xmeans = xmeanslist, xscales = xscaleslist, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, 
+         niter = niter), 
     class = c("Consensuspcanipals"))
 }
 
-# Exécution de la PCA multibloc
-# Xbl <- list(matrix(rnorm(110), 10, 11), matrix(rnorm(90), 10, 9))  # Exemple de blocs
-# result <- consensuspcanipals(Xbl, nlv = 3, tol = 1e-15)
-
 
 transform.Consensuspcanipals <- function(object, X, nlv = NULL) {
-  # Calcul des variables latentes (scores) à partir du modèle ajusté
   nlv <- if (is.null(nlv)) ncol(object$T) else min(nlv, ncol(object$T))
   
   X <- lapply(1:length(X), function(i) .mat(X[[i]]))
@@ -139,7 +124,7 @@ transform.Consensuspcanipals <- function(object, X, nlv = NULL) {
       TB[,k] <- Tbl[[k]][,a] <- tk <- X[[k]] %*% object$Wbl[[k]][, a]
       # u <- u + X[[k]] %*% object$Wbl[[k]][, a]
     }
-    U[, a] <- u <- (1 / sqrt(object$mu[a])) * TB %*% object$W[, a] # A VERFIIER
+    U[, a] <- u <- (1 / sqrt(object$mu[a])) * TB %*% object$WB[, a] # A VERFIIER
     for (k in 1:length(X)) {
       Px <- sqrt(object$lb[k, a]) %*% t(object$Wbl[[k]][, a])
       X[[k]] <- X[[k]] - (u %*% Px)

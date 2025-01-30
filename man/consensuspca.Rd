@@ -110,6 +110,8 @@ For \code{consensuspcanipals}:
 
 \item{W}{The global loadings matrix (\eqn{p, nlv}).}
 
+\item{WB}{The Xlist-block loadings matrix (\eqn{blocks, nlv}).}
+
 \item{Tbl}{The list of block scores matrices (\eqn{n, nlv}) (grouped by blocks, in original scale).}
 
 \item{Tb}{The list of block scores matrices (\eqn{n, nlv}) (grouped by LV, in the metric scale).}

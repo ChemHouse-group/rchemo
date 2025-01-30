@@ -3,7 +3,7 @@ nipals <- function(X, tol = 1e-6, maxit = 100) {
   p <- ncol(X)
   
   # Initialisation
-  u <- X[, which.max(sapply(1:ncol(X), function(i) norm(X[, i], type = "2")))]  # Trouver le maximum de la norme des colonnes
+  u <- X[, which.max(sapply(1:ncol(X), function(i) norm(X[,i, drop=FALSE], type = "1")))]  # Trouver le maximum de la norme des colonnes
   v <- rep(0, p)
   v0 <- rep(0, p)
   cont <- TRUE
