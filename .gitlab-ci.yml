@@ -43,6 +43,7 @@ unit-tests-rocker-verse:
     - PKG_FILE=$(ls build/*.tar.gz)
     - mkdir check
     - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}/etc/Rprofile.site"  # Necessary because of docker image default R repository url
+    - Rscript -e "install.packages('remotes')"
     - Rscript -e "devtools::install_deps(dependencies = TRUE)"  # Not possible to specify package with .tar.gz (only uncompressed folder)
     - Rscript -e "devtools::check(check_dir = 'check')"  # Not possible to specify package with .tar.gz (only uncompressed folder)
   cache:
