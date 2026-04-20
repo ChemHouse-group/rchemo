@@ -37,6 +37,7 @@ predict.Qda <- function(object, X, ...) {
     }    
     z <- t(object$wprior * t(ds))
     posterior <- z / rowSums(z)
+    posterior[which(is.nan(posterior))] <- 1/nlev #v2026
     z <- apply(posterior, FUN = .findmax, MARGIN = 1)
     pred <- matrix(.replace_bylev(z, lev), ncol = 1)
     rownam <- row.names(X)

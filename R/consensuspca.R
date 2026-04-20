@@ -31,6 +31,8 @@ consensuspca <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscali
   # n <- zdim[1]
   # p <- zdim[2]
   
+  Xconc <- sqrt(weights) * Xconc
+  
   niter <- NULL
   conv <- NULL
 
@@ -84,7 +86,7 @@ summary.Consensuspca <- function(object, X, ...) {
   cor_circle <- data.frame(t(object$weights * Xconc) %*% zT)#data.frame(t(object$weights * zX) %*% zT)
   Xinitconc <- as.matrix(do.call("cbind", Xinit))
   coord_var <- data.frame(crossprod(Xinitconc, object$weights * zT))#data.frame(crossprod(X, object$weights * zT))
-  z <- coord.var^2
+  z <- coord_var^2
   contr_var <- data.frame(.scale(z, rep(0, nlv), colSums(z)))
   row.names(cor_circle) <- row.names(contr_var) <- row.names(coord_var) <- row.names(object$P)
   
