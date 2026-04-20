@@ -1,0 +1,150 @@
+image: rocker/verse:latest
+
+variables:
+  R_LIBS_USER: ${CI_PROJECT_DIR}/ci/lib
+
+stages:
+  - build
+  - test
+  - report
+  - deploy
+
+devtools-build:
+  stage: build
+  script:
+    - mkdir -p $R_LIBS_USER
+    - Rscript -e 'if(!requireNamespace("pak", quietly = TRUE)) install.packages("pak")'
+    - Rscript -e 'pak::pak(pkg = "devtools")'
+    - Rscript -e 'pak::pak(pkg = "covr")'
+    - Rscript -e 'pak::pak(pkg = ".")'
+    - mkdir build  # the target folder for the next call must exist
+    - Rscript -e 'devtools::build(path = "build")'
+    - ls
+    - ls build/
+  cache:
+    - key: cache-$CI_COMMIT_REF_SLUG
+      fallback_keys:
+        - cache-$CI_DEFAULT_BRANCH
+        - cache-default
+      paths:
+        - ${R_LIBS_USER}
+  artifacts:
+    paths:
+      - build/*.tar.gz
+    expire_in: 1 month
+
+
+unit-tests-rocker-verse:
+  stage: test
+  script:
+    - apt-get update
+    - apt-get install -y poppler-utils libpoppler-cpp-dev
+    - ls build/
+    - PKG_FILE=$(ls build/*.tar.gz)
+    - mkdir check
+    - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}/etc/Rprofile.site"  # Necessary because of docker image default R repository url
+    - Rscript -e "devtools::install_deps(dependencies = TRUE)"  # Not possible to specify package with .tar.gz (only uncompressed folder)
+    - Rscript -e "devtools::check(check_dir = 'check')"  # Not possible to specify package with .tar.gz (only uncompressed folder)
+  cache:
+    - key: cache-$CI_COMMIT_REF_SLUG
+      fallback_keys:
+        - cache-$CI_DEFAULT_BRANCH
+        - cache-default
+      paths:
+        - ${R_LIBS_USER}
+  artifacts:
+    paths:
+      - check/
+
+coverage-report:
+  stage: report
+  script:
+    - apt-get update
+    - apt-get install -y poppler-utils libpoppler-cpp-dev
+    - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}/etc/Rprofile.site"
+    - Rscript -e "devtools::install_deps(dependencies = TRUE)"
+    - Rscript -e 'install.packages("htmltools")'
+    - Rscript -e 'install.packages("DT")'
+    - Rscript -e 'covr::gitlab(quiet = FALSE)'
+  cache:
+    - key: cache-$CI_COMMIT_REF_SLUG
+      fallback_keys:
+        - cache-$CI_DEFAULT_BRANCH
+        - cache-default
+      paths:
+        - ${R_LIBS_USER}
+  coverage: '/Coverage: \d+\.\d+/'
+  artifacts:
+    paths:
+      - public/coverage.html
+    expire_in: 1 month
+
+
+pkgdown-site:
+  stage: report
+  script:
+    - apt-get update
+    - apt-get install -y poppler-utils libpoppler-cpp-dev
+    - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}/etc/Rprofile.site"
+    - Rscript -e 'install.packages("pkgdown")'
+    - Rscript -e 'install.packages("roxygen2")'
+    - Rscript -e "devtools::install_deps(dependencies = TRUE)"
+    - Rscript -e 'roxygen2::roxygenise()'
+    - Rscript -e 'pkgdown::build_site()'
+  artifacts:
+    paths:
+      - docs/
+    expire_in: 1 month
+
+package-registry:
+  stage: deploy
+  rules:
+    - if: '$CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - if (($(ls build/*.tar.gz | wc -l) != 1)); then  printf '%s\n' "None or multiple build archive built for this pipeline ..." >&2; exit 1; fi
+    - cd build; PACKAGE_FILE="$(ls *.tar.gz)"; cd ..
+    - echo "build/$PACKAGE_FILE"
+    - echo "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_COMMIT_TAG/$PACKAGE_FILE"
+    - |
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file build/$PACKAGE_FILE "$CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_COMMIT_TAG/$PACKAGE_FILE"
+    - echo "PACKAGE_FILE=$PACKAGE_FILE" >> package-registry.env
+  artifacts:
+    reports:
+      dotenv: package-registry.env
+
+make-release:
+  stage: deploy
+  rules:
+  - if: '$CI_COMMIT_TAG && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  image: registry.gitlab.com/gitlab-org/cli:latest
+  needs: 
+    - job: package-registry
+      artifacts: true
+  script:
+    - echo "creating gitlab release"
+  release:
+    tag_name: '$CI_COMMIT_TAG'
+    description: '$CI_COMMIT_TAG'
+    assets:
+      links:
+        - name: package-build
+          url: $CI_API_V4_URL/projects/$CI_PROJECT_ID/packages/generic/$CI_PROJECT_NAME/$CI_COMMIT_TAG/$PACKAGE_FILE
+          link_type: package
+
+
+#deploy-to-cran:
+#  stage: deploy
+#  script:
+#    - FINAL_PKG=$(ls -1t *.tar.gz | head -n1)
+#    - echo "📦 PACKAGE PRÊT POUR CRAN"
+#    - echo "==============================="
+#    - echo "Archive:$FINAL_PKG"
+#    - echo "Taille:$(du -h $FINAL_PKG | cut -f1)"
+#    - echo ""
+#    - echo "PROCHAINES ÉTAPES MANUELLES:"
+#    - echo "1. Télécharger l'archive depuis les artefacts GitLab"
+#    - echo "2. Aller sur https://cran.r-project.org/submit.html"
+#    - echo "3. Soumettre l'archive selon les instructions CRAN"
+#  when: manual  # Action manuelle requise
+#  only:
+#    - dev
