@@ -63,6 +63,7 @@ coverage-report:
     - apt-get update
     - apt-get install -y poppler-utils libpoppler-cpp-dev
     - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}/etc/Rprofile.site"
+    - Rscript -e "install.packages('remotes')"
     - Rscript -e "devtools::install_deps(dependencies = TRUE)"
     - Rscript -e 'install.packages("htmltools")'
     - Rscript -e 'install.packages("DT")'
@@ -89,6 +90,7 @@ pkgdown-site:
     - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' >>"${R_HOME}/etc/Rprofile.site"
     - Rscript -e 'install.packages("pkgdown")'
     - Rscript -e 'install.packages("roxygen2")'
+    - Rscript -e "install.packages('remotes')"
     - Rscript -e "devtools::install_deps(dependencies = TRUE)"
     - Rscript -e 'roxygen2::roxygenise()'
     - Rscript -e 'pkgdown::build_site()'
