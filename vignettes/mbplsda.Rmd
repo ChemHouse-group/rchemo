@@ -125,7 +125,7 @@ rm(row_names, rns, rns.unique, check_row_names)
 ```{r change_data_format}
 GCTOF <- Zhang2023$GCTOF
 HILICPOS <- Zhang2023$HILICPOS
-sample_metadata <- Zhang2023$sample_metadata
+sample_metadata <- Zhang2023$metadata
 rm(Zhang2023)
 ```
 
@@ -284,10 +284,9 @@ variables if doing so significantly improves the cross-validated error.
 
 ```{r run_nlvtest}
 nlvtestmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                       HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]),                                           
-                                          Xnames = c("GCTOF", "HILICPOS"), 
+                                                       HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]),                                           Xnames = c("GCTOF", "HILICPOS"), 
                                           Xscaling = c("none","pareto","sd")[3], 
-                                          Y = sample_metadata[,"Gender",drop=FALSE], 
+                                          Y = sample_metadata[,"Gender", drop=FALSE], 
                                           Yscaling = c("none","pareto","sd")[1], 
                                           weights = NULL,
                                           newXlist = NULL, newXnames = NULL,
