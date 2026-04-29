@@ -13,6 +13,7 @@ Description: Data exploration and prediction with focus on high dimensional data
     Functions such as transform(), predict(), coef() and summary() are available. Tuning the predictive models is facilitated by generic functions gridscore() (validation dataset) and gridcv() (cross-validation). Faster versions are also available for models based on latent variables (LVs) (gridscorelv() and gridcvlv()) and ridge regularization (gridscorelb() and gridcvlb()).
 Imports: stats, graphics, grDevices, data.table, FNN, signal, e1071, utils
 Depends: R (>= 4.0)
+VignetteBuilder: knitr
 Suggests: knitr, rmarkdown
 URL: https://github.com/ChemHouse-group/rchemo/
 License: GPL-3
