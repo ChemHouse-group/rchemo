@@ -97,7 +97,7 @@ names(dims) <- BlockNames
 dims
 
 # Remove unuseful object for the next steps
-rm(BlockNames, nbrBlocs, dims)
+rm(nbrBlocs, dims)
 ```
 
 The identical order of samples in the three blocks should be ensured.
