@@ -122,6 +122,13 @@ rm(row_names, rns, rns.unique, check_row_names)
 ```
 
 
+```{r change_data_format}
+GCTOF <- Zhang2023$GCTOF
+HILICPOS <- Zhang2023$HILICPOS
+sample_metadata <- Zhang2023$sample_metadata
+rm(Zhang2023)
+```
+
 # Data visualization by PCA on separate data blocks
 
 PCA on different datablocks is necessary to verify that there is no outlier, 
