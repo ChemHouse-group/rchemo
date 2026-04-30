@@ -480,9 +480,10 @@ predsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[
                                         import = c("R","ChemFlow","W4M")[1],
                                         outputfilename = NULL)
 
-predmbplsda
+predsoplsda
+
 # Remove unuseful object for the next steps
-rm(predmbplsda, nlvoptmbplsda)
+rm(predsoplsda, nlvoptsoplsda)
 ```
 
 # Reproducibility
