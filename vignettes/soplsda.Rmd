@@ -1,9 +1,9 @@
 ---
-title: 'Multi-Block PLS Discriminant Analysis'
+title: 'Sequential and Orthogonalised PLS Discriminant Analysis'
 author: "Marion Brandolini-Bunlon"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 vignette: >
-  %\VignetteIndexEntry{Multi-Block PLS Discriminant Analysis}
+  %\VignetteIndexEntry{Sequential and Orthogonalised PLS Discriminant Analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 output:
@@ -28,17 +28,15 @@ body {
 text-align: justify}
 </style>
 
-# The Multi-Block PLS Discriminant Analysis method
+# The Sequential and Orthogonalised PLS Discriminant Analysis method
 
 Metabolomics is a powerful phenotyping tool, generating complex data that need 
 dedicated treatments to enrich knowledge of biological systems. In particular, 
-to investigate relations between experimental factors, phenotypes and 
-metabolism, discriminant statistical analyses are generally performed separately
-on metabolomic datasets, complemented by associations with metadata. Another 
-relevant strategy is to simultaneously analyse thematic data blocks by a 
-multi-block partial least squares discriminant analysis (MBPLSDA) allowing 
-determining the importance of variables of the different data blocks in 
-discriminating groups of observations, taking into account data structure.
+to investigate relations between experimental factors and metabolism, 
+discriminant statistical analyses are generally performed on metabolomic 
+datasets. In this context, the SOPLSDA method makes it possible to assess the 
+complementarity of data blocks in predicting or explaining a categorical 
+variable.
 
 A selection of reduced datasets from an article of Zhang et al. have been used 
 to illustrate the method application.  
@@ -192,17 +190,24 @@ rm(pcaGCTOF, pcaHILICPOS)
 ```
 
 
-# MB-PLS-DA model
+# SO-PLS-DA model
 
-In MB-PLS-DA, datablocks are separatly scaled, and weigthed by their Frobenius 
-norm. Then, they are concatenated before a PLS-DA to predict or explain a 
-categorical variable.
+In SO-PLS-DA, datablocks are involved sequentially in the model.
+The first explanatory block is scaled and a PLS-DA model is build to predict the
+response variable.
+Then, the next explanatory block is orthogonalised to the PLS components, before
+a PLS model to explain the residuals, etc...
+The final prediction is the results of the sum of the predictions by the PLS 
+models.
+The interpretation is based on the separate PLS models included in the SO-PLS 
+modelling.
+
 The main steps to apply this method are:
-- the determination of the optimal number of latent variables of the model, 
-proposed in the package by cross-validation
+- the determination of the optimal number of latent variables of each model 
+included in the SO-PLS-DA one, proposed in the package by cross-validation
 - the model validation, proposed by permutation test
 - the model analysis, based on the scatter plot, the loading plot, the Variable 
-Importance in Projection
+Importance in Projection of each PLS model
 - the calculation of the predicted categories for each observation.
 
 In rchemo, all these steps can be performed with a single function.
@@ -220,8 +225,8 @@ scaling). If "pareto" or "sd", uncorrected standard deviation is used.
 weights are "normalized" to sum to 1. Default to NULL (weights are set to 1/n).
 - newXlist: list of new X-data (m, p) to consider.
 - newXnames: names of the newX-matrices
-- method: method to apply among "mbplsrda","mbplslda","mbplsqda"
-- prior: for mbplslda or mbplsqda models : The prior probabilities of the 
+- method: method to apply among "soplsrda","soplslda","soplsqda"
+- prior: for soplslda or soplsqda models : The prior probabilities of the 
 classes. Possible values are "unif" (default; probabilities are set equal for 
 all the classes) or "prop" (probabilities are set equal to the observed 
 proportions of the classes in y).
@@ -229,8 +234,12 @@ proportions of the classes in y).
 the optimal number of latent variables), "permutation" (permutation test),
 "model" (model calculation),"prediction" (prediction of newX-data or X-data if 
 any))
-- nlv: number of latent variables to test if step is "nlvtest"; number of latent 
-variables of the model if step is not "nlvtest".
+- nlv: if step is not "nlvtest". A vector of same length as the number of blocks 
+defining the number of scores to calculate for each block, or a single number. 
+In this last case, the same number of scores is used for all the blocks.
+- nlvlist: if step is not "nlvtest". A list of same length as the number of 
+X-blocks. Each component of the list gives the number of PLS components of the 
+corresponding X-block to test.
 - modeloutput: if step is "model": outputs among "scores", "loadings", "coef" 
 (regression coefficients), "vip" (Variable Importance in Projection; the VIP 
 calculation being based on the proportion of Y-variance explained by the 
@@ -249,8 +258,12 @@ is set in the first fold, the second observation in the second fold, etc...
 to create.Default value is 10.
 - npermut: if step is "permutation": An integer, setting the number of Y-Block 
 with permutated responses to create. Default value is 30.
-- criterion: if step is "nlvtest" or "permutation" and method is "mbplsrda", 
-"mbplslda" or "mbplsqda": optimisation criterion among "rmse" and "err" (for 
+- optimisation: if step is "nlvtest", method for the error optimisation among 
+"global" (the optimal number of latent variables is determined after all the 
+ordred block combination have been computed), or "sequential" (the optimal 
+number of latent variables is determined after each addition of X-block).
+- criterion: if step is "nlvtest" or "permutation" and method is "soplsrda", 
+"soplslda" or "soplsqda": optimisation criterion among "rmse" and "err" (for 
 classification error rate)))
 - selection: if step is "nlvtest": a character indicating the selection method 
 to use to choose the optimal combination of components, among "localmin",
@@ -263,11 +276,11 @@ which the mean cross-validated rmse or error rate does not decrease significantl
 ## determination by cross-validation of the optimal number of latent variables 
 ## of the model 
 
-In this example,the mbplslda method with an uniform prior is performed: a linear
+In this example,the soplslda method with an uniform prior is performed: a linear
 discriminant analysis is applied on the PLS scores to obtain the classifications.
-In the mbplsrda method, the classification step is performed according to the 
+In the soplsrda method, the classification step is performed according to the 
 predicted value, and consequently, it doesn't take into account the variance of 
-the scatter plot. And the mbplsqda method is mode suited when the scatter plot 
+the scatter plot. And the soplsqda method is mode suited when the scatter plot 
 has an atypical shape.
 The cvmethod is to choose according to the number of observations. If this
 number is small, a leave-one-out cross-validation is more suited, but can lead 
@@ -287,42 +300,46 @@ also very parsimonious because it only considers a larger number of latent
 variables if doing so significantly improves the cross-validated error.
 
 ```{r run_nlvtest}
-nlvtestmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                       HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]),                                           Xnames = c("GCTOF", "HILICPOS"), 
+nlvtestsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
+                                                       HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
+                                          Xnames = c("GCTOF", "HILICPOS"), 
                                           Xscaling = c("none","pareto","sd")[3], 
-                                          Y = sample_metadata[,"Gender", drop=FALSE], 
-                                          Yscaling = c("none","pareto","sd")[1], 
-                                          weights = NULL,
+                                          Y = sample_metadata[,"Gender",drop=FALSE], 
+                                          Yscaling = c("none","pareto","sd")[1], weights = NULL,
                                           newXlist = NULL, newXnames = NULL,
-                                          method = c("mbplsrda","mbplslda","mbplsqda")[2],
+                                          
+                                          method = c("soplsrda","soplslda","soplsqda")[2],
                                           prior = c("unif", "prop")[1],
+                                          
                                           step = c("nlvtest","permutation","model","prediction")[1],
-                                          nlv = 4, 
-                                          #modeloutput = c("scores","loadings","coef","vip"), 
+                                          # nlv = c(),
+                                          nlvlist = list(0:3, 0:3), 
+                                          modeloutput = c("scores","loadings","coef","vip"), 
+                                          
                                           cvmethod = c("kfolds","loo")[1], 
                                           nbrep = 10, 
                                           seed = 123, 
                                           samplingk = NULL, 
                                           nfolds = 3, 
-                                          #npermut = 30, 
+                                          # npermut = 30, 
                                           
+                                          optimisation = c("global","sequential")[1],
                                           criterion = c("err","rmse")[1], 
                                           selection = c("localmin","globalmin","1std")[1],
                                           
+                                          import = c("R","ChemFlow","W4M")[1],
                                           outputfilename = NULL)
 
-nlvtestmbplsda
-
-nlvoptmbplsda <- nlvtestmbplsda[nlvtestmbplsda$optimum==1,"nblv"] # to obtain the optimal number of LV.
 
 # to plot the results of the cross-validation
-plot(nlvtestmbplsda$nblv, nlvtestmbplsda$err_mean, xlab = "number of LV", ylab = "CV classification error rate", pch = 16, ylim = c(0,0.6))
-segments(nlvtestmbplsda$nblv,nlvtestmbplsda$err_mean-nlvtestmbplsda$err_sd,nlvtestmbplsda$nblv,nlvtestmbplsda$err_mean+nlvtestmbplsda$err_sd)
-segments(nlvtestmbplsda$nblv-0.1,nlvtestmbplsda$err_mean-nlvtestmbplsda$err_sd,nlvtestmbplsda$nblv+0.1,nlvtestmbplsda$err_mean-nlvtestmbplsda$err_sd)
-segments(nlvtestmbplsda$nblv-0.1,nlvtestmbplsda$err_mean+nlvtestmbplsda$err_sd,nlvtestmbplsda$nblv+0.1,nlvtestmbplsda$err_mean+nlvtestmbplsda$err_sd)
+plot(nlvtestsoplsda[,"nlvsum"],nlvtestsoplsda[,"mean"], type = "n", xlab = "nlv sum", ylab = "classification error rate")
+text(x=nlvtestsoplsda[,"nlvsum"], y=nlvtestsoplsda[,"mean"], 
+     labels=paste0(nlvtestsoplsda[,"Xlist1"],",",nlvtestsoplsda[,"Xlist2"]))
+
+nlvoptsoplsda <- nlvtestsoplsda[which(nlvtestsoplsda[,"optimum"]==1),c("Xlist1","Xlist2")] # to obtain the optimal number of LV.
 
 # Remove unuseful object for the next steps
-rm(nlvtestmbplsda)
+rm(nlvtestsoplsda)
 ```
 
 # model validation by permutation test
@@ -336,7 +353,7 @@ To be valid, all the cross-validated errors obtained on permuted data must be
 lower than the cross-validated error obtained on the orignial data.
 
 ```{r run_permutation}
-permutmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
+permutsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
                                                       HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
                                          Xnames = c("GCTOF", "HILICPOS"), 
                                          Xscaling = c("none","pareto","sd")[3], 
@@ -344,11 +361,12 @@ permutmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF
                                          Yscaling = c("none","pareto","sd")[1], weights = NULL,
                                          newXlist = NULL, newXnames = NULL,
                                          
-                                         method = c("mbplsrda","mbplslda","mbplsqda")[2],
+                                         method = c("soplsrda","soplslda","soplsqda")[2],
                                          prior = c("unif", "prop")[1],
                                          
                                          step = c("nlvtest","permutation","model","prediction")[2],
-                                         nlv = nlvoptmbplsda, 
+                                         nlv = nlvoptsoplsda,
+                                         #nlvlist = list(),
                                          modeloutput = c("scores","loadings","coef","vip"), 
                                          
                                          cvmethod = c("kfolds","loo")[1], 
@@ -358,6 +376,7 @@ permutmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF
                                          nfolds = 3, 
                                          npermut = 10, 
                                          
+                                         # optimisation = c("global","sequential")[1],
                                          criterion = c("err","rmse")[1], 
                                          # selection = c("localmin","globalmin","1std")[1],
                                          
@@ -365,10 +384,10 @@ permutmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF
                                          outputfilename = NULL)
 
 #plot of the results
-plot(permutmbplsda, pch = 16, ylab = "CV classification error rate", xlab = "dyssimilarity Y-Ypermuted")
+plot(permutsoplsda, pch = 16, ylab = "CV classification error rate", xlab = "dyssimilarity Y-Ypermuted")
 
 # Remove unuseful object for the next steps
-rm(permutmbplsda)
+rm(permutsoplsda)
 ```
 
 # model analysis, based on the scatter plot, the loading plot, the Variable 
@@ -378,75 +397,74 @@ Based on the VIP curve, the threshold to consider that a variable is important
 can be set.
 
 ```{r run_model}
-modelmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                     HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
+modelsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
+                                                      HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
+                                         Xnames = c("GCTOF", "HILICPOS"), 
+                                         Xscaling = c("none","pareto","sd")[3], 
+                                         Y = sample_metadata[,"Gender",drop=FALSE], 
+                                         Yscaling = c("none","pareto","sd")[1], weights = NULL,
+                                         newXlist = NULL, newXnames = NULL,
+                                         
+                                         method = c("soplsrda","soplslda","soplsqda")[2],
+                                         prior = c("unif", "prop")[1],
+                                         
+                                         step = c("nlvtest","permutation","model","prediction")[3],
+                                         nlv = nlvoptsoplsda,
+                                         #nlvlist = list(), 
+                                         modeloutput = c("scores","loadings","coef","vip"), 
+                                         
+                                         # cvmethod = c("kfolds","loo")[1], 
+                                         # nbrep = 30, 
+                                         # seed = 123, 
+                                         # samplingk = NULL, 
+                                         # nfolds = 5, 
+                                         # npermut = 30, 
+                                         # 
+                                         # criterion = c("err","rmse")[1], 
+                                         # selection = c("localmin","globalmin","1std")[1],
+                                         
+                                         import = c("R","ChemFlow","W4M")[1],
+                                         outputfilename = NULL)
+# score plot
+
+plotxy(do.call("cbind",modelsoplsda$scores)[,1:2], group = sample_metadata[,"Gender"],
+       asp = 0, col = 3:4, alpha.f = .8,
+       zeroes = TRUE, circle = FALSE, ellipse = FALSE,
+       labels = FALSE,
+       legend = TRUE, legend.title = NULL, ncol = 1,
+       pch=16,
+       xlab="lv1 HILICPOS",
+       ylab="lv2 HILICPOS")
+
+# loading plot
+plotxy(modelsoplsda$loadings[[2]], pch = 16, xlab="lv1 HILICPOS", ylab="lv2 HILICPOS")
+
+
+plot(modelsoplsda$vip[[2]][order(modelsoplsda$vip[[2]][,2], decreasing = TRUE),1,drop=FALSE], pch = 16, ylab = "VIP", xlab="HILICPOS variables")
+
+
+# Remove unuseful object for the next steps
+rm(modelsoplsda)
+```
+
+```{r run_prediction}
+predsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
+                                                    HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
                                         Xnames = c("GCTOF", "HILICPOS"), 
                                         Xscaling = c("none","pareto","sd")[3], 
                                         Y = sample_metadata[,"Gender",drop=FALSE], 
                                         Yscaling = c("none","pareto","sd")[1], 
                                         weights = NULL,
-                                        newXlist = NULL, newXnames = NULL,
+                                        newXlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
+                                                        HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]),
+                                       newXnames =  c("GCTOF", "HILICPOS"),
                                         
-                                        method = c("mbplsrda","mbplslda","mbplsqda")[2],
-                                        prior = c("unif", "prop")[1],
-                                        
-                                        step = c("nlvtest","permutation","model","prediction")[3],
-                                        nlv = nlvoptmbplsda, 
-                                        modeloutput = c("scores","loadings","coef","vip"), 
-                                        
-                                        cvmethod = c("kfolds","loo")[1], 
-                                        # nbrep = 30, 
-                                        # seed = 123, 
-                                        # samplingk = NULL, 
-                                        # nfolds = 5, 
-                                        # npermut = 30, 
-                                        
-                                        # criterion = c("err","rmse")[1], 
-                                        # selection = c("localmin","globalmin","1std")[1],
-                                        
-                                        import = c("R","ChemFlow","W4M")[1],
-                                        outputfilename = NULL)
-
-# score plot
-plotxy(X= modelmbplsda$scores, group = sample_metadata$Gender, 
-       asp = 0, col = 3:4, alpha.f = .8,
-       zeroes = TRUE, circle = FALSE, ellipse = FALSE,
-       labels = FALSE,
-       legend = TRUE, legend.title = NULL, ncol = 1,
-       pch=16)
-
-# loading plot
-plotxy(X=  modelmbplsda$loadings, group = substr(rownames(modelmbplsda$loadings),1,6), 
-       asp = 0, col = NULL, alpha.f = .8,
-       zeroes = TRUE, circle = FALSE, ellipse = FALSE,
-       labels = FALSE,
-       legend = FALSE, legend.title = NULL, ncol = 1,
-       cex=0.8, pch = 16)
-
-# VIP curve
-plot(modelmbplsda$vip[order(modelmbplsda$vip[,nlvoptmbplsda], decreasing = TRUE),nlvoptmbplsda], pch = 16,cex = 0.8,
-     col = as.numeric(as.factor(substr(rownames(modelmbplsda$vip[order(modelmbplsda$vip[,nlvoptmbplsda], decreasing = TRUE),nlvoptmbplsda, drop=FALSE]),1,6))), ylab = "VIP value")
-legend("topright", legend = c("GCTOF", "HILICPOS"), pch = 16, col = 1:2)
-
-# Remove unuseful object for the next steps
-rm(modelmbplsda)
-```
-
-```{r run_prediction}
-predmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                    HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
-                                        Xnames = c("GCTOF", "HILICPOS"), 
-                                        Xscaling = c("none","pareto","sd")[3], 
-                                        Y = sample_metadata[,"Gender",drop=FALSE], 
-                                       Yscaling = c("none","pareto","sd")[1], 
-                                       weights = NULL,
-                                        newXlist = NULL, newXnames = NULL,
-                                        
-                                        method = c("mbplsrda","mbplslda","mbplsqda")[2],
+                                        method = c("soplsrda","soplslda","soplsqda")[2],
                                         prior = c("unif", "prop")[1],
                                         
                                         step = c("nlvtest","permutation","model","prediction")[4],
-                                        nlv = nlvoptmbplsda, 
+                                        nlv = nlvoptsoplsda, 
+                                        # nlvlist = list(),
                                         # modeloutput = c("scores","loadings","coef","vip"), 
                                         # 
                                         # cvmethod = c("kfolds","loo")[1], 
@@ -458,7 +476,7 @@ predmbplsda <- mbplsr_mbplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[
                                         # 
                                         # criterion = c("err","rmse")[1], 
                                         # selection = c("localmin","globalmin","1std")[1],
-                                        
+                                        # 
                                         import = c("R","ChemFlow","W4M")[1],
                                         outputfilename = NULL)
 

@@ -56,9 +56,9 @@ mbplsr_mbplsda_allsteps(Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")
 
 \item{newXnames}{names of the newX-matrices}
 
-\item{method}{method to apply among "plsr", "plsrda","plslda","plsqda"}
+\item{method}{method to apply among "mbplsr", "mbplsrda","mbplslda","mbplsqda"}
 
-\item{prior}{for plslda or plsqda models : The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
+\item{prior}{for mbplslda or mbplsqda models : The prior probabilities of the classes. Possible values are "unif" (default; probabilities are set equal for all the classes) or "prop" (probabilities are set equal to the observed proportions of the classes in \code{y}).}
 
 \item{step}{step of the analysis among "nlvtest" (cross-validation to help determine the optimal number of latent variables), "permutation" (permutation test),"model" (model calculation),"prediction" (prediction of newX-data or X-data if any))}
 
@@ -78,7 +78,7 @@ mbplsr_mbplsda_allsteps(Xlist, Xnames = NULL, Xscaling = c("none","pareto","sd")
                    
 \item{npermut}{if step is "permutation": An integer, setting the number of Y-Block with permutated responses to create. Default value is 30.} 
                    
-\item{criterion}{if step is "nlvtest" or "permutation" and method is "plsrda", "plslda" or "plsqda": optimisation criterion among "rmse" and "err" (for classification error rate)))}
+\item{criterion}{if step is "nlvtest" or "permutation" and method is "mbplsrda", "mbplslda" or "mbplsqda": optimisation criterion among "rmse" and "err" (for classification error rate)))}
                    
 \item{selection}{if step is "nlvtest": a character indicating the selection method to use to choose the optimal combination of components, among "localmin","globalmin","1std". If "localmin": the optimal combination corresponds to the first local minimum of the mean CV rmse or error rate. If "globalmin" : the optimal combination corresponds to the minimum mean CV rmse or error rate. If "1std" (one standard error rule) : it corresponds to the first combination after which the mean cross-validated rmse or error rate does not decrease significantly.}
     
