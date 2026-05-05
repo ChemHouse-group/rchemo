@@ -10,19 +10,19 @@ nipals <- function(X, tol = 1e-6, maxit = 100) {
   iter <- 1
   
   while (cont) {
-    v0 <- v  # Sauvegarde de la dernière valeur de v
+    v0 <- v  # Sauvegarde de la derniere valeur de v
     v <- crossprod(X, u)  # v = X' * u
     v <- v / sqrt(sum(v^2))  # Normalisation de v
     u <- X %*% v  # u = X * v
-    dif <- sum((v - v0)^2)  # Calcul de la différence entre v et v0
+    dif <- sum((v - v0)^2)  # Calcul de la difference entre v et v0
     
     iter <- iter + 1
     if (dif < tol || iter > maxit) {
-      cont <- FALSE  # Condition d'arrêt
+      cont <- FALSE  # Condition d'arret
     }
   }
   
-  sv <- sqrt(sum(u^2)) # Valeur singulière
+  sv <- sqrt(sum(u^2)) # Valeur singuliere
   u <- u / sv  # Normalisation de u
   list(u = u, v = v, sv = sv, niter = iter - 1)
 }
