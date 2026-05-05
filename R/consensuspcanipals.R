@@ -113,7 +113,8 @@ transform.Consensuspcanipals <- function(object, X, ..., nlv = NULL) {
   # tt <- colSums(TT)
   
   X <- lapply(1:length(X), function(i) scale(.mat(X[[i]]), center = object$xmeans[[i]], scale = object$xscales[[i]]))
-  if(object$blockscaling==TRUE){X <- blockscal(Xtrain = X, weights = object$weights)$Xtrain}
+  #if(object$blockscaling==TRUE){X <- blockscal(Xtrain = X, weights = object$weights)$Xtrain}
+  if(object$blockscaling==TRUE){X <- lapply(1:length(X), function(i) X[[i]]/object$Xnorms[i])}
   # Xconc <- do.call("cbind",X)
   
   U <- matrix(0, nrow(X[[1]]), nlv)
