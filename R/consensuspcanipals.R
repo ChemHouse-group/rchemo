@@ -134,7 +134,9 @@ transform.Consensuspcanipals <- function(object, X, ..., nlv = NULL) {
     }
   }
   T <- sqrt((object$mu[1:nlv])) * U
-  return(list(T = T, Tbl = Tbl))
+  structure(
+    list(T = T, Tbl = Tbl),
+    class = c("Consensuspcanipals"))
 }
 
 
