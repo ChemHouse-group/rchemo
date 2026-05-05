@@ -20,3 +20,5 @@
 
 - New functions : covsellm, covselrda, covsellda, covselqda
 - Function changes : "Xscaling" and "Yscaling" arguments added to covsel instead of "scaly"
+- New vignettes mbplsda, soplsda
+- New data : Zhang2023

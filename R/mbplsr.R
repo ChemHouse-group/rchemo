@@ -60,7 +60,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
                 ## u <- eigen(crossprod(tXY), symmetric = TRUE)$vectors[, 1]
                 w <- tXY %*% u
             } 
-        for(i in 1:length(Xlist)){Tk[[i]][,a] <- Xlist[[i]]%*%t(Xlist[[i]])%*%u}##### to check
+        #for(i in 1:length(Xlist)){Tk[[i]][,a] <- Xlist[[i]]%*%t(Xlist[[i]])%*%u}##### to check
         w <- w / sqrt(sum(w * w))
         r <- w
         if(a > 1)

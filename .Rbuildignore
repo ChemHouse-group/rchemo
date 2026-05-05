@@ -1,3 +1,5 @@
 ^\.gitattributes$
 ^cran-comments\.md$
 .gitlab-ci.yml
+^.*\.Rproj$
+^\.Rproj\.user$
