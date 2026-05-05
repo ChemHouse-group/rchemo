@@ -12,7 +12,8 @@ Variable selection for high-dimensionnal data with the COVSEL method (Roger et a
 
 \usage{
 
-covsel(X, Y, nvar = NULL, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
+covsel(X, Y, nvar = NULL, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
 
 }
 

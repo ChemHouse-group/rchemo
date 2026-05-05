@@ -17,9 +17,10 @@ Variable selection for high-dimensionnal data with the COVSEL method (Roger et a
 
 \usage{
 
-covsellmr(X, Y, nvar = NULL, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
+covsellmr(X, Y, nvar = NULL, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
 
-predict.Covsellmr(object, X, ..., nvar = NULL)
+\method{predict}{Covsellmr}(object, X, ..., nvar = NULL)
 
 }
 
@@ -36,6 +37,8 @@ predict.Covsellmr(object, X, ..., nvar = NULL)
 \item{Yscaling}{Y variable scaling among "none" (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected standard deviation is used.}
 
 \item{weights}{Weights (\eqn{n, 1}) to apply to the training observations. Internally, weights are "normalized" to sum to 1. Default to \code{NULL} (weights are set to \eqn{1 / n}).}
+
+\item{object}{For the auxiliary functions: A fitted model, output of a call to the main functions.}
 
 \item{...}{For the auxiliary functions: Optional arguments. Not used.}
 

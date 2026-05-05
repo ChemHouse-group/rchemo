@@ -27,15 +27,20 @@ The training variable \eqn{y} (univariate class membership) is firstly transform
 
 \usage{
 
-covselrda(X, y, nvar = NULL, Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
+covselrda(X, y, nvar = NULL, Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
 
-covsellda(X, y, nvar = NULL, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
+covsellda(X, y, nvar = NULL, prior = c("unif", "prop"), 
+Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
   
-covselqda(X, y, nvar = NULL, prior = c("unif", "prop"), Xscaling = c("none", "pareto", "sd")[1], Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
+covselqda(X, y, nvar = NULL, prior = c("unif", "prop"), 
+Xscaling = c("none", "pareto", "sd")[1], 
+Yscaling = c("none", "pareto", "sd")[1], weights = NULL)
 
-predict.Covselrda(object, X, ..., nvar = NULL)
+\method{predict}{Covselrda}(object, X, ..., nvar = NULL)
 
-predict.Covselprobda(object, X, ..., nvar = NULL)
+\method{predict}{Covselprobda}(object, X, ..., nvar = NULL)
 
 }
 
