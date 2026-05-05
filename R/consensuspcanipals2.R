@@ -32,12 +32,12 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
   weights <- .mweights(weights) ### somme des poids  = 1
   sqrtw <- sqrt(weights)
   
-  U <- matrix(0, n, nlv) # composantes normées
-  WB <- matrix(0, nbl, nlv) # saliences normés
-  Tbl <- lapply(1:nbl, function(k) matrix(0, n, nlv)) # composantes partielles non normées, par bloc
-  Tb <- lapply(1:nlv, function(k) matrix(0, n, nbl)) # composantes partielles non normées par nlv
-  Wbl <- lapply(1:nbl, function(k) matrix(0, ncol(Xlist[[k]]), nlv)) # loadings partiels normés, par bloc
-  lb <- matrix(0, nbl, nlv) # saliences non normés?
+  U <- matrix(0, n, nlv) # composantes normees
+  WB <- matrix(0, nbl, nlv) # saliences normes
+  Tbl <- lapply(1:nbl, function(k) matrix(0, n, nlv)) # composantes partielles non normees, par bloc
+  Tb <- lapply(1:nlv, function(k) matrix(0, n, nbl)) # composantes partielles non normees par nlv
+  Wbl <- lapply(1:nbl, function(k) matrix(0, ncol(Xlist[[k]]), nlv)) # loadings partiels normes, par bloc
+  lb <- matrix(0, nbl, nlv) # saliences non normes?
   mu <- numeric(nlv) # eigen values
   niter <- numeric(nlv)
   
@@ -53,15 +53,15 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
     while (cont) {
       u0 <- u  
       for (k in 1:nbl) {
-        wk <- t(Xlist[[k]]) %*% u / sqrt(sum(weights^2))#loadings non normés associés aux composantes partielles non normées
-        dk <- sqrt(sum(wk^2)) 
+        wk <- t(Xlist[[k]]) %*% u / sqrt(sum(weights^2))#loadings non normes associes aux composantes partielles non normees
+        dk <- sqrt(sum(wk^2))
         # wk <- wk / dk ########
         # tk <- Xlist[[k]] %*% wk
-        tk <- Xlist[[k]] %*% (wk/dk) # composantes partielles non normées
+        tk <- Xlist[[k]] %*% (wk/dk) # composantes partielles non normees
         Tb[[a]][, k] <- tk
         #Tbl[[k]][, a] <- (1/sqrtw) * tk
         Tbl[[k]][, a] <- tk #####
-        Wbl[[k]][, a] <- wk #loadings non normés associés aux composantes partielles non normées => A DIVISER PAR sqrt(5)
+        Wbl[[k]][, a] <- wk #loadings non normes associes aux composantes partielles non normees => A DIVISER PAR sqrt(5)
         lb[k, a] <- dk^2 ### sum(wk^2)? => A DIVISER PAR 5
       }
       res <- nipals(Tb[[a]], tol = tol, maxit = maxit)
@@ -76,7 +76,7 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
     
     niter[a] <- iter - 1
     U[, a] <- u
-    WB[, a] <- w # saliences normés
+    WB[, a] <- w # saliences normes
     mu[a] <- res$sv^2# =sum(lb[, a])  # eigen values
     # mu[a] <- res$sv^2 / sum(weights) # =sum(lb[, a])  # eigen values ###
     for (k in 1:nbl) {
@@ -84,7 +84,7 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
     }
   }
   
-  # loadings associés aux composantes normées
+  # loadings associes aux composantes normees
   # W <- crossprod(weights * Xinit, U) / sum(weights * U * U) ####
   W <- crossprod(weights * Xinit, U)
   W <- W / sqrt(sum(W * W))
@@ -93,7 +93,7 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
   #T <- (diag(1 / sqrt(weights))) %*% (matrix(rep(sqrt(mu),n),nrow=n, byrow=T) * U) ######
   T <- (diag(1 / sqrt(weights))) %*% (matrix(rep(sqrt(mu),n),nrow=n, byrow=T) * U)
   
-  #loadings associés aux composantes non normées
+  #loadings associes aux composantes non normees
   # P <- crossprod(weights * Xinit, T) / sum(weights * T * T) ####
   P <- crossprod(weights * Xinit, T)
   P <- P / (matrix(rep(colSums(lb),ncol(X)),nrow=ncol(X), byrow=T))

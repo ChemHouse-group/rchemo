@@ -55,10 +55,10 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
       u0 <- u  
       for (k in 1:nbl) {
         wk <- t(Xlist[[k]]) %*% u
-        dk <- sqrt(sum(wk^2)) # valeur singulière captée par la 1er comp de Xk
+        dk <- sqrt(sum(wk^2)) # valeur singuliere captee par la 1er comp de Xk
         wk <- wk / dk
         tk <- Xlist[[k]] %*% wk
-        Tb[[a]][, k] <- tk # composante non normée
+        Tb[[a]][, k] <- tk # composante non normee
         Tbl[[k]][, a] <- (1/sqrtw) * tk 
         Wbl[[k]][, a] <- wk
         lb[k, a] <- dk^2
