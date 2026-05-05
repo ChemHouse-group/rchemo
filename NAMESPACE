@@ -104,6 +104,11 @@ S3method(predict, Covsellmr)
 S3method(predict, Covselprobda)
 S3method(predict, Covselrda)
 
+S3method(predict, Consensuspca) 
+S3method(transform, Consensuspca)
+S3method(predict, Consensuspcanipals) 
+S3method(transform, Consensuspcanipals)
+
 #exportMethods("transform", "coef", "predict")
 #exportClasses("PcaOrtho", "PlsOrtho", 
 #              "Dmnorm", "Lda", "Qda", "Plsda", "PlsDaProb",
