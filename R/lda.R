@@ -32,8 +32,10 @@ predict.Lda <- function(object, X, ...) {
     }    
     z <- t(object$wprior * t(ds))
     posterior <- z / rowSums(z)
+    posterior[which(is.nan(posterior))] <- 1/nlev #v2026
     z <- apply(posterior, FUN = .findmax, MARGIN = 1)
     pred <- matrix(.replace_bylev(z, lev), ncol = 1)
+    #pred[which(is.na(posterior[,1]))] <- NA #v2026
     rownam <- row.names(X)
     dimnames(pred) <- list(rownam, "y1")
     dimnames(posterior) <- dimnames(ds) <- list(rownam, lev)

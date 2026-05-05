@@ -2,15 +2,20 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     Xlist <- lapply(1:length(Xlist), function(i) .mat(Xlist[[i]]))
     Y <- .mat(Y, "y")
     
+    if((length(Xscaling)==1) & (length(Xlist)>1)){Xscaling = rep(Xscaling, length(Xlist))}
+    
+    # Tk <- lapply(1:length(Xlist), function(i) plskern(X = Xlist[[i]], Y = Y, weights = weights, nlv = nlv, 
+    #                                                   Xscaling = Xscaling [i], 
+    #                                                   Yscaling = Yscaling)$T)## to check
+    Tk <- lapply(1:length(Xlist), function(i) matrix(0, ncol = nlv, nrow = nrow(Y)))
+    
     if(is.null(weights))
         weights <- rep(1, nrow(Y))
     weights <- .mweights(weights)
     
     xmeanslist <- lapply(1:length(Xlist), function(i) .colmeans(Xlist[[i]], weights = weights))
     ymeans     <- .colmeans(Y, weights = weights) 
-    
-    if((length(Xscaling)=1) & (length(Xlist)>1)){Xscaling = rep(Xscaling, length(Xlist))}
-    
+
     xscaleslist <- list()
     for(i in 1:length(Xlist)){
       if(Xscaling[i] == "none"){xscaleslist[[i]] <- rep(1, ncol(Xlist[[i]]))}
@@ -47,7 +52,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     tXY <- crossprod(Xd, Y)
     # = t(D %*% Xconc) %*% Y = t(Xconc) %*% D %*% Y
     for(a in seq_len(nlv)) {
-        if(q == 1) w <- tXY
+        if(q == 1) {w <- tXY ; u <- rep(1,nrow(Y))}##### u to check
             else {
                 u <- svd(t(tXY), nu = 1, nv = 0)$u
                 ## Same as
@@ -55,6 +60,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
                 ## u <- eigen(crossprod(tXY), symmetric = TRUE)$vectors[, 1]
                 w <- tXY %*% u
             } 
+        for(i in 1:length(Xlist)){Tk[[i]][,a] <- Xlist[[i]]%*%t(Xlist[[i]])%*%u}##### to check
         w <- w / sqrt(sum(w * w))
         r <- w
         if(a > 1)
@@ -72,8 +78,9 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
         C[, a] <- c
         TT[a] <- tt
     }
+    
     structure(
-        list(T = T, P = P, R = R, W = W, C = C, TT = TT,
+        list(T = T, Tk = Tk, P = P, R = R, W = W, C = C, TT = TT,
              xmeans = xmeanslist, ymeans = ymeans, xscales = xscaleslist, yscales = yscales, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, U = NULL),
         class = c("Mbplsr"))
 }
@@ -98,7 +105,26 @@ summary.Mbplsr <- function(object, X, ...) {
     xvar <- tt.adj / n
     explvar <- data.frame(nlv = seq(nlv), var = xvar, pvar = pvar, cumpvar = cumpvar)
     row.names(explvar) <- seq(nlv)
-    list(explvarx = explvar)
+    
+    ##### TO CHECK 
+    Tknorm <- object$Tk
+    for(j in 1:length(X)){
+      for(i in 1:nlv){
+        if(var(Tknorm[[j]][,i])!=0){
+          Tknorm[[j]][,i] <- Tknorm[[j]][,i,drop=FALSE]/norm(Tknorm[[j]][,i,drop=FALSE], type = "e")
+        }
+      }
+    }
+    Tnorm <- object$T
+    for(i in 1:nlv){Tnorm[,i] <- object$T[,i,drop=FALSE]/norm(object$T[,i,drop=FALSE], type = "e")}
+    contr.block <- matrix(NA, ncol = nlv, nrow = length(X), dimnames = list(paste0("X",1:length(X)),paste0("pc",1:nlv)))
+    for(i in 1:nlv){
+      contr.block[,i] <- sapply(1:length(X), function(j) nrow(X[[1]])*cov(Tknorm[[j]][,i],Tnorm[,i]))
+      contr.block[,i] <- abs(contr.block[,i,drop=FALSE]/norm(contr.block[,i,drop=FALSE], type = "e"))
+      contr.block[,i] <- contr.block[,i]/sum(contr.block[,i])*100
+    }
+    
+    list(explvarx = explvar, contr.block = contr.block)
 }
 
 transform.Mbplsr <- function(object, X, ..., nlv = NULL) {

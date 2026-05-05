@@ -41,7 +41,8 @@ cor2 <- function(pred, Y) {
 # R2
 r2 <- function(pred, Y) {
     Y <- .mat(Y)
-    z <- .scale(Y / Y, scale = 1 / colMeans(Y))
+    z <- .scale(matrix(1, nrow = nrow(Y), ncol= ncol(Y)), scale = 1 / colMeans(Y))
+    #z <- .scale(Y / Y, scale = 1 / colMeans(Y))
     #z <- t(t(Y / Y) * colMeans(Y))
     1 - msep(pred, Y) / msep(z, Y)
 }
