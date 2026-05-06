@@ -32,7 +32,11 @@ predict.Lda <- function(object, X, ...) {
     }    
     z <- t(object$wprior * t(ds))
     posterior <- z / rowSums(z)
-    posterior[which(is.nan(posterior))] <- 1/nlev #v2026
+    
+    #v2026
+    if(length(which(is.nan(posterior)))>0){warning(paste0(rownames(X)[which(is.nan(posterior))]," has/have equal posterior probabilities and has/have been classified in the first category in alphabetical order"))}
+    posterior[which(is.nan(posterior))] <- 1/nlev 
+    
     z <- apply(posterior, FUN = .findmax, MARGIN = 1)
     pred <- matrix(.replace_bylev(z, lev), ncol = 1)
     #pred[which(is.na(posterior[,1]))] <- NA #v2026
