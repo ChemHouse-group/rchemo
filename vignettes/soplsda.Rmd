@@ -43,7 +43,8 @@ to illustrate the method application.
 (Zhang, Y.; Barupal, D.K.; Fan, S.; Gao, B.; Zhu, C.; Flenniken, A.M.; 
 McKerlie, C.; Nutter, L.M.J.; Lloyd, K.C.K.; Fiehn, O. Sexual Dimorphism of the
 Mouse Plasma Metabolome Is Associated with Phenotypes of 30 Gene Knockout Lines. 
-Metabolites 2023, 13, 947. https://doi.org/10.3390/metabo13080947)
+Metabolites 2023, 13, 947. https://doi.org/10.3390/metabo13080947).
+
 Plasma were analyzed by several metabolomics platforms. In our example, the 
 objective is to highlight metabolites discriminating males and females.
 
@@ -143,21 +144,21 @@ pcaGCTOF <- pcanipalsna(X = scale(GCTOF[,1:dim(GCTOF)[2]]), nlv = nrow(GCTOF),
                          tol = .Machine$double.eps^0.5, maxit = 200)
 
 ## diagram of explained variance
-barplot(summary(pcaGCTOF,X = scale(GCTOF[,1:dim(GCTOF)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(GCTOF))
+barplot(summary(pcaGCTOF,X = scale(GCTOF[,1:dim(GCTOF)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(GCTOF), main = "diagram of explained variance - PCA GCTOF")
 
 ## score plot
 plotxy(X= pcaGCTOF$T, group = sample_metadata$Gender, 
        asp = 0, col = 3:4, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = FALSE,
-       legend = TRUE, legend.title = NULL, ncol = 1,
+       legend = TRUE, main = "scores - PCA GCTOF", ncol = 1,
        pch=16)
 ## loading plot
 plotxy(X= pcaGCTOF$P, group = NULL, 
        asp = 0, col = NULL, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = TRUE,
-       legend = FALSE, legend.title = NULL, ncol = 1,
+       legend = FALSE, main = "loadings - PCA GCTOF", ncol = 1,
        cex=0.8) 
 
 #HILICPOS with unit variance scaling
@@ -166,14 +167,14 @@ pcaHILICPOS <- pcanipalsna(X = scale(HILICPOS[,1:dim(HILICPOS)[2]]), nlv = nrow(
                          tol = .Machine$double.eps^0.5, maxit = 200)
 
 ## diagram of explained variance
-barplot(summary(pcaHILICPOS,X = scale(HILICPOS[,1:dim(HILICPOS)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(HILICPOS))
+barplot(summary(pcaHILICPOS,X = scale(HILICPOS[,1:dim(HILICPOS)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(HILICPOS), main = "diagram of explained variance - PCA HILIC POS")
 
 ## score plot
 plotxy(X= pcaHILICPOS$T, group = sample_metadata$Gender, 
        asp = 0, col = 3:4, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = FALSE,
-       legend = TRUE, legend.title = NULL, ncol = 1,
+       legend = TRUE, main = "scores - PCA HILIC POS", ncol = 1,
        pch=16)
 
 ## loading plot
@@ -181,7 +182,7 @@ plotxy(X= pcaHILICPOS$P, group = NULL,
        asp = 0, col = NULL, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = TRUE,
-       legend = FALSE, legend.title = NULL, ncol = 1,
+       legend = FALSE, main = "loadings - PCA HILIC POS", ncol = 1,
        cex=0.8)
 
 
@@ -193,78 +194,109 @@ rm(pcaGCTOF, pcaHILICPOS)
 # SO-PLS-DA model
 
 In SO-PLS-DA, datablocks are involved sequentially in the model.
-The first explanatory block is scaled and a PLS-DA model is build to predict the
+
+- The first explanatory block is scaled and a PLS-DA model is build to predict the
 response variable.
-Then, the next explanatory block is orthogonalised to the PLS components, before
+
+- Then, the next explanatory block is orthogonalised to the PLS components, before
 a PLS model to explain the residuals, etc...
-The final prediction is the results of the sum of the predictions by the PLS 
+
+- The final prediction is the results of the sum of the predictions by the PLS 
 models.
+
 The interpretation is based on the separate PLS models included in the SO-PLS 
 modelling.
 
 The main steps to apply this method are:
+
 - the determination of the optimal number of latent variables of each model 
 included in the SO-PLS-DA one, proposed in the package by cross-validation
+
 - the model validation, proposed by permutation test
+
 - the model analysis, based on the scatter plot, the loading plot, the Variable 
 Importance in Projection of each PLS model
+
 - the calculation of the predicted categories for each observation.
 
 In rchemo, all these steps can be performed with a single function.
+
 - Xlist: list of training X-data (n, p).
+
 - Xnames: names of the X-matrices
+
 - Xscaling: vector of Xlist length. X variable scaling among "none" 
 (mean-centering only), "pareto" (mean-centering and pareto scaling), "sd" 
 (mean-centering and unit variance scaling). If "pareto" or "sd", uncorrected 
 standard deviation is used.
+
 - Y: Training Y-data (n, 1).
+
 - Yscaling: Y variable scaling among "none" (mean-centering only), "pareto" 
 (mean-centering and pareto scaling), "sd" (mean-centering and unit variance 
 scaling). If "pareto" or "sd", uncorrected standard deviation is used.
+
 - weights Weights (n, 1) to apply to the training observations. Internally,
 weights are "normalized" to sum to 1. Default to NULL (weights are set to 1/n).
+
 - newXlist: list of new X-data (m, p) to consider.
+
 - newXnames: names of the newX-matrices
+
 - method: method to apply among "soplsrda","soplslda","soplsqda"
+
 - prior: for soplslda or soplsqda models : The prior probabilities of the 
 classes. Possible values are "unif" (default; probabilities are set equal for 
 all the classes) or "prop" (probabilities are set equal to the observed 
 proportions of the classes in y).
+
 - step: step of the analysis among "nlvtest" (cross-validation to help determine 
 the optimal number of latent variables), "permutation" (permutation test),
 "model" (model calculation),"prediction" (prediction of newX-data or X-data if 
 any))
+
 - nlv: if step is not "nlvtest". A vector of same length as the number of blocks 
 defining the number of scores to calculate for each block, or a single number. 
 In this last case, the same number of scores is used for all the blocks.
+
 - nlvlist: if step is not "nlvtest". A list of same length as the number of 
 X-blocks. Each component of the list gives the number of PLS components of the 
 corresponding X-block to test.
+
 - modeloutput: if step is "model": outputs among "scores", "loadings", "coef" 
 (regression coefficients), "vip" (Variable Importance in Projection; the VIP 
 calculation being based on the proportion of Y-variance explained by the 
 components, as proposed by Mehmood et al (2012, 2020).)
+
 - cvmethod: if step is "nlvtest" or "permutation": "kfolds" for k-folds 
 cross-validation, or "loo" for leave-one-out.
+
 - nbrep: if step is "nlvtest" and cvmethod is "kfolds": An integer, setting the 
 number of CV repetitions. Default value is 30. Must me set to 1 if cvmethod is 
 "loo"
+
 - seed: if step is "nlvtest" and cvmethod is "kfolds", or if step is 
 "permutation: a numeric. Seed used for the repeated resampling
+
 - samplingk: A vector of length n. The elements are the values of a qualitative 
 variable used for stratified partition creation. If NULL, the first observation 
 is set in the first fold, the second observation in the second fold, etc...
+
 - nfolds: if cvmethod is "kfolds". An integer, setting the number of partitions 
 to create.Default value is 10.
+
 - npermut: if step is "permutation": An integer, setting the number of Y-Block 
 with permutated responses to create. Default value is 30.
+
 - optimisation: if step is "nlvtest", method for the error optimisation among 
 "global" (the optimal number of latent variables is determined after all the 
 ordred block combination have been computed), or "sequential" (the optimal 
 number of latent variables is determined after each addition of X-block).
+
 - criterion: if step is "nlvtest" or "permutation" and method is "soplsrda", 
 "soplslda" or "soplsqda": optimisation criterion among "rmse" and "err" (for 
 classification error rate)))
+
 - selection: if step is "nlvtest": a character indicating the selection method 
 to use to choose the optimal combination of components, among "localmin",
 "globalmin","1std". If "localmin": the optimal combination corresponds to the 
@@ -273,8 +305,7 @@ optimal combination corresponds to the minimum mean CV rmse or error rate. If
 "1std" (one standard error rule) : it corresponds to the first combination after 
 which the mean cross-validated rmse or error rate does not decrease significantly.
 
-## determination by cross-validation of the optimal number of latent variables 
-## of the model 
+## determination by cross-validation of the optimal number of latent variables of the model 
 
 In this example,the soplslda method with an uniform prior is performed: a linear
 discriminant analysis is applied on the PLS scores to obtain the classifications.
@@ -282,22 +313,29 @@ In the soplsrda method, the classification step is performed according to the
 predicted value, and consequently, it doesn't take into account the variance of 
 the scatter plot. And the soplsqda method is mode suited when the scatter plot 
 has an atypical shape.
+
 The cvmethod is to choose according to the number of observations. If this
 number is small, a leave-one-out cross-validation is more suited, but can lead 
 to optimistic results. In the other cases, it could be better to apply a k-fold
 cross-validation, usually with 3, 5 or 10 folds.
 In order to reduce the computational time, in this example, the number of cross-
 validation repetition is set to 10. But it must be higher (at least 30).
+
 Concerning the criterion, in a discriminant context, it is more logical to 
 choose the classification error rate. However, this can result in an error plot
 depending on the number of latent variables that is not smooth, so some prefer 
 to use rmsecv instead.
+
 In the example, the selection parameter is set to "localmin". Normally, the 
 cross-validated error decreases until it reaches the optimal number of latent 
 variables, before rising again. Sometimes it fluctuates before this rise, so 
 choosing “localmin” allows for a more parsimonious model. The “1std” option is 
 also very parsimonious because it only considers a larger number of latent 
 variables if doing so significantly improves the cross-validated error.
+
+The plot of the results (called "Mage plot) indicates the number of latent 
+variables of each block, and the corresponding error rates and sum of latent
+variables.
 
 ```{r run_nlvtest}
 nlvtestsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
@@ -332,7 +370,8 @@ nlvtestsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTO
 
 
 # to plot the results of the cross-validation
-plot(nlvtestsoplsda[,"nlvsum"],nlvtestsoplsda[,"mean"], type = "n", xlab = "nlv sum", ylab = "classification error rate")
+plot(nlvtestsoplsda[,"nlvsum"],nlvtestsoplsda[,"mean"], type = "n", xlab = "nlv sum", ylab = "classification error rate", 
+     main = "error rates obtained from the different numbers \n of latent variable combinaisons of the 2 datablocks")
 text(x=nlvtestsoplsda[,"nlvsum"], y=nlvtestsoplsda[,"mean"], 
      labels=paste0(nlvtestsoplsda[,"Xlist1"],",",nlvtestsoplsda[,"Xlist2"]))
 
@@ -342,15 +381,16 @@ nlvoptsoplsda <- nlvtestsoplsda[which(nlvtestsoplsda[,"optimum"]==1),c("Xlist1",
 rm(nlvtestsoplsda)
 ```
 
-# model validation by permutation test
+## model validation by permutation test
 Usually, the  cross-validation parameters are the same than for the 
 determination of the optimal number of latent variables.
 In this example, as for the determination of the optimal number of latent 
 variables, in order to reduce the computational time, the number of cross-
 validation repetition and the number of permuted responses are set to 10. 
 But they must be higher (at least 30).
+
 To be valid, all the cross-validated errors obtained on permuted data must be
-lower than the cross-validated error obtained on the orignial data.
+lower than the cross-validated error obtained on the original data.
 
 ```{r run_permutation}
 permutsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
@@ -390,11 +430,17 @@ plot(permutsoplsda, pch = 16, ylab = "CV classification error rate", xlab = "dys
 rm(permutsoplsda)
 ```
 
-# model analysis, based on the scatter plot, the loading plot, the Variable 
-# Importance in Projection
+## model analysis, based on the scatter plot, the loading plot, the Variable Importance in Projection
 The score plot allows to show the group discrimination.
 Based on the VIP curve, the threshold to consider that a variable is important
 can be set.
+
+NOTE: In our example, only the HILICPOS matrix is retained by the SO-PLS-DA 
+method to discriminate the groups.
+If both matrices had been retained, there would have been two loading plots and
+two VIP curves, and the scores obtained from the two matrices would have been
+concatenated.
+
 
 ```{r run_model}
 modelsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
@@ -431,22 +477,31 @@ plotxy(do.call("cbind",modelsoplsda$scores)[,1:2], group = sample_metadata[,"Gen
        asp = 0, col = 3:4, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = FALSE,
-       legend = TRUE, legend.title = NULL, ncol = 1,
+       legend = TRUE, main = "scores - SO PLS DA", ncol = 1,
        pch=16,
        xlab="lv1 HILICPOS",
        ylab="lv2 HILICPOS")
 
 # loading plot
-plotxy(modelsoplsda$loadings[[2]], pch = 16, xlab="lv1 HILICPOS", ylab="lv2 HILICPOS")
+plotxy(modelsoplsda$loadings[[2]], pch = 16, xlab="lv1 HILICPOS", ylab="lv2 HILICPOS",
+       main = "loadings - SO PLS DA")
 
-
-plot(modelsoplsda$vip[[2]][order(modelsoplsda$vip[[2]][,2], decreasing = TRUE),1,drop=FALSE], pch = 16, ylab = "VIP", xlab="HILICPOS variables")
+# vip curve
+plot(modelsoplsda$vip[[2]][order(modelsoplsda$vip[[2]][,2], decreasing = TRUE),1,drop=FALSE], pch = 16, ylab = "VIP", xlab="HILICPOS variables", main = "VIP curve SO PLS DA")
 
 
 # Remove unuseful object for the next steps
 rm(modelsoplsda)
 ```
 
+## predicted values
+The prediction step provides a table with:
+
+- subjects scores
+
+- predicted categories
+
+- probabilities to be predicted for each category.
 ```{r run_prediction}
 predsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
                                                     HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
