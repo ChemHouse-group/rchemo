@@ -38,6 +38,11 @@ datasets. In this context, the SOPLSDA method makes it possible to assess the
 complementarity of data blocks in predicting or explaining a categorical 
 variable.
 
+Reference: Næs T, Tomic O, Afseth NK, Segtnan V, Måge I. Multi-block regression 
+based on combinations of orthogonalisation, PLS-regression and canonical 
+correlation analysis. Chemom Intel Lab Syst. 2013;124:32-42. 
+
+
 A selection of reduced datasets from an article of Zhang et al. have been used 
 to illustrate the method application.  
 (Zhang, Y.; Barupal, D.K.; Fan, S.; Gao, B.; Zhu, C.; Flenniken, A.M.; 
@@ -45,8 +50,14 @@ McKerlie, C.; Nutter, L.M.J.; Lloyd, K.C.K.; Fiehn, O. Sexual Dimorphism of the
 Mouse Plasma Metabolome Is Associated with Phenotypes of 30 Gene Knockout Lines. 
 Metabolites 2023, 13, 947. https://doi.org/10.3390/metabo13080947).
 
-Plasma were analyzed by several metabolomics platforms. In our example, the 
-objective is to highlight metabolites discriminating males and females.
+In our example, the 6 samples from 5 mutant groups (Dhfr, Gnpda1, Plk1, Sra1, 
+Ulk3) and the 40 controls were retained, with the exception of 2 animals that 
+had missing values in non-targeted metabolomics. Three HILIC-negative variables 
+were then removed due to missing or infinite values.
+Lastly, we kept only 2 data blocks (GCTOF and HILIC NEG) to reduce the 
+computation time.
+Always in our example, the objective was to highlight metabolites discriminating 
+males and females.
 
 
 # R environment preparation
@@ -89,7 +100,7 @@ The block dimension can be checked with the following command:
 
 ```{r check_dims, class.source='fold-hide'}
 # Check dimension
-BlockNames <- c("GCTOF", "HILICPOS", "metadata")
+BlockNames <- names(Zhang2023)
 nbrBlocs <- length(BlockNames)
 dims <- lapply(X=Zhang2023[BlockNames], FUN=dim)
 names(dims) <- BlockNames
@@ -123,7 +134,7 @@ rm(row_names, rns, rns.unique, check_row_names)
 
 ```{r change_data_format}
 GCTOF <- Zhang2023$GCTOF
-HILICPOS <- Zhang2023$HILICPOS
+HILICNEG <- Zhang2023$HILICNEG
 sample_metadata <- Zhang2023$metadata
 rm(Zhang2023)
 ```
@@ -144,7 +155,7 @@ pcaGCTOF <- pcanipalsna(X = scale(GCTOF[,1:dim(GCTOF)[2]]), nlv = nrow(GCTOF),
                          tol = .Machine$double.eps^0.5, maxit = 200)
 
 ## diagram of explained variance
-barplot(summary(pcaGCTOF,X = scale(GCTOF[,1:dim(GCTOF)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(GCTOF), main = "diagram of explained variance - PCA GCTOF")
+barplot(summary(pcaGCTOF,X = scale(GCTOF[,1:dim(GCTOF)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(summary(pcaGCTOF,X = scale(GCTOF[,1:dim(GCTOF)[2]]))$explvar), main = "diagram of explained variance - PCA GCTOF")
 
 ## score plot
 plotxy(X= pcaGCTOF$T, group = sample_metadata$Gender, 
@@ -161,33 +172,33 @@ plotxy(X= pcaGCTOF$P, group = NULL,
        legend = FALSE, main = "loadings - PCA GCTOF", ncol = 1,
        cex=0.8) 
 
-#HILICPOS with unit variance scaling
-pcaHILICPOS <- pcanipalsna(X = scale(HILICPOS[,1:dim(HILICPOS)[2]]), nlv = nrow(HILICPOS), 
+#HILICNEG with unit variance scaling
+pcaHILICNEG <- pcanipalsna(X = scale(HILICNEG[,1:dim(HILICNEG)[2]]), nlv = nrow(HILICNEG), 
                          gs = TRUE,
                          tol = .Machine$double.eps^0.5, maxit = 200)
 
 ## diagram of explained variance
-barplot(summary(pcaHILICPOS,X = scale(HILICPOS[,1:dim(HILICPOS)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(HILICPOS), main = "diagram of explained variance - PCA HILIC POS")
+barplot(summary(pcaHILICNEG,X = scale(HILICNEG[,1:dim(HILICNEG)[2]]))$explvar$pvar * 100, names.arg = 1:nrow(summary(pcaHILICNEG,X = scale(HILICNEG[,1:dim(HILICNEG)[2]]))$explvar), main = "diagram of explained variance - PCA HILIC NEG")
 
 ## score plot
-plotxy(X= pcaHILICPOS$T, group = sample_metadata$Gender, 
+plotxy(X= pcaHILICNEG$T, group = sample_metadata$Gender, 
        asp = 0, col = 3:4, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = FALSE,
-       legend = TRUE, main = "scores - PCA HILIC POS", ncol = 1,
+       legend = TRUE, main = "scores - PCA HILIC NEG", ncol = 1,
        pch=16)
 
 ## loading plot
-plotxy(X= pcaHILICPOS$P, group = NULL, 
+plotxy(X= pcaHILICNEG$P, group = NULL, 
        asp = 0, col = NULL, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = TRUE,
-       legend = FALSE, main = "loadings - PCA HILIC POS", ncol = 1,
+       legend = FALSE, main = "loadings - PCA HILIC NEG", ncol = 1,
        cex=0.8)
 
 
 # Remove unuseful object for the next steps
-rm(pcaGCTOF, pcaHILICPOS)
+rm(pcaGCTOF, pcaHILICNEG)
 ```
 
 
@@ -259,7 +270,7 @@ any))
 defining the number of scores to calculate for each block, or a single number. 
 In this last case, the same number of scores is used for all the blocks.
 
-- nlvlist: if step is not "nlvtest". A list of same length as the number of 
+- nlvlist: if step is "nlvtest". A list of same length as the number of 
 X-blocks. Each component of the list gives the number of PLS components of the 
 corresponding X-block to test.
 
@@ -333,18 +344,18 @@ choosing “localmin” allows for a more parsimonious model. The “1std” opt
 also very parsimonious because it only considers a larger number of latent 
 variables if doing so significantly improves the cross-validated error.
 
-The plot of the results (called "Mage plot) indicates the number of latent 
-variables of each block, and the corresponding error rates and sum of latent
-variables.
+The plot of the results (called "Mage plot") indicates the number of latent 
+variables of each block (in the order of the block involvement in the model), 
+and the corresponding error rates and sum of latent variables.
 
 ```{r run_nlvtest}
 nlvtestsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                       HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
-                                          Xnames = c("GCTOF", "HILICPOS"), 
+                                                       HILICNEG = HILICNEG[,1:dim(HILICNEG)[2]]), 
+                                          Xnames = c("GCTOF", "HILICNEG"), 
                                           Xscaling = c("none","pareto","sd")[3], 
                                           Y = sample_metadata[,"Gender",drop=FALSE], 
                                           Yscaling = c("none","pareto","sd")[1], weights = NULL,
-                                          newXlist = NULL, newXnames = NULL,
+                                          #newXlist = NULL, newXnames = NULL,
                                           
                                           method = c("soplsrda","soplslda","soplsqda")[2],
                                           prior = c("unif", "prop")[1],
@@ -352,7 +363,7 @@ nlvtestsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTO
                                           step = c("nlvtest","permutation","model","prediction")[1],
                                           # nlv = c(),
                                           nlvlist = list(0:3, 0:3), 
-                                          modeloutput = c("scores","loadings","coef","vip"), 
+                                          # modeloutput = c("scores","loadings","coef","vip"), 
                                           
                                           cvmethod = c("kfolds","loo")[1], 
                                           nbrep = 10, 
@@ -365,7 +376,7 @@ nlvtestsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTO
                                           criterion = c("err","rmse")[1], 
                                           selection = c("localmin","globalmin","1std")[1],
                                           
-                                          import = c("R","ChemFlow","W4M")[1],
+                                          #import = c("R","ChemFlow","W4M")[1],
                                           outputfilename = NULL)
 
 
@@ -394,12 +405,12 @@ lower than the cross-validated error obtained on the original data.
 
 ```{r run_permutation}
 permutsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                      HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
-                                         Xnames = c("GCTOF", "HILICPOS"), 
+                                                      HILICNEG = HILICNEG[,1:dim(HILICNEG)[2]]), 
+                                         Xnames = c("GCTOF", "HILICNEG"), 
                                          Xscaling = c("none","pareto","sd")[3], 
                                          Y = sample_metadata[,"Gender",drop=FALSE], 
                                          Yscaling = c("none","pareto","sd")[1], weights = NULL,
-                                         newXlist = NULL, newXnames = NULL,
+                                         #newXlist = NULL, newXnames = NULL,
                                          
                                          method = c("soplsrda","soplslda","soplsqda")[2],
                                          prior = c("unif", "prop")[1],
@@ -407,7 +418,7 @@ permutsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF
                                          step = c("nlvtest","permutation","model","prediction")[2],
                                          nlv = nlvoptsoplsda,
                                          #nlvlist = list(),
-                                         modeloutput = c("scores","loadings","coef","vip"), 
+                                         #modeloutput = c("scores","loadings","coef","vip"), 
                                          
                                          cvmethod = c("kfolds","loo")[1], 
                                          nbrep = 10, 
@@ -420,7 +431,7 @@ permutsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF
                                          criterion = c("err","rmse")[1], 
                                          # selection = c("localmin","globalmin","1std")[1],
                                          
-                                         import = c("R","ChemFlow","W4M")[1],
+                                         #import = c("R","ChemFlow","W4M")[1],
                                          outputfilename = NULL)
 
 #plot of the results
@@ -435,21 +446,20 @@ The score plot allows to show the group discrimination.
 Based on the VIP curve, the threshold to consider that a variable is important
 can be set.
 
-NOTE: In our example, only the HILICPOS matrix is retained by the SO-PLS-DA 
-method to discriminate the groups.
-If both matrices had been retained, there would have been two loading plots and
-two VIP curves, and the scores obtained from the two matrices would have been
+In our example, latent variables of the 2 matrices are retained by the SO-PLS-DA 
+method to best discriminate the groups. Consequently, we have two loading plots 
+and two VIP curves, and the scores obtained from the two matrices could be
 concatenated.
 
 
 ```{r run_model}
 modelsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                      HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
-                                         Xnames = c("GCTOF", "HILICPOS"), 
+                                                     HILICNEG = HILICNEG[,1:dim(HILICNEG)[2]]), 
+                                         Xnames = c("GCTOF", "HILICNEG"), 
                                          Xscaling = c("none","pareto","sd")[3], 
                                          Y = sample_metadata[,"Gender",drop=FALSE], 
                                          Yscaling = c("none","pareto","sd")[1], weights = NULL,
-                                         newXlist = NULL, newXnames = NULL,
+                                         #newXlist = NULL, newXnames = NULL,
                                          
                                          method = c("soplsrda","soplslda","soplsqda")[2],
                                          prior = c("unif", "prop")[1],
@@ -469,7 +479,7 @@ modelsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)
                                          # criterion = c("err","rmse")[1], 
                                          # selection = c("localmin","globalmin","1std")[1],
                                          
-                                         import = c("R","ChemFlow","W4M")[1],
+                                         #import = c("R","ChemFlow","W4M")[1],
                                          outputfilename = NULL)
 # score plot
 
@@ -477,18 +487,31 @@ plotxy(do.call("cbind",modelsoplsda$scores)[,1:2], group = sample_metadata[,"Gen
        asp = 0, col = 3:4, alpha.f = .8,
        zeroes = TRUE, circle = FALSE, ellipse = FALSE,
        labels = FALSE,
-       legend = TRUE, main = "scores - SO PLS DA", ncol = 1,
+       legend = TRUE, main = "scores - SO PLS DA \n first model (GCTOF variables)", ncol = 1,
        pch=16,
-       xlab="lv1 HILICPOS",
-       ylab="lv2 HILICPOS")
+       xlab="lv1 GCTOF",
+       ylab="lv2 GCTOF")
+
+plotxy(do.call("cbind",modelsoplsda$scores)[,3:4], group = sample_metadata[,"Gender"],
+       asp = 0, col = 3:4, alpha.f = .8,
+       zeroes = TRUE, circle = FALSE, ellipse = FALSE,
+       labels = FALSE,
+       legend = TRUE, main = "scores - SO PLS DA \n 2nd model (HILIC NEG variables)", ncol = 1,
+       pch=16,
+       xlab="lv1 HILICNEG",
+       ylab="lv2 HILICNEG")
 
 # loading plot
-plotxy(modelsoplsda$loadings[[2]], pch = 16, xlab="lv1 HILICPOS", ylab="lv2 HILICPOS",
-       main = "loadings - SO PLS DA")
+plotxy(modelsoplsda$loadings[[1]], pch = 16, xlab="lv1 GCTOF", ylab="lv2 GCTOF",
+       main = "loadings - SO PLS DA \n first model (GCTOF variables)")
+
+plotxy(modelsoplsda$loadings[[2]], pch = 16, xlab="lv1 HILIC NEG", ylab="lv2 HILIC NEG",
+       main = "loadings - SO PLS DA \n 2nd model (HILIC NEG variables)")
 
 # vip curve
-plot(modelsoplsda$vip[[2]][order(modelsoplsda$vip[[2]][,2], decreasing = TRUE),1,drop=FALSE], pch = 16, ylab = "VIP", xlab="HILICPOS variables", main = "VIP curve SO PLS DA")
+plot(modelsoplsda$vip[[1]][order(modelsoplsda$vip[[1]][,2], decreasing = TRUE),1,drop=FALSE], pch = 16, ylab = "VIP", xlab="GCTOF variables", main = "VIP curve - SO PLS DA \n first model (GCTOF variables)")
 
+plot(modelsoplsda$vip[[2]][order(modelsoplsda$vip[[2]][,2], decreasing = TRUE),1,drop=FALSE], pch = 16, ylab = "VIP", xlab="HILIC NEG variables", main = "VIP curve - SO PLS DA \n 2nd model (HILIC NEG variables)")
 
 # Remove unuseful object for the next steps
 rm(modelsoplsda)
@@ -504,15 +527,15 @@ The prediction step provides a table with:
 - probabilities to be predicted for each category.
 ```{r run_prediction}
 predsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                    HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]), 
-                                        Xnames = c("GCTOF", "HILICPOS"), 
+                                                    HILICNEG = HILICNEG[,1:dim(HILICNEG)[2]]), 
+                                        Xnames = c("GCTOF", "HILICNEG"), 
                                         Xscaling = c("none","pareto","sd")[3], 
                                         Y = sample_metadata[,"Gender",drop=FALSE], 
                                         Yscaling = c("none","pareto","sd")[1], 
                                         weights = NULL,
                                         newXlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[2]], 
-                                                        HILICPOS = HILICPOS[,1:dim(HILICPOS)[2]]),
-                                       newXnames =  c("GCTOF", "HILICPOS"),
+                                                        HILICNEG = HILICNEG[,1:dim(HILICNEG)[2]]),
+                                       newXnames =  c("GCTOF", "HILICNEG"),
                                         
                                         method = c("soplsrda","soplslda","soplsqda")[2],
                                         prior = c("unif", "prop")[1],
@@ -532,7 +555,7 @@ predsoplsda <- soplsr_soplsda_allsteps(Xlist = list(GCTOF = GCTOF[,1:dim(GCTOF)[
                                         # criterion = c("err","rmse")[1], 
                                         # selection = c("localmin","globalmin","1std")[1],
                                         # 
-                                        import = c("R","ChemFlow","W4M")[1],
+                                        #import = c("R","ChemFlow","W4M")[1],
                                         outputfilename = NULL)
 
 predsoplsda

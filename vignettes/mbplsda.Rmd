@@ -40,15 +40,33 @@ multi-block partial least squares discriminant analysis (MBPLSDA) allowing
 determining the importance of variables of the different data blocks in 
 discriminating groups of observations, taking into account data structure.
 
+References: 
+
+- Wold, S. (Ed.). (1984). Three PLS algorithms according to SW. In Report from 
+the symposium MULTDAST (multivariate data analysis in science and technology) 
+(pp. 26–30). Umeå, Sweden
+
+- Westerhuis, J. A., Kourti, T., & Macgregor, J. F. (1998). Analysis of multi-
+block and hierarchical PCA and PLS models. Journal of Chemometrics, 12, 301–321.
+
+
 A selection of reduced datasets from an article of Zhang et al. have been used 
-to illustrate the method application.  
-(Zhang, Y.; Barupal, D.K.; Fan, S.; Gao, B.; Zhu, C.; Flenniken, A.M.; 
-McKerlie, C.; Nutter, L.M.J.; Lloyd, K.C.K.; Fiehn, O. Sexual Dimorphism of the
-Mouse Plasma Metabolome Is Associated with Phenotypes of 30 Gene Knockout Lines. 
+to illustrate the method application. (Zhang, Y.; Barupal, D.K.; Fan, S.; 
+Gao, B.; Zhu, C.; Flenniken, A.M.; McKerlie, C.; Nutter, L.M.J.; Lloyd, K.C.K.; 
+Fiehn, O. Sexual Dimorphism of the Mouse Plasma Metabolome Is Associated with 
+Phenotypes of 30 Gene Knockout Lines. 
 Metabolites 2023, 13, 947. https://doi.org/10.3390/metabo13080947).
 
-Plasma were analyzed by several metabolomics platforms. In our example, the 
-objective is to highlight metabolites discriminating males and females.
+In this study, plasma were analyzed by several metabolomics platforms. 
+
+In our example, the 6 samples from 5 mutant groups (Dhfr, Gnpda1, Plk1, Sra1, 
+Ulk3) and the 40 controls were retained, with the exception of 2 animals that 
+had missing values in non-targeted metabolomics. Three HILIC-negative variables 
+were then removed due to missing or infinite values.
+Lastly, we kept only 2 data blocks (GCTOF and HILIC POS) to reduce the 
+computation time.
+Always in our example, the objective was to highlight metabolites discriminating 
+males and females.
 
 
 # R environment preparation
@@ -91,7 +109,7 @@ The block dimension can be checked with the following command:
 
 ```{r check_dims, class.source='fold-hide'}
 # Check dimension
-BlockNames <- c("GCTOF", "HILICPOS", "metadata")
+BlockNames <- names(Zhang2023)
 nbrBlocs <- length(BlockNames)
 dims <- lapply(X=Zhang2023[BlockNames], FUN=dim)
 names(dims) <- BlockNames
