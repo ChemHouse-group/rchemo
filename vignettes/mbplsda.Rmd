@@ -46,7 +46,7 @@ References:
 the symposium MULTDAST (multivariate data analysis in science and technology) 
 (pp. 26–30). Umeå, Sweden
 
-- Westerhuis, J. A., Kourti, T., & Macgregor, J. F. (1998). Analysis of multi-
+- Westerhuis, J. A., Kourti, T., & Macgregor, J. F. (1998). Analysis of multi
 block and hierarchical PCA and PLS models. Journal of Chemometrics, 12, 301–321.
 
 

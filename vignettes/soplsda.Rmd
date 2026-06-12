@@ -38,7 +38,7 @@ datasets. In this context, the SOPLSDA method makes it possible to assess the
 complementarity of data blocks in predicting or explaining a categorical 
 variable.
 
-Reference: Næs T, Tomic O, Afseth NK, Segtnan V, Måge I. Multi-block regression 
+Reference: Næs T, Tomic O, Afseth NK, Segtnan V, Måge I. Multi block regression 
 based on combinations of orthogonalisation, PLS-regression and canonical 
 correlation analysis. Chemom Intel Lab Syst. 2013;124:32-42. 
 
