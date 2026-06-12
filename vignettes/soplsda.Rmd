@@ -43,17 +43,17 @@ based on combinations of orthogonalisation, PLS-regression and canonical
 correlation analysis. Chemom Intel Lab Syst. 2013;124:32-42. 
 
 
-A selection of reduced datasets from an article of Zhang et al. have been used 
-to illustrate the method application.  
+A selection of reduced non-targeted metabolomics datasets from an article of 
+Zhang et al. have been used to illustrate the method application. 
 (Zhang, Y.; Barupal, D.K.; Fan, S.; Gao, B.; Zhu, C.; Flenniken, A.M.; 
-McKerlie, C.; Nutter, L.M.J.; Lloyd, K.C.K.; Fiehn, O. Sexual Dimorphism of the
+McKerlie, C.; Nutter, L.M.J.; Lloyd, K.C.K.; Fiehn, O. Sexual Dimorphism of the 
 Mouse Plasma Metabolome Is Associated with Phenotypes of 30 Gene Knockout Lines. 
 Metabolites 2023, 13, 947. https://doi.org/10.3390/metabo13080947).
 
 In our example, the 6 samples from 5 mutant groups (Dhfr, Gnpda1, Plk1, Sra1, 
 Ulk3) and the 40 controls were retained, with the exception of 2 animals that 
-had missing values in non-targeted metabolomics. Three HILIC-negative variables 
-were then removed due to missing or infinite values.
+had missing values in non-targeted metabolomics. Three HILIC-NEG and 2 HILIC-POS
+variables were then removed due to missing or infinite values.
 Lastly, we kept only 2 data blocks (GCTOF and HILIC NEG) to reduce the 
 computation time.
 Always in our example, the objective was to highlight metabolites discriminating 
