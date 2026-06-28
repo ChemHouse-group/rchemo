@@ -1,10 +1,7 @@
 \name{consensuspca}
 \alias{consensuspca}
-\alias{consensuspcanipals}
 \alias{transform.Consensuspca}
-\alias{transform.Consensuspcanipals}
 \alias{summary.Consensuspca}
-\alias{summary.Consensuspcanipals}
 
 \encoding{UTF-8}
 
@@ -13,8 +10,6 @@
 \description{
 
 Algorithms fitting a consensus PCA of a list of matrices \eqn{Xlist}. A chosen PCA algorithm is applied on the X-matrix obtained after variable scaling, blockscaling, block concatenation.
-
-In \code{consensuspcanipals} the PCA is performed using NIPALS, allowing the block contribution calculation.
 
 \bold{Auxiliary functions}
 
@@ -30,18 +25,10 @@ consensuspca(Xlist, blockscaling = TRUE, weights = NULL, nlv,
       Xscaling = c("none", "pareto", "sd")[1], 
       algo = c("svd","eigen","eigenk","nipals","nipalsna","sph")[1], 
       gs = TRUE, tol = .Machine$double.eps^0.5, maxit = 200)
-      
-consensuspcanipals(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
-      Xscaling = c("none", "pareto", "sd")[1],
-      tol = .Machine$double.eps^0.5, maxit = 200)
 
 \method{transform}{Consensuspca}(object, X, ..., nlv = NULL) 
 
-\method{transform}{Consensuspcanipals}(object, X, ..., nlv = NULL)  
-
 \method{summary}{Consensuspca}(object, X, ...) 
-
-\method{summary}{Consensuspcanipals}(object, X, ...)  
 
 }
 
@@ -73,7 +60,6 @@ consensuspcanipals(Xlist, blockscaling = TRUE, weights = NULL, nlv,
 
 \item{maxit}{Maximum number of NIPALS iterations for each PC.}
 
-
 }
 
 \value{
@@ -102,67 +88,14 @@ For \code{consensuspca}:
 
 \item{conv}{Logical indicating if the NIPALS converged before reaching the maximal number of iterations.}
 
-For \code{consensuspcanipals}: 
 
-\item{T}{The non normed global scores matrix (\eqn{n, nlv}).}
-
-\item{U}{The normed global scores matrix (\eqn{n, nlv}).}
-
-\item{W}{The global loadings matrix (\eqn{p, nlv}).}
-
-\item{WB}{The Xlist-block loadings matrix (\eqn{blocks, nlv}).}
-
-\item{Tbl}{The list of block scores matrices (\eqn{n, nlv}) (grouped by blocks, in original scale).}
-
-\item{Tb}{The list of block scores matrices (\eqn{n, nlv}) (grouped by LV, in the metric scale).}
-
-\item{Wbl}{The list of block loadings matrices (\eqn{p, nlv}).}
-
-\item{lb}{The block specific weights "lambda" matrix.}
-
-\item{mu}{The sum of the specific weights (= eigen value of the global PCA)}
-
-\item{sv}{The singular values (\eqn{min(n, p), 1}) except for NIPALS = (\eqn{nlv, 1}).}###
-
-\item{eig}{The eigenvalues (\code{= sv^2}) (\eqn{min(n, p), 1}) except for NIPALS = (\eqn{nlv, 1}).}###
-
-\item{xmeans}{The list of centering vectors of \eqn{Xlist}.}
-
-\item{xscales}{The list of \eqn{Xlist} variable standard deviations.}
-
-\item{weights}{Weights applied to the training observations.}
-
-\item{blockscaling}{block scaling.}
-
-\item{Xnorms}{"norm" of each block, i.e. the square root of the sum of the variances of each column of each block, computed on the training, and used as scaling factor}.
-
-\item{niter}{Numbers of iterations of the NIPALS.}
 
 For \code{transform.Consensuspca}: X-scores matrix for new Xlist-data.
 
-For \code{transform.Consensuspcanipals}: X-scores matrix for new Xlist-data.
-
-\item{T}{X-scores matrix for new Xlist-data.}
-
-\item{Tbl}{X-scores matrix for new Xlist-data.}
 
 For \code{summary.Consensuspca}:
 
 \item{explvarx}{matrix of explained variances.}
-
-\item{contr_ind}{observation contributions.}
-
-\item{contr_var}{variable contributions.}
-
-\item{coord_var}{variable coordinates.}
-
-\item{cor_circle}{variable coordinates on the correlation circle.}
-
-For \code{summary.Consensuspcanipals}:
-
-\item{explvarx}{matrix of explained variances.}
-
-\item{contr_block}{block contributions.}
 
 \item{contr_ind}{observation contributions.}
 
@@ -206,12 +139,6 @@ X2 <- mblocks(Xtest, blocks = blocks)
 nlv <- 3
 fm <- consensuspca(Xlist = X1, Xscaling = c("sd","none","none"), 
 blockscaling = TRUE, weights = NULL, nlv = nlv)
-
-summary(fm, X1)
-transform(fm, X2)
-
-fm <- consensuspcanipals(Xlist = X1, Xscaling = c("sd","none","none"), 
-blockscaling = TRUE, weights = NULL, nlv = nlv, tol=1e-15)
 
 summary(fm, X1)
 transform(fm, X2)

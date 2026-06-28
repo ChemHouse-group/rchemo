@@ -1,4 +1,4 @@
-consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1],
+.consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, Xscaling = c("none", "pareto", "sd")[1],
                                tol = .Machine$double.eps^0.5, maxit = 200) {
 
   if (is.null(weights)) {
@@ -108,7 +108,7 @@ consensuspcanipals <- function(Xlist, blockscaling = TRUE, weights = NULL, nlv, 
 }
 
 
-transform.Consensuspcanipals <- function(object, X, ..., nlv = NULL) {
+.transform.Consensuspcanipals <- function(object, X, ..., nlv = NULL) {
   nlv <- if (is.null(nlv)) ncol(object$T) else min(nlv, ncol(object$T))
   
   X <- lapply(1:length(X), function(i) .mat(X[[i]]))
@@ -146,7 +146,7 @@ transform.Consensuspcanipals <- function(object, X, ..., nlv = NULL) {
 }
 
 
-summary.Consensuspcanipals <- function(object, X, ...) {
+.summary.Consensuspcanipals <- function(object, X, ...) {
 
   X <- lapply(1:length(X), function(i) .mat(X[[i]]))
   Xinit <- X

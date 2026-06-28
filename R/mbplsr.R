@@ -7,7 +7,8 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     # Tk <- lapply(1:length(Xlist), function(i) plskern(X = Xlist[[i]], Y = Y, weights = weights, nlv = nlv, 
     #                                                   Xscaling = Xscaling [i], 
     #                                                   Yscaling = Yscaling)$T)## to check
-    Tk <- lapply(1:length(Xlist), function(i) matrix(0, ncol = nlv, nrow = nrow(Y)))
+    
+    # Tk <- lapply(1:length(Xlist), function(i) matrix(0, ncol = nlv, nrow = nrow(Y)))
     
     if(is.null(weights))
         weights <- rep(1, nrow(Y))
@@ -52,7 +53,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     tXY <- crossprod(Xd, Y)
     # = t(D %*% Xconc) %*% Y = t(Xconc) %*% D %*% Y
     for(a in seq_len(nlv)) {
-        if(q == 1) {w <- tXY ; u <- rep(1,nrow(Y))}##### u to check
+        if(q == 1) {w <- tXY}# ; u <- rep(1,nrow(Y))}##### u to check
             else {
                 u <- svd(t(tXY), nu = 1, nv = 0)$u
                 ## Same as
@@ -80,7 +81,7 @@ mbplsr <- function(Xlist, Y, blockscaling = TRUE, weights = NULL, nlv, Xscaling 
     }
     
     structure(
-        list(T = T, Tk = Tk, P = P, R = R, W = W, C = C, TT = TT,
+        list(T = T, P = P, R = R, W = W, C = C, TT = TT, #Tk = Tk, 
              xmeans = xmeanslist, ymeans = ymeans, xscales = xscaleslist, yscales = yscales, weights = weights, blockscaling = blockscaling, Xnorms = Xnorms, U = NULL),
         class = c("Mbplsr"))
 }
@@ -107,24 +108,24 @@ summary.Mbplsr <- function(object, X, ...) {
     row.names(explvar) <- seq(nlv)
     
     ##### TO CHECK 
-    Tknorm <- object$Tk
-    for(j in 1:length(X)){
-      for(i in 1:nlv){
-        if(var(Tknorm[[j]][,i])!=0){
-          Tknorm[[j]][,i] <- Tknorm[[j]][,i,drop=FALSE]/norm(Tknorm[[j]][,i,drop=FALSE], type = "e")
-        }
-      }
-    }
-    Tnorm <- object$T
-    for(i in 1:nlv){Tnorm[,i] <- object$T[,i,drop=FALSE]/norm(object$T[,i,drop=FALSE], type = "e")}
-    contr.block <- matrix(NA, ncol = nlv, nrow = length(X), dimnames = list(paste0("X",1:length(X)),paste0("pc",1:nlv)))
-    for(i in 1:nlv){
-      contr.block[,i] <- sapply(1:length(X), function(j) nrow(X[[1]])*cov(Tknorm[[j]][,i],Tnorm[,i]))
-      contr.block[,i] <- abs(contr.block[,i,drop=FALSE]/norm(contr.block[,i,drop=FALSE], type = "e"))
-      contr.block[,i] <- contr.block[,i]/sum(contr.block[,i])*100
-    }
+    # Tknorm <- object$Tk
+    # for(j in 1:length(X)){
+    #   for(i in 1:nlv){
+    #     if(var(Tknorm[[j]][,i])!=0){
+    #       Tknorm[[j]][,i] <- Tknorm[[j]][,i,drop=FALSE]/norm(Tknorm[[j]][,i,drop=FALSE], type = "e")
+    #     }
+    #   }
+    # }
+    # Tnorm <- object$T
+    # for(i in 1:nlv){Tnorm[,i] <- object$T[,i,drop=FALSE]/norm(object$T[,i,drop=FALSE], type = "e")}
+    # contr.block <- matrix(NA, ncol = nlv, nrow = length(X), dimnames = list(paste0("X",1:length(X)),paste0("pc",1:nlv)))
+    # for(i in 1:nlv){
+    #   contr.block[,i] <- sapply(1:length(X), function(j) nrow(X[[1]])*cov(Tknorm[[j]][,i],Tnorm[,i]))
+    #   contr.block[,i] <- abs(contr.block[,i,drop=FALSE]/norm(contr.block[,i,drop=FALSE], type = "e"))
+    #   contr.block[,i] <- contr.block[,i]/sum(contr.block[,i])*100
+    # }
     
-    list(explvarx = explvar, contr.block = contr.block)
+    list(explvarx = explvar)#, contr.block = contr.block)
 }
 
 transform.Mbplsr <- function(object, X, ..., nlv = NULL) {

@@ -184,6 +184,7 @@
 - ***hconcat*** Horizontal block concatenation 
 - ***blockscal*** Block autoscaling
 - ***orthog*** Orthogonalization of two blocks
+- ***consensuspca*** Consensus PCA
 - ***mbplsr***, ***mbplskern***, ***mbplsnipals***, ***mbplsrannar***: Multi-Block PLS
 - ***mbplsrda*** Multi-Block PLS-RDA
 - ***mbplslda*** Multi-Block PLS-LDA
@@ -207,6 +208,7 @@
 - ***forages*** Tropical forages
 - ***octane*** Gazoline "octane" dataset
 - ***ozone*** Los Angeles "ozone" pollution (1976) dataset
+- ***Zhang2023*** reduced non-targeted metabolomics datasets from Zhang et al.(2023)
 
 #### <span style="color:#1589F0"> GRAPHICS </span>
 

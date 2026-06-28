@@ -71,8 +71,6 @@ A list of outputs, such as
 
 \item{T}{The X-score matrix (\eqn{n, nlv}).}
 
-\item{Tk}{The partial X-score matrices (\eqn{n, nlv}).}
-
 \item{P}{The X-loadings matrix (\eqn{p, nlv}).}
 
 \item{W}{The X-loading weights matrix (\eqn{p, nlv}).}
@@ -104,8 +102,6 @@ For \code{transform.Mbplsr}: X-scores matrix for new Xlist-data.
 For \code{summary.Mbplsr}:
 
 \item{explvarx}{matrix of explained variances.}
-
-\item{contr.block}{block contributions.}
 
 For \code{coef.Mbplsr}: 
 
